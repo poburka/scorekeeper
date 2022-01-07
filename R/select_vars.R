@@ -4,8 +4,9 @@
 #'
 #' @param raw - raw data object
 #' @param metadata - formatted metadata object
-#'
 #' @return tibble with selected variables
+#' @import dplyr
+#' @import glue
 #' @export
 #'
 

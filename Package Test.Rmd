@@ -1,0 +1,36 @@
+---
+title: "Test Scorekeep"
+author: "K Schaumberg"
+date: "1/5/2022"
+output: html_document
+---
+
+```{r}
+binge_meta <- readxl::read_excel('binge_meta.xlsx')
+load('test.Rda')
+```
+
+```{r}
+library(scorekeeper)
+library(rlang)
+library(sjmisc)
+  #create a new tibble with just the raw data
+
+```
+
+```{r}
+test1<- scorekeep(test, binge_meta)
+
+sumvars <- test1
+sumvars
+```
+
+```{r}
+vars <- sumvars[[6]]
+```
+
+
+```{r}
+frq(sumvars[[6]], binge_freq_d.14)
+```
+

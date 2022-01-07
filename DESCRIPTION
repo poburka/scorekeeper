@@ -1,10 +1,10 @@
 Package: scorekeeper
-Title:  Score Multi-item Assessments
+Title: Score Multi-item Assessments
 Version: 0.0.0.9000
 Authors@R: 
     person("Katherine", "Schaumberg", email = "katherine.schaumberg@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3193-2233"))
-Description: Scores data using tidyverse/dplyr functionality using input metadata file and raw data file. Supports reproducable scoring for multi-item assessments
+Description: Scores data using dplyr functionality with input metadata file and raw data file. Supports reproducable scoring for multi-item assessments
 License: use_gpl3_license()
 Suggests: 
     testthat (>= 3.0.0)
@@ -20,4 +20,8 @@ Imports:
     glue,
     rlang,
     naniar,
-    dplyr
+    dplyr,
+    haven,
+    tibble
+URL: https://github.com/embark-lab/scorekeeper
+BugReports: https://github.com/embark-lab/scorekeeper/issues
