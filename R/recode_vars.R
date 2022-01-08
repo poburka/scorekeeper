@@ -2,13 +2,16 @@
 
 #' The recode_vars function recodes variables according to metadata instructions
 #'
-#' @param raw : A raw data object (tibble or dataframe)
-#' @param metadata  : A metadata object (tibble or dataframe)
+#' @param raw : A raw data object
+#' @param metadata  : A metadata object
 #' @import dplyr
 #' @import labelled
-#' @import haven
+#' @importFrom haven as_factor
 #' @import tibble
-#' @return A tibble with both original and recoded varaibles
+#' @import rlang
+#' @importFrom rlang eval_tidy
+#' @importFrom purrr as_vector
+#' @return A tibble with both original and recoded variables
 #' @export
 #'
 #'

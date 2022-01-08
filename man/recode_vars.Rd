@@ -7,12 +7,12 @@
 recode_vars(raw, metadata)
 }
 \arguments{
-\item{raw}{: A raw data object (tibble or dataframe)}
+\item{raw}{: A raw data object}
 
-\item{metadata}{: A metadata object (tibble or dataframe)}
+\item{metadata}{: A metadata object}
 }
 \value{
-A tibble with both original and recoded varaibles
+A tibble with both original and recoded variables
 }
 \description{
 The recode_vars function recodes variables according to metadata instructions

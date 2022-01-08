@@ -2,16 +2,18 @@
 % Please edit documentation in R/filter_at.R
 \name{filter_at_vars}
 \alias{filter_at_vars}
-\title{Title}
+\title{Filter at function}
 \usage{
 filter_at_vars(raw, metadata)
 }
 \arguments{
-\item{metadata}{}
+\item{raw}{a raw data object}
+
+\item{metadata}{a metadata object}
 }
 \value{
 tibble that is filtered at specific variables
 }
 \description{
-Title
+Filter at function
 }

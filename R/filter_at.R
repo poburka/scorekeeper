@@ -1,10 +1,10 @@
 
 
-#' Title
+#' Filter at function
 #'
-#' @param raw
-#' @param metadata
-#'
+#' @param raw a raw data object
+#' @param metadata a metadata object
+#' @import dplyr
 #' @return tibble that is filtered at specific variables
 #' @export
 #'

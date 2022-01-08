@@ -17,6 +17,3 @@ a series of tibbles representing data manipulations at each step as specified in
 \description{
 Scores raw data in a step-by-step fashion using metadata provided
 }
-\examples{
-
-}

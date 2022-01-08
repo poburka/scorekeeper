@@ -2,26 +2,27 @@ Package: scorekeeper
 Title: Score Multi-item Assessments
 Version: 0.0.0.9000
 Authors@R: 
-    person("Katherine", "Schaumberg", email = "katherine.schaumberg@gmail.com", role = c("aut", "cre"),
+    person("Katherine", "Schaumberg", , "katherine.schaumberg@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3193-2233"))
-Description: Scores data using dplyr functionality with input metadata file and raw data file. Supports reproducable scoring for multi-item assessments
-License: use_gpl3_license()
+Description: The scorekeeper package scores multi-item data using dplyr functionality with a scoresheet (specifically formatted metadata
+    file) and raw data file. This package supports reproducable scoring for multi-item assessments.
+License: GPL (>= 3) + file LICENSE
+URL: https://github.com/embark-lab/scorekeeper
+BugReports: https://github.com/embark-lab/scorekeeper/issues
+Imports: 
+    dplyr,
+    glue,
+    haven,
+    methods,
+    labelled,
+    naniar,
+    purrr,
+    rlang,
+    tibble,
+    stats
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Depends: 
-    tidyverse
-Imports: 
-    purrr,
-    labelled,
-    glue,
-    rlang,
-    naniar,
-    dplyr,
-    haven,
-    tibble
-URL: https://github.com/embark-lab/scorekeeper
-BugReports: https://github.com/embark-lab/scorekeeper/issues

@@ -9,7 +9,9 @@
 #' @import dplyr
 #' @import labelled
 #' @import tibble
-#' @import rlang
+#' @importFrom rlang parse_expr
+#' @importFrom methods el
+#' @importFrom stats as.formula
 #' @return  a tibble with new variables appended that follow tidyverse evaluation of case_when metadata statements
 #' @export
 
@@ -58,7 +60,7 @@ case_when_function <- function (raw_tbl, n_var, case_when_code, n_lab, n_val_lab
 
   tbl_0 <- tbl_0 %>%
     mutate(NAs := rowSums(is.na(across(starts_with('temp'))))) %>%
-    mutate("{n_var}" := ifelse(NAs < 3, rowSums(across(starts_with('temp')), na.rm = TRUE), NA)) %>%
+    mutate("{n_var}" := ifelse(NAs < LHS_len, rowSums(across(starts_with('temp')), na.rm = TRUE), NA)) %>%
     select(-starts_with('temp'))
 
   tbl_0 <- tbl_0 %>%

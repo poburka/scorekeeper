@@ -7,7 +7,7 @@
 #' @import dplyr
 #' @import labelled
 #' @import tibble
-#' @import rlang
+#' @importFrom rlang parse_expr
 #' @return a tibble with new variables appended that follow tidyverse evaluation of if_else metadata statements
 #' @export
 #'

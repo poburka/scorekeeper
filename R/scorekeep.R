@@ -13,13 +13,12 @@ step_func <- function (op, dat, metadata) {
 #' @param raw Raw data object
 #' @param metadata Formatted metadata object with one step selected (all operations can be preformed simultaneously.
 #' For sequential operations, see scorekeep function)
-#' @import purrr
+#' @importFrom purrr map
 #' @import tibble
 #' @import dplyr
 #' @return a tibble
 #' @export
-#'
-#' @examples
+
 
 score <- function (raw, metadata) {
   operations <- c('select', 'if_else', 'recode', 'sum', 'case_when', 'filter_at')
@@ -52,8 +51,7 @@ tibble_func_2 <- function (meta) {
 #'
 #' @return a series of tibbles representing data manipulations at each step as specified in metadata file
 #' @export
-#'
-#' @examples
+
 #'
 scorekeep <- function (raw, metadata) {
   meta4 <- metadata
