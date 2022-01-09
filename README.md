@@ -4,45 +4,88 @@
 # scorekeeper
 
 <!-- badges: start -->
+<!-- badges: end -->
 
-The goal of scorekeeper is to organize scoresheets for multi-item
-assessments <!-- badges: end -->
+Katherine Schaumberg
 
-The goal of scorekeeper is to …
+The goal of scorekeeper is to support the development of accessible,
+approachable, and reproducible scoring algorithms for multi-item
+measures. This package was designed with psychological assessment
+measures in mind, but can be broadly applicable to other multi-item
+assessments. The package requires a raw data file and a scoresheet
+(metadata file) as input. Scorekeeper uses dplyr functionality to
+manipulate and clean data in a systematic way, as specified in the
+scoresheet. The scoresheet can then serve as a resource that will make
+your data cleaning process both reproducible and easily shared (e.g. if
+a colleague would like to score a measure in the same way that you did
+for their project on a different sample, you can send or post your
+scoresheet and it should easily replicate your scoring algorithm – no
+need to send or post additional code). While scoresheets are structured
+to be more easily developed and interpreted as compared to raw code, I
+also recommend a companion text file outlining each step in your data
+cleaning to maximize ease of interpretation when sharing with others (or
+your future self!). Currently, scoresheets must be formatted in
+accordance with guidelines outlined in each of the ‘operation’
+functions, and with steps that proceed in an appropriate order.
+
+I recommend building a scoresheet step-by-step. Add one ‘step’ at a time
+in your data manipulaton and complete error checking by running
+functions in the scorekeeper package as you build the scoresheet.
+
+Necessary columns in a scoresheet include:
+
+raw\_vars : a raw variable or list of raw variables needed for an
+operation new\_var: the desired name of a new variable created during
+the operation label: the new variable label, if needed operation: the
+operation to preform (‘select’, ‘filter\_at’, ‘recode’, ‘sum’,
+‘if\_else’, ‘case\_when’) {REQUIRED} step: identifies the order of
+operations to be preformed {REQUIRED} val\_labs: value labels for a new
+variable new\_vals : a recoding scheme, used in ‘recode’ operations
+if\_condition: a logical condition to be evaluated for an ‘if\_else’
+operation if\_true\_return: value that is returned if the
+‘if\_condition’ == TRUE in ‘if\_else’ operations else\_return: value
+that is returned if the ‘if\_condition’ != TRUE in ‘if\_else’ operations
+code: code for performing a ‘filter\_at’ or ‘case\_when’ operation
+
+The required columns in a scoresheet currently have limited flexibility.
+Enter ‘NA’ for any elements that are unnecessary for a given operation.
+Current operations supported are:
+
+select : selects variables that you identify in
+scoresheet*r**a**w*<sub>*v*</sub>*a**r**s*.*f**i**l**t**e**r*<sub>*a*</sub>*t* : *f**i**l**t**e**r**s**r**o**w**s**o**f**a**d**a**t**a**s**e**t*.*U**s**e*′*f**i**l**t**e**r*<sub>*a*</sub>*t*′*d**p**l**y**r**c**o**n**v**e**n**t**i**o**n**s**a**s**i**n**p**u**t**t**o**s**c**o**r**e**s**h**e**e**t*code
+recode : recodes variables using
+scoresheet*n**e**w*<sub>*v*</sub>*a**l**s**s**u**m* : *s**u**m**s**v**a**r**i**a**b**l**e**s**i**d**e**n**t**i**f**i**e**d**i**n**s**c**o**r**e**s**h**e**e**t*raw\_vars.
+Provides weighted and unweighted sums, with sum and proportion of NA
+values in input variables if\_else : creates a new variable based on
+if\_else conventions using
+scoresheet*i**f*<sub>*c*</sub>*o**n**d**i**t**i**o**n*, *s**c**o**r**e**s**h**e**e**t*if\_true
+return, and soresheet$else\_return case\_when :
 
 ## Installation
 
-You can install the development version of scorekeeper like so:
+Install scorekeeper from its GitHub repository. If you do not have the
+remotes package installed, first install the remotes package.
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+install.packages("remotes")
+```
+
+then install R/scorekeeper using the install\_github function in
+remotes.
+
+``` r
+library(remotes)
+install_github("embark-lab/scorekeeper")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The following example takes a raw data file of 6 items through
 
 ``` r
 library(scorekeeper)
-#> Loading required package: tidyverse
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-#> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-#> ✓ tibble  3.1.6     ✓ dplyr   1.0.7
-#> ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-#> ✓ readr   1.4.0     ✓ forcats 0.5.1
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> x dplyr::filter() masks stats::filter()
-#> x dplyr::lag()    masks stats::lag()
-#> 
-#> Attaching package: 'scorekeeper'
-#> The following object is masked from 'package:dplyr':
-#> 
-#>     select_vars
 ## basic example code
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
 
 ``` r
 summary(cars)
@@ -54,16 +97,3 @@ summary(cars)
 #>  3rd Qu.:19.0   3rd Qu.: 56.00  
 #>  Max.   :25.0   Max.   :120.00
 ```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
