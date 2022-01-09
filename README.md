@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Katherine Schaumberg
+A data cleaning package, by Katherine Schaumberg
 
 The goal of scorekeeper is to support the development of accessible,
 approachable, and reproducible scoring algorithms for multi-item
@@ -32,34 +32,58 @@ I recommend building a scoresheet step-by-step. Add one ‘step’ at a time
 in your data manipulaton and complete error checking by running
 functions in the scorekeeper package as you build the scoresheet.
 
-Necessary columns in a scoresheet include:
+***Necessary columns in a scoresheet include***:
 
-raw\_vars : a raw variable or list of raw variables needed for an
-operation new\_var: the desired name of a new variable created during
-the operation label: the new variable label, if needed operation: the
-operation to preform (‘select’, ‘filter\_at’, ‘recode’, ‘sum’,
-‘if\_else’, ‘case\_when’) {REQUIRED} step: identifies the order of
-operations to be preformed {REQUIRED} val\_labs: value labels for a new
-variable new\_vals : a recoding scheme, used in ‘recode’ operations
-if\_condition: a logical condition to be evaluated for an ‘if\_else’
-operation if\_true\_return: value that is returned if the
-‘if\_condition’ == TRUE in ‘if\_else’ operations else\_return: value
-that is returned if the ‘if\_condition’ != TRUE in ‘if\_else’ operations
-code: code for performing a ‘filter\_at’ or ‘case\_when’ operation
+**raw\_vars** : a raw variable or list of raw variables needed for an
+operation
+
+**new\_var**: the desired name of a new variable created during the
+operation
+
+**label**: the new variable label, if needed
+
+**operation**: the operation to preform (‘select’, ‘filter\_at’,
+‘recode’, ‘sum’, ‘if\_else’, ‘case\_when’)
+
+**step**: identifies the order of operations to be preformed
+
+**val\_labs**: value labels for a new variable
+
+**new\_vals**: a recoding scheme, used in ‘recode’ operations
+
+**if\_condition**: a logical condition to be evaluated for an ‘if\_else’
+operation
+
+**if\_true\_return**: value that is returned if the ‘if\_condition’ ==
+TRUE in ‘if\_else’ operations
+
+**else\_return**: value that is returned if the ‘if\_condition’ != TRUE
+in ‘if\_else’ operations
+
+**code**: code for performing a ‘filter\_at’ or ‘case\_when’ operation
 
 The required columns in a scoresheet currently have limited flexibility.
 Enter ‘NA’ for any elements that are unnecessary for a given operation.
 Current operations supported are:
 
-select : selects variables that you identify in
-scoresheet*r**a**w*<sub>*v*</sub>*a**r**s*.*f**i**l**t**e**r*<sub>*a*</sub>*t* : *f**i**l**t**e**r**s**r**o**w**s**o**f**a**d**a**t**a**s**e**t*.*U**s**e*′*f**i**l**t**e**r*<sub>*a*</sub>*t*′*d**p**l**y**r**c**o**n**v**e**n**t**i**o**n**s**a**s**i**n**p**u**t**t**o**s**c**o**r**e**s**h**e**e**t*code
-recode : recodes variables using
-scoresheet*n**e**w*<sub>*v*</sub>*a**l**s**s**u**m* : *s**u**m**s**v**a**r**i**a**b**l**e**s**i**d**e**n**t**i**f**i**e**d**i**n**s**c**o**r**e**s**h**e**e**t*raw\_vars.
-Provides weighted and unweighted sums, with sum and proportion of NA
-values in input variables if\_else : creates a new variable based on
-if\_else conventions using
-scoresheet*i**f*<sub>*c*</sub>*o**n**d**i**t**i**o**n*, *s**c**o**r**e**s**h**e**e**t*if\_true
-return, and soresheet$else\_return case\_when :
+**select** : selects variables that you identify in
+scoresheet$raw\_vars.
+
+**filter\_at**: filters rows of a dataset. Use ‘filter\_at’ dplyr
+conventions as input to scoresheet$code
+
+**recode**: recodes variables using scoresheet$new\_vals
+
+**sum**: sums variables identified in scoresheet$raw\_vars. Provides
+weighted and unweighted sums, with sum and proportion of NA values in
+input variables
+
+**if\_else** : creates a new variable based on if\_else conventions
+using
+scoresheet*i**f*<sub>*c*</sub>*o**n**d**i**t**i**o**n**s**c**o**r**e**s**h**e**e**t*if\_true
+return soresheet$else\_return
+
+**case\_when** :
 
 ## Installation
 
