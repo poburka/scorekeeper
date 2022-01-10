@@ -4,15 +4,15 @@
 \alias{case_when_vars}
 \title{Title}
 \usage{
-case_when_vars(raw, metadata)
+case_when_vars(raw, scoresheet)
 }
 \arguments{
 \item{raw}{raw data object}
 
-\item{metadata}{formatted metadata object}
+\item{scoresheet}{formatted scoresheet object}
 }
 \value{
-a tibble with new variables appended that follow tidyverse evaluation of case_when metadata statements
+a tibble with new variables appended that follow tidyverse evaluation of case_when scoresheet statements
 }
 \description{
 Title

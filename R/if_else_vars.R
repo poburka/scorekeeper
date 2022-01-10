@@ -15,7 +15,7 @@
 if_else_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (recode_operation_r == 'if_else')
+    filter (operation == 'if_else')
 
 
   #create a new tibble with just the raw data --we'll add columns with if_else alogrithm variables as we loop down below
@@ -57,7 +57,7 @@ if_else_function <- function (raw_tbl, n_var, if_cond, if_true_r, else_r, n_lab,
 
 
 n_val_lab_func <- function (scoresheet, i) {
-  if (!is.na(scoresheet$new_labs_r[i]))
+  if (!is.na(scoresheet$val_labs[i]))
   {val_lab_names <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
   new_val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
   val_lab_names <- lapply(new_val_labs, function(x) sub("=.*", "", x))

@@ -4,15 +4,15 @@
 \alias{if_else_vars}
 \title{Title}
 \usage{
-if_else_vars(raw, metadata)
+if_else_vars(raw, scoresheet)
 }
 \arguments{
 \item{raw}{Raw data object}
 
-\item{metadata}{Formatted metadata object}
+\item{scoresheet}{Formatted scoresheet object}
 }
 \value{
-a tibble with new variables appended that follow tidyverse evaluation of if_else metadata statements
+a tibble with new variables appended that follow tidyverse evaluation of if_else scoresheet statements
 }
 \description{
 Title

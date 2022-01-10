@@ -19,7 +19,7 @@
 case_when_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (recode_operation_r == 'case_when')
+    filter (operation == 'case_when')
 
   #create a new tibble with just the raw data --we'll add columns with if_else alogrithm variables as we loop down below
   new_table2 <- tibble(raw_data)

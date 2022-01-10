@@ -13,7 +13,7 @@ filter_at_vars <- function (raw, scoresheet) {
 
   raw_data <- raw
   meta1 <- scoresheet %>%
-    filter (recode_operation_r == 'filter_at')
+    filter (operation == 'filter_at')
   code <- meta1$code[1]
   LHS <- gsub(",.*", "",code)
   LHS <- as_vector(str_eval(LHS))

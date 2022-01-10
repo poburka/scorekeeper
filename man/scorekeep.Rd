@@ -2,18 +2,18 @@
 % Please edit documentation in R/scorekeep.R
 \name{scorekeep}
 \alias{scorekeep}
-\title{Scores raw data in a step-by-step fashion using metadata provided}
+\title{Scores raw data in a step-by-step fashion using scoresheet provided}
 \usage{
-scorekeep(raw, metadata)
+scorekeep(raw, scoresheet)
 }
 \arguments{
 \item{raw}{Raw data object}
 
-\item{metadata}{Formatted metadata object}
+\item{scoresheet}{Formatted scoresheet object}
 }
 \value{
-a series of tibbles representing data manipulations at each step as specified in metadata file
+a series of tibbles representing data manipulations at each step as specified in scoresheet file
 }
 \description{
-Scores raw data in a step-by-step fashion using metadata provided
+Scores raw data in a step-by-step fashion using scoresheet provided
 }

@@ -2,22 +2,22 @@
 % Please edit documentation in R/select_vars.R
 \name{select_vars}
 \alias{select_vars}
-\title{Select Variables Using Metadata}
+\title{Select Variables Using scoresheet}
 \usage{
-select_vars(raw, metadata)
+select_vars(raw, scoresheet)
 }
 \arguments{
 \item{raw}{\itemize{
 \item raw data object
 }}
 
-\item{metadata}{\itemize{
-\item formatted metadata object
+\item{scoresheet}{\itemize{
+\item formatted scoresheet object
 }}
 }
 \value{
 tibble with selected variables
 }
 \description{
-Select Variables Using Metadata
+Select Variables Using scoresheet
 }

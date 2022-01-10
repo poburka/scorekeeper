@@ -2,18 +2,18 @@
 % Please edit documentation in R/sum_vars.R
 \name{sum_vars}
 \alias{sum_vars}
-\title{Sum variables using metadata}
+\title{Sum variables using scoresheet}
 \usage{
-sum_vars(raw, metadata)
+sum_vars(raw, scoresheet)
 }
 \arguments{
 \item{raw}{A raw data object}
 
-\item{metadata}{A formatted metadata object}
+\item{scoresheet}{A formatted scoresheet object}
 }
 \value{
 raw tibble with four additional columns appended: a column which is the raw sum of items, a _NAs column with the count of NAs among items summed, the _NA_percent column with the percentage of NAs among the summed variables, and the _weighted_sum column with the sum that is weighted by the number of non-NA items included
 }
 \description{
-Sum variables using metadata
+Sum variables using scoresheet
 }

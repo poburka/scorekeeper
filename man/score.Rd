@@ -4,12 +4,12 @@
 \alias{score}
 \title{Title}
 \usage{
-score(raw, metadata)
+score(raw, scoresheet)
 }
 \arguments{
 \item{raw}{Raw data object}
 
-\item{metadata}{Formatted metadata object with one step selected (all operations can be preformed simultaneously.
+\item{scoresheet}{Formatted scoresheet object with one step selected (all operations can be preformed simultaneously.
 For sequential operations, see scorekeep function)}
 }
 \value{

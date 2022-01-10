@@ -4,12 +4,12 @@
 \alias{filter_at_vars}
 \title{Filter at function}
 \usage{
-filter_at_vars(raw, metadata)
+filter_at_vars(raw, scoresheet)
 }
 \arguments{
 \item{raw}{a raw data object}
 
-\item{metadata}{a metadata object}
+\item{scoresheet}{a scoresheet object}
 }
 \value{
 tibble that is filtered at specific variables
