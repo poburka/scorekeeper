@@ -3,18 +3,18 @@
 #' Filter at function
 #'
 #' @param raw a raw data object
-#' @param metadata a metadata object
+#' @param scoresheet a scoresheet object
 #' @import dplyr
 #' @return tibble that is filtered at specific variables
 #' @export
 #'
 
-filter_at_vars <- function (raw, metadata) {
+filter_at_vars <- function (raw, scoresheet) {
 
   raw_data <- raw
-  meta1 <- metadata %>%
+  meta1 <- scoresheet %>%
     filter (recode_operation_r == 'filter_at')
-  code <- meta1$case_when_code[1]
+  code <- meta1$code[1]
   LHS <- gsub(",.*", "",code)
   LHS <- as_vector(str_eval(LHS))
   RHS<-  gsub(".*,","",code)

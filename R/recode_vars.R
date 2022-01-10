@@ -1,9 +1,9 @@
 
 
-#' The recode_vars function recodes variables according to metadata instructions
+#' The recode_vars function recodes variables according to scoresheet instructions
 #'
 #' @param raw : A raw data object
-#' @param metadata  : A metadata object
+#' @param scoresheet  : A scoresheet object
 #' @import dplyr
 #' @import labelled
 #' @importFrom haven as_factor
@@ -16,22 +16,22 @@
 #'
 #'
 
-recode_vars <- function (raw, metadata){
+recode_vars <- function (raw, scoresheet){
 
-  #from the metadata file - filter rows where the variables need to be recoded
+  #from the scoresheet file - filter rows where the variables need to be recoded
   raw_data <-raw
   #create a new, empty tibble with just the id numbers
   new_table2 <- tibble(raw_data)
-  #filter rows of the metadata where the operation is 'recode'
-  metadata <- metadata %>%
-    filter (recode_operation_r == 'recode')
-  #loop through the recode function, using the arguments defined frp, the metadata file and using the functions above
-  for (i in 1:nrow(metadata)){
-    new_var <- metadata$recoded_var[i]
-    raw_var <- metadata$raw_vars_r[i]
-    new_label <- metadata$recode_label_r[i]
+  #filter rows of the scoresheet where the operation is 'recode'
+  scoresheet <- scoresheet %>%
+    filter (operation == 'recode')
+  #loop through the recode function, using the arguments defined frp, the scoresheet file and using the functions above
+  for (i in 1:nrow(scoresheet)){
+    new_var <- scoresheet$new_var[i]
+    raw_var <- scoresheet$raw_vars[i]
+    new_label <- scoresheet$label[i]
 
-    new_table <- recode_function(raw_tbl = raw, n_var = new_var, r_var = raw_var, n_val = n_val_func(metadata,i), n_val_lab = n_val_lab_func(metadata,i), n_lab = new_label, n_var_factor = n_var_factor_func(metadata,i))
+    new_table <- recode_function(raw_tbl = raw, n_var = new_var, r_var = raw_var, n_val = n_val_func(scoresheet,i), n_val_lab = n_val_lab_func(scoresheet,i), n_lab = new_label, n_var_factor = n_var_factor_func(scoresheet,i))
   #save the last two columns (the new named variable and the '.factor' variable as columns in the new table at each loop)
     new_table1 <- new_table[,(ncol(new_table)-1):ncol(new_table)]
     new_table2 <- new_table2 %>%
@@ -42,7 +42,7 @@ recode_vars <- function (raw, metadata){
 }
 
 
-#define function to recode using variables that will be read in from metadata. This is the primary function that will recode the data and be put on loop down each row of the metadata. This function takes a raw data table (raw_tbl), a new variable name (n_var) and raw variable name (r_var), new value assignments (n_val) and new value labels (n_val_lab), the new varaible label (n_lab), and a second new variable name that will be the 'factor' variable where the variable labels will be presented instead of variable values in each row (n_var_factor).
+#define function to recode using variables that will be read in from scoresheet. This is the primary function that will recode the data and be put on loop down each row of the scoresheet. This function takes a raw data table (raw_tbl), a new variable name (n_var) and raw variable name (r_var), new value assignments (n_val) and new value labels (n_val_lab), the new varaible label (n_lab), and a second new variable name that will be the 'factor' variable where the variable labels will be presented instead of variable values in each row (n_var_factor).
 
 recode_function <- function (raw_tbl, n_var, r_var, n_val, n_val_lab, n_lab, n_var_factor) {
   raw_tbl <-raw_tbl %>%
@@ -60,13 +60,13 @@ recode_function <- function (raw_tbl, n_var, r_var, n_val, n_val_lab, n_lab, n_v
   return(raw_tbl)
 }
 
-#The next three functions build the arguments that we will feed into the above 'recode_function' when we put it on loop. The raw info from the metadata file is in 'charachter' format when it comes in,   we need to manipulate it just a little bit in order to get it into a form that r finds acceptable for that argument
+#The next three functions build the arguments that we will feed into the above 'recode_function' when we put it on loop. The raw info from the scoresheet file is in 'charachter' format when it comes in,   we need to manipulate it just a little bit in order to get it into a form that r finds acceptable for that argument
 
 #the new value function takes the 'new_vals_r' data and changes it from a charachter string to a named vector
 
-n_val_func <- function (metadata, i) {
+n_val_func <- function (scoresheet, i) {
   #new values are defined in a list, splitting by the commas in the charachter string
-  new_vals <- as.list(el(strsplit(metadata$new_vals_r[i], ",")))
+  new_vals <- as.list(el(strsplit(scoresheet$new_vals[i], ",")))
   #the original values are defined as those on the left of the equals sign for each element in the list
   origin_list <- lapply(new_vals, function(x) sub("=.*", "", x))
   #the new values are defined as those on the right of the equals sign for each element in the list
@@ -80,9 +80,9 @@ n_val_func <- function (metadata, i) {
 }
 
 #this function repeats the same process for the new value labels -- the charachter vector is split into two lists, and the new value labels become 'names' of the new values
-n_val_lab_func <- function (metadata, i) {
-  val_lab_names <- as.list(el(strsplit(metadata$new_labs_r[i], ",")))
-  new_val_labs <- as.list(el(strsplit(metadata$new_labs_r[i], ",")))
+n_val_lab_func <- function (scoresheet, i) {
+  val_lab_names <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
+  new_val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
   val_lab_names <- lapply(new_val_labs, function(x) sub("=.*", "", x))
   val_lab_names <- trimws(unlist(val_lab_names))
   n_val_labs<- lapply(new_val_labs, function(x) sub(".*=","",x))
@@ -93,8 +93,8 @@ n_val_lab_func <- function (metadata, i) {
 }
 
 #this final function just creates the name of the .factor variable, taking the 'new variable' name and appending .factor to the end
-n_var_factor_func <- function(metadata, i) {
-  n_var <- metadata$recoded_var[i]
+n_var_factor_func <- function(scoresheet, i) {
+  n_var <- scoresheet$new_var[i]
   n_var_factor <- paste(n_var,'.factor')
   n_var_factor <- gsub (" ", "", n_var_factor, fixed = TRUE)
   return(n_var_factor)

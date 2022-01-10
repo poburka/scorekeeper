@@ -5,33 +5,33 @@
 #' Title
 #'
 #' @param raw raw data object
-#' @param metadata formatted metadata object
+#' @param scoresheet formatted scoresheet object
 #' @import dplyr
 #' @import labelled
 #' @import tibble
 #' @importFrom rlang parse_expr
 #' @importFrom methods el
 #' @importFrom stats as.formula
-#' @return  a tibble with new variables appended that follow tidyverse evaluation of case_when metadata statements
+#' @return  a tibble with new variables appended that follow tidyverse evaluation of case_when scoresheet statements
 #' @export
 
 
-case_when_vars <- function (raw, metadata){
+case_when_vars <- function (raw, scoresheet){
   raw_data <- raw
-  metadata <- metadata %>%
+  scoresheet <- scoresheet %>%
     filter (recode_operation_r == 'case_when')
 
   #create a new tibble with just the raw data --we'll add columns with if_else alogrithm variables as we loop down below
   new_table2 <- tibble(raw_data)
 
-  for (i in 1:nrow(metadata)){
-    raw_var1 <- metadata$raw_vars_r[1]
-    new_var <- metadata$recoded_var[i]
-    new_label <- metadata$recode_label_r[i]
-    case_when_code <- metadata$case_when_code[i]
+  for (i in 1:nrow(scoresheet)){
+    raw_var1 <- scoresheet$raw_vars[1]
+    new_var <- scoresheet$new_var[i]
+    new_label <- scoresheet$label[i]
+    case_when_code <- scoresheet$code[i]
 
 
-    case_when_table <- case_when_function(raw_tbl = raw, n_var = new_var, case_when_code = case_when_code, n_val_lab = n_val_lab_func(metadata, i), n_lab = new_label)
+    case_when_table <- case_when_function(raw_tbl = raw, n_var = new_var, case_when_code = case_when_code, n_val_lab = n_val_lab_func(scoresheet, i), n_lab = new_label)
 
     #save the last column and append to the 'new table'
     new_table1 <- case_when_table[,ncol(case_when_table)]
@@ -70,10 +70,10 @@ case_when_function <- function (raw_tbl, n_var, case_when_code, n_lab, n_val_lab
   return(tbl_0)
 }
 
-n_val_lab_func <- function (metadata, i) {
-  if (!is.na(metadata$new_labs_r[i]))
-  {val_lab_names <- as.list(el(strsplit(metadata$new_labs_r[i], ",")))
-  new_val_labs <- as.list(el(strsplit(metadata$new_labs_r[i], ",")))
+n_val_lab_func <- function (scoresheet, i) {
+  if (!is.na(scoresheet$new_labs_r[i]))
+  {val_lab_names <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
+  new_val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
   val_lab_names <- lapply(new_val_labs, function(x) sub("=.*", "", x))
   val_lab_names <- trimws(unlist(val_lab_names))
   n_val_labs<- lapply(new_val_labs, function(x) sub(".*=","",x))
@@ -84,8 +84,8 @@ n_val_lab_func <- function (metadata, i) {
   return(n_val_lab)
 }
 
-case_when_code_func <- function(metadata, i) {
-  case_when_code_1 <- metadata$case_when_code[i]
+case_when_code_func <- function(scoresheet, i) {
+  case_when_code_1 <- scoresheet$code[i]
   case_when_code_2 <- as.character(eval(parse(text=paste('{case_when_code_1}'))))
   case_when_code_3 <- as.list(el(strsplit(case_when_code_2, ",")))
   case_when_code_4 <- lapply(case_when_code_3, as.formula)
