@@ -4,6 +4,7 @@
 # scorekeeper
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 A data cleaning package, by Katherine Schaumberg
@@ -24,7 +25,7 @@ need to send or post additional code). While scoresheets are structured
 to be more easily developed and interpreted as compared to raw code, I
 also recommend a companion text file outlining each step in your data
 cleaning to maximize ease of interpretation when sharing with others (or
-your future self!). Currently, scoresheets must be formatted in
+your future self\!). Currently, scoresheets must be formatted in
 accordance with guidelines outlined in each of the ‘operation’
 functions, and with steps that proceed in an appropriate order.
 
@@ -57,7 +58,7 @@ operation
 **if\_true\_return**: value that is returned if the ‘if\_condition’ ==
 TRUE in ‘if\_else’ operations
 
-**else\_return**: value that is returned if the ‘if\_condition’ != TRUE
+**else\_return**: value that is returned if the ‘if\_condition’ \!= TRUE
 in ‘if\_else’ operations
 
 **code**: code for performing a ‘filter\_at’ or ‘case\_when’ operation
@@ -67,23 +68,23 @@ Enter ‘NA’ for any elements that are unnecessary for a given operation.
 Current operations supported are:
 
 **select** : selects variables that you identify in
-scoresheet$raw\_vars.
+`scoresheet$raw_vars`.
 
-**filter\_at**: filters rows of a dataset. Use ‘filter\_at’ dplyr
-conventions as input to scoresheet$code
+**filter\_at**: filters rows of a dataset. Use `filter_at` dplyr
+conventions using `scoresheet$code`
 
-**recode**: recodes variables using scoresheet$new\_vals
+**recode**: recodes variables defined in `scoresheet$new_vals`
 
-**sum**: sums variables identified in scoresheet$raw\_vars. Provides
+**sum**: sums variables identified in `scoresheet$raw_vars`. Provides
 weighted and unweighted sums, with sum and proportion of NA values in
 input variables
 
-**if\_else** : creates a new variable based on if\_else conventions
-using
-scoresheet*i**f*<sub>*c*</sub>*o**n**d**i**t**i**o**n**s**c**o**r**e**s**h**e**e**t*if\_true
-return soresheet$else\_return
+**if\_else** : creates a new variable defined in
+`scoresheet$if_condition`, `scoresheet$if_true return`,
+`soresheet$else_return`
 
-**case\_when** :
+**case\_when** : creates a new variable using case\_when code defined in
+`scoresheet$code`
 
 ## Installation
 
@@ -104,20 +105,4 @@ install_github("embark-lab/scorekeeper")
 
 ## Example
 
-The following example takes a raw data file of 6 items through
-
-``` r
-library(scorekeeper)
-## basic example code
-```
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+An example of how to use scoresheet is provided in \[vingettes\]

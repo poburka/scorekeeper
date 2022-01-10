@@ -33,7 +33,7 @@ I recommend building a scoresheet step-by-step. Add one 'step' at a time in your
 
 **label**: the new variable label, if needed
 
-**operation**: the operation to preform ('select', 'filter_at', 'recode', 'sum', 'if_else', 'case_when') 
+**operation**: the operation to preform ('select', 'filter_at', 'recode', 'sum', 'if_else', 'case_when')
 
 **step**: identifies the order of operations to be preformed
 
@@ -51,20 +51,17 @@ I recommend building a scoresheet step-by-step. Add one 'step' at a time in your
 
 The required columns in a scoresheet currently have limited flexibility. Enter 'NA' for any elements that are unnecessary for a given operation.  Current  operations supported are: 
 
-**select** : selects variables that you identify in scoresheet$raw_vars. 
+**select** : selects variables that you identify in `scoresheet$raw_vars`. 
 
-**filter_at**: filters rows of a dataset. Use 'filter_at' dplyr conventions as input to scoresheet$code 
+**filter_at**: filters rows of a dataset. Use `filter_at` dplyr conventions using `scoresheet$code` 
 
-**recode**: recodes variables using scoresheet$new_vals
+**recode**: recodes variables defined in `scoresheet$new_vals`
 
-**sum**: sums variables identified in scoresheet$raw_vars. Provides weighted and unweighted sums, with sum and proportion of NA values in input variables
+**sum**: sums variables identified in `scoresheet$raw_vars`. Provides weighted and unweighted sums, with sum and proportion of NA values in input variables
 
-**if_else** : creates a new variable based on if_else conventions using 
-scoresheet$if_condition 
-scoresheet$if_true return
-soresheet$else_return
+**if_else** : creates a new variable defined in `scoresheet$if_condition`, `scoresheet$if_true return`, `soresheet$else_return`
 
-**case_when** : 
+**case_when** : creates a new variable using case_when code defined in `scoresheet$code`
 
 
 ## Installation
@@ -84,19 +81,5 @@ install_github("embark-lab/scorekeeper")
 
 ## Example
 
-The following example takes a raw data file of 6 items through 
-```{r example}
-library(scorekeeper)
-## basic example code
-```
-
-
-```{r cars}
-summary(cars)
-```
-
-
-```{r pressure, echo = FALSE}
-
-```
+An example of how to use scoresheet is provided in [vingettes]
 
