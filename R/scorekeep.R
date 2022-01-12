@@ -31,8 +31,10 @@ score <- function (raw, scoresheet) {
   data4 <- step_func(op = 'sum', dat = data3, scoresheet = scoresheet1)
   data5 <- step_func(op = 'case_when', dat = data4, scoresheet = scoresheet1)
   data6 <- step_func(op = 'filter_at', dat = data5, scoresheet = scoresheet1)
+  data7 <- step_func(op = 'rename', dat = data6, scoresheet = scoresheet1)
 
-  return (data6)}
+
+  return (data7)}
 
 tibble_func_1 <- function(x) {
   y = as_tibble(x)
@@ -54,7 +56,7 @@ tibble_func_2 <- function (meta) {
 
 #'
 scorekeep <- function (raw, scoresheet) {
-  meta4 <- scoresheet
+  meta4 <- scoresheet %>% filter(step > 0)
   raw_data <- raw
   steps <- c(unique({{meta4}}$step))
   i <- 1
