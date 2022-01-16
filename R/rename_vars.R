@@ -4,7 +4,7 @@ tibble_func_1 <- function(x) {
   return (y) }
 
 tibble_func_2 <- function (meta) {
-  empty_vec <- vector(mode = 'list', length = length(scoresheet$step))
+  empty_vec <- vector(mode = 'list', length = length(meta$step))
   tibbles <- purrr::map(empty_vec, tibble_func_1)
   return(tibbles) }
 
@@ -27,7 +27,7 @@ rename_vars <- function (raw, scoresheet) {
   #filter rows of the scoresheet where the operation is 'recode'
   scoresheet1 <- scoresheet %>%
     filter (operation == 'rename')
-  #loop through the recode function, using the arguments defined frp, the scoresheet file and using the functions above
+  #loop through the rename function, using the arguments defined in the scoresheet file and using the functions above
   i <- 1
   m <- 2
   x <- ((length(scoresheet1$step) + 1))

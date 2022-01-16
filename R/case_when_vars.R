@@ -6,7 +6,7 @@
 #'
 #' @param raw a raw data object
 #' @param scoresheet a properly formatted scoresheet object. Key columns that must have data for a case_when function are new_var and code. Code should be formatted in accordance with
-#' dplyr case_when input. See https://dplyr.tidyverse.org/reference/case_when.html
+#' dplyr case_when input. See [case_when](https://dplyr.tidyverse.org/reference/case_when.html)
 #' @import dplyr
 #' @import labelled
 #' @import tibble
@@ -32,7 +32,7 @@ case_when_vars <- function (raw, scoresheet){
     case_when_code <- scoresheet$code[i]
 
 
-    case_when_table <- case_when_function(raw_tbl = raw, n_var = new_var, case_when_code = case_when_code, n_val_lab = n_val_lab_func(scoresheet, i), n_lab = new_label)
+    case_when_table <- case_when_function(raw_tbl = raw, n_var = new_var, case_when_code = case_when_code, n_labs = n_val_lab_func(scoresheet, i), label = new_label)
 
     #save the last column and append to the 'new table'
     new_table1 <- case_when_table[,ncol(case_when_table)]
@@ -45,7 +45,7 @@ case_when_vars <- function (raw, scoresheet){
 }
 
 
-case_when_function <- function (raw_tbl, n_var, case_when_code, n_lab, n_val_lab) {
+case_when_function <- function (raw_tbl, n_var, case_when_code, n_labs, label) {
   code <- as.list(el(strsplit(case_when_code, ",")))
   LHS <- lapply(code, function(x) sub("~.*", "",x))
   LHS <- trimws(unlist(LHS))
@@ -64,25 +64,11 @@ case_when_function <- function (raw_tbl, n_var, case_when_code, n_lab, n_val_lab
     mutate("{n_var}" := ifelse(NAs < LHS_len, rowSums(across(starts_with('temp')), na.rm = TRUE), NA)) %>%
     select(-starts_with('temp'))
 
-  tbl_0 <- tbl_0 %>%
-    set_variable_labels(!!as.name(n_var):= n_lab) %>%
-    mutate("{n_var}" := labelled(!!as.name(n_var), n_val_lab))
+  tbl_1 <- tbl_0 %>%
+    mutate("{n_var}" := labelled(!!as.name(n_var), n_labs)) %>%
+    set_variable_labels('{n_var}' := label)
 
-  return(tbl_0)
-}
-
-n_val_lab_func <- function (scoresheet, i) {
-  if (!is.na(scoresheet$new_labs_r[i]))
-  {val_lab_names <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
-  new_val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
-  val_lab_names <- lapply(new_val_labs, function(x) sub("=.*", "", x))
-  val_lab_names <- trimws(unlist(val_lab_names))
-  n_val_labs<- lapply(new_val_labs, function(x) sub(".*=","",x))
-  n_val_labs<- lapply(n_val_labs, function(x)as.numeric(x))
-  n_val_lab <- unlist(n_val_labs)
-  names(n_val_lab) <-val_lab_names}
-  else n_val_lab <- NA
-  return(n_val_lab)
+  return(tbl_1)
 }
 
 case_when_code_func <- function(scoresheet, i) {
