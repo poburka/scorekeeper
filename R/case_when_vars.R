@@ -2,10 +2,11 @@
 
 
 #this function picks out the variables that need case_when, then puts the function on a loop
-#' Title
+#' case_when function
 #'
-#' @param raw raw data object
-#' @param scoresheet formatted scoresheet object
+#' @param raw a raw data object
+#' @param scoresheet a properly formatted scoresheet object. Key columns that must have data for a case_when function are new_var and code. Code should be formatted in accordance with
+#' dplyr case_when input. See https://dplyr.tidyverse.org/reference/case_when.html
 #' @import dplyr
 #' @import labelled
 #' @import tibble
