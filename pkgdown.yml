@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   scorekeeper-vignette: scorekeeper-vignette.html
-last_built: 2022-01-17T17:22Z
+last_built: 2022-01-17T22:59Z
 urls:
   reference: https://embark-lab.github.io/scorekeeper/reference
   article: https://embark-lab.github.io/scorekeeper/articles
