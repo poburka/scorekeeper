@@ -7,7 +7,8 @@ Authors@R:
 Description: The scorekeeper package scores multi-item data using dplyr functionality with a scoresheet (specifically formatted metadata
     file) and raw data file. This package supports reproducable scoring for multi-item assessments.
 License: GPL (>= 3) + file LICENSE
-URL: https://github.com/embark-lab/scorekeeper
+URL: https://github.com/embark-lab/scorekeeper,
+    https://embark-lab.github.io/scorekeeper
 BugReports: https://github.com/embark-lab/scorekeeper/issues
 Imports: 
     dplyr,
@@ -19,10 +20,10 @@ Imports:
     purrr,
     rlang,
     tibble,
-    stats
-Suggests: 
-    rmarkdown,
+    stats,
     knitr,
+    rmarkdown
+Suggests: 
     testthat,
     sjmisc
 Encoding: UTF-8
