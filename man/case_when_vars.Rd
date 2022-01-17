@@ -2,18 +2,19 @@
 % Please edit documentation in R/case_when_vars.R
 \name{case_when_vars}
 \alias{case_when_vars}
-\title{Title}
+\title{case_when function}
 \usage{
 case_when_vars(raw, scoresheet)
 }
 \arguments{
-\item{raw}{raw data object}
+\item{raw}{a raw data object}
 
-\item{scoresheet}{formatted scoresheet object}
+\item{scoresheet}{a properly formatted scoresheet object. Key columns that must have data for a case_when function are new_var and code. Code should be formatted in accordance with
+dplyr case_when input. See \href{https://dplyr.tidyverse.org/reference/case_when.html}{case_when}}
 }
 \value{
 a tibble with new variables appended that follow tidyverse evaluation of case_when scoresheet statements
 }
 \description{
-Title
+case_when function
 }

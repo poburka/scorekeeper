@@ -46,7 +46,7 @@ sum_function <- function (raw_tbl, n_var, r_vars, n_lab) {
     #create a new variable that tells you -- across the raw variables, the number that are missing
     mutate("{n_var}_NAs" := rowSums(is.na(across(r_vars))))  %>%
     #create a new variable that tells you -- across the raw variables that are summed, the percent that are missing
-    mutate("{n_var}_NA_percent" := ((rowSums(is.na(across(r_vars))))/(length(r_vars)))) %>%
+    mutate("{n_var}_NA_percent" := ((rowSums(is.na(across(r_vars))))/(length(r_vars))*100)) %>%
     #create a new variable that is your weighted sum score
     mutate ("{n_var}_weighted_sum" := ((!!as.name(n_var))/(1-(((rowSums(is.na(across(r_vars))))/(length(r_vars)))))))
   return(new_tbl)

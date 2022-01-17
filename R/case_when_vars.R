@@ -45,6 +45,7 @@ case_when_vars <- function (raw, scoresheet){
 }
 
 
+#splits the left hand side (side to be evaluated), and right hand side (new value if true) of the case when list
 case_when_function <- function (raw_tbl, n_var, case_when_code, n_labs, label) {
   code <- as.list(el(strsplit(case_when_code, ",")))
   LHS <- lapply(code, function(x) sub("~.*", "",x))

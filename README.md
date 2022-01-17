@@ -4,7 +4,6 @@
 # scorekeeper
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 A data cleaning package, by Katherine Schaumberg
@@ -25,9 +24,9 @@ need to send or post additional code). While scoresheets are structured
 to be more easily developed and interpreted as compared to raw code, I
 also recommend a companion text file outlining each step in your data
 cleaning to maximize ease of interpretation when sharing with others (or
-your future self\!). Currently, scoresheets must be formatted in
-accordance with guidelines outlined in each of the ‘operation’
-functions, and with steps that proceed in an appropriate order.
+your future self!). Currently, scoresheets must be formatted in
+accordance with guidelines outlined in each of the ‘operation’ functions
+and with steps that proceed in an appropriate order.
 
 I recommend building a scoresheet step-by-step. Add one ‘step’ at a time
 in your data manipulaton and complete error checking by running
@@ -43,29 +42,33 @@ operation
 
 **label**: the new variable label, if needed
 
-**operation**: the operation to preform (‘select’, ‘filter\_at’,
-‘recode’, ‘sum’, ‘if\_else’, ‘case\_when’)
+**operation**: the operation to preform (`select`, `filter_at`,
+`recode`, `sum`, `if_else`, `case_when`, `rename`)
 
-**step**: identifies the order of operations to be preformed
+**step**: identifies the order of operations to be preformed, starting
+with ‘1’. I recommend entering any raw metadata as ‘0’ to increase
+transparency of your scoring method when sharing a scoresheet
 
 **val\_labs**: value labels for a new variable
 
-**new\_vals**: a recoding scheme, used in ‘recode’ operations
+**new\_vals**: values to be recoded in a `recode` operation. Follow the
+convention ‘old’ = ‘new’, with commas separating each old/new pair
 
-**if\_condition**: a logical condition to be evaluated for an ‘if\_else’
+**if\_condition**: a logical condition to be evaluated for an `if_else`
 operation
 
 **if\_true\_return**: value that is returned if the ‘if\_condition’ ==
-TRUE in ‘if\_else’ operations
+TRUE in `if_else` operations
 
-**else\_return**: value that is returned if the ‘if\_condition’ \!= TRUE
-in ‘if\_else’ operations
+**else\_return**: value that is returned if the ‘if\_condition’ != TRUE
+in `if_else` operations
 
 **code**: code for performing a ‘filter\_at’ or ‘case\_when’ operation
 
 The required columns in a scoresheet currently have limited flexibility.
-Enter ‘NA’ for any elements that are unnecessary for a given operation.
-Current operations supported are:
+I anticipate adding additional functionality in the future. Enter `NA`
+for any elements that are unnecessary for a given operation. Current
+operations supported are:
 
 **select** : selects variables that you identify in
 `scoresheet$raw_vars`.
@@ -73,11 +76,12 @@ Current operations supported are:
 **filter\_at**: filters rows of a dataset. Use `filter_at` dplyr
 conventions using `scoresheet$code`
 
-**recode**: recodes variables defined in `scoresheet$new_vals`
+**recode**: recodes a variable into a new variable, using values defined
+in `scoresheet$new_vals`
 
 **sum**: sums variables identified in `scoresheet$raw_vars`. Provides
-weighted and unweighted sums, with sum and proportion of NA values in
-input variables
+weighted and unweighted sums, along with the number of and proportion of
+`NA` values in the sum
 
 **if\_else** : creates a new variable defined in
 `scoresheet$if_condition`, `scoresheet$if_true return`,
@@ -102,7 +106,3 @@ remotes.
 library(remotes)
 install_github("embark-lab/scorekeeper")
 ```
-
-## Example
-
-An example of how to use scoresheet is provided in \[vingettes\]

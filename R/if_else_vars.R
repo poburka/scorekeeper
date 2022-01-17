@@ -1,7 +1,5 @@
 
-#this function picks out the variables that need if_else, then puts the function on a loop
-#' Title
-#'
+#' If_else_vars
 #' @param raw Raw data object
 #' @param scoresheet Formatted scoresheet object. Key variables for if_else_vars are 'if_condition', 'if_true_return' and 'else_return'.
 #' These variables should be entered in as the 'condition', 'TRUE' and 'FALSE' statements,

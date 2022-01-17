@@ -6,3 +6,6 @@
 test.Rda
 scorekeeper_tests
 
+inst/doc
+/doc/
+/Meta/

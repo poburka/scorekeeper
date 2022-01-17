@@ -8,8 +8,9 @@ step_func <- function (op, dat, scoresheet) {
   else {data_step <-dat}
   return(data_step)}
 
-#' Title
-#'
+#' score function
+#'The score function completes all scoring for a single step of a scoresheet. operations are conducted in the following order:
+#'`select`, `if_else`, `recode`, `sum`, `case_when`, `filter_at`
 #' @param raw Raw data object
 #' @param scoresheet Formatted scoresheet object with one step selected (all operations can be preformed simultaneously.
 #' For sequential operations, see scorekeep function)
@@ -53,7 +54,6 @@ tibble_func_2 <- function (meta) {
 #'
 #' @return a series of tibbles representing data manipulations at each step as specified in scoresheet file
 #' @export
-
 #'
 scorekeep <- function (raw, scoresheet) {
   meta4 <- scoresheet %>% filter(step > 0)

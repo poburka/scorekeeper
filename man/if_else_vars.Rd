@@ -9,10 +9,12 @@ if_else_vars(raw, scoresheet)
 \arguments{
 \item{raw}{Raw data object}
 
-\item{scoresheet}{Formatted scoresheet object}
+\item{scoresheet}{Formatted scoresheet object. Key variables for if_else_vars are 'if_condition', 'if_true_return' and 'else_return'.
+These variables should be entered in as the 'condition', 'TRUE' and 'FALSE' statements,
+respectively, in a 'dplyr' if_else statement. see: \href{https://dplyr.tidyverse.org/reference/if_else.html}{dyplyr if_else}.}
 }
 \value{
-a tibble with new variables appended that follow tidyverse evaluation of if_else scoresheet statements
+a tibble with 'new_var' appended.
 }
 \description{
 Title
