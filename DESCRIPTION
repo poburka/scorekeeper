@@ -21,9 +21,9 @@ Imports:
     rlang,
     tibble,
     stats,
-    knitr,
-    rmarkdown
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat,
     sjmisc
 Encoding: UTF-8
