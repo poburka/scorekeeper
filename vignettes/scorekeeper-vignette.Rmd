@@ -1,6 +1,6 @@
 ---
 title: "A Scorekeeper Vignette"
-output: rmarkdown::github_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{A Scorekeeper Vignette}
   %\VignetteEngine{knitr::rmarkdown}
