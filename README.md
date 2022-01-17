@@ -34,10 +34,10 @@ functions in the scorekeeper package as you build the scoresheet.
 
 ***Necessary columns in a scoresheet include***:
 
-**raw\_vars** : a raw variable or list of raw variables needed for an
+**raw_vars** : a raw variable or list of raw variables needed for an
 operation
 
-**new\_var**: the desired name of a new variable created during the
+**new_var**: the desired name of a new variable created during the
 operation
 
 **label**: the new variable label, if needed
@@ -49,21 +49,21 @@ operation
 with ‘1’. I recommend entering any raw metadata as ‘0’ to increase
 transparency of your scoring method when sharing a scoresheet
 
-**val\_labs**: value labels for a new variable
+**val_labs**: value labels for a new variable
 
-**new\_vals**: values to be recoded in a `recode` operation. Follow the
+**new_vals**: values to be recoded in a `recode` operation. Follow the
 convention ‘old’ = ‘new’, with commas separating each old/new pair
 
-**if\_condition**: a logical condition to be evaluated for an `if_else`
+**if_condition**: a logical condition to be evaluated for an `if_else`
 operation
 
-**if\_true\_return**: value that is returned if the ‘if\_condition’ ==
-TRUE in `if_else` operations
-
-**else\_return**: value that is returned if the ‘if\_condition’ != TRUE
+**if_true_return**: value that is returned if the ‘if_condition’ == TRUE
 in `if_else` operations
 
-**code**: code for performing a ‘filter\_at’ or ‘case\_when’ operation
+**else_return**: value that is returned if the ‘if_condition’ != TRUE in
+`if_else` operations
+
+**code**: code for performing a ‘filter_at’ or ‘case_when’ operation
 
 The required columns in a scoresheet currently have limited flexibility.
 I anticipate adding additional functionality in the future. Enter `NA`
@@ -73,7 +73,7 @@ operations supported are:
 **select** : selects variables that you identify in
 `scoresheet$raw_vars`.
 
-**filter\_at**: filters rows of a dataset. Use `filter_at` dplyr
+**filter_at**: filters rows of a dataset. Use `filter_at` dplyr
 conventions using `scoresheet$code`
 
 **recode**: recodes a variable into a new variable, using values defined
@@ -83,11 +83,11 @@ in `scoresheet$new_vals`
 weighted and unweighted sums, along with the number of and proportion of
 `NA` values in the sum
 
-**if\_else** : creates a new variable defined in
+**if_else** : creates a new variable defined in
 `scoresheet$if_condition`, `scoresheet$if_true return`,
 `soresheet$else_return`
 
-**case\_when** : creates a new variable using case\_when code defined in
+**case_when** : creates a new variable using case_when code defined in
 `scoresheet$code`
 
 ## Installation
@@ -99,8 +99,7 @@ remotes package installed, first install the remotes package.
 install.packages("remotes")
 ```
 
-then install R/scorekeeper using the install\_github function in
-remotes.
+then install R/scorekeeper using the install_github function in remotes.
 
 ``` r
 library(remotes)
