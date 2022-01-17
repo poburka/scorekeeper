@@ -12,7 +12,11 @@ select_vars(raw, scoresheet)
 }}
 
 \item{scoresheet}{\itemize{
-\item formatted scoresheet object
+\item formatted scoresheet object. Key variables in this operation are \code{raw_vars}. The select operation currently takes a list of
+\code{raw_vars} and selects those variables. Remember to select any necessary variables for identification of your data when scoring a measure
+(so that you can later stitch tibbles back together for analysis if needed). Currently, you must enter the names of variables you would like
+in a simple, comma separated list. You cannot use shorthand expressions (e.g. \code{starts_with} or \code{c(1:7)} will not work as input. Full variables
+names are necessary. Additional flexibility for this function is planned for future releases
 }}
 }
 \value{

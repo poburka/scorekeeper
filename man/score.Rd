@@ -2,7 +2,9 @@
 % Please edit documentation in R/scorekeep.R
 \name{score}
 \alias{score}
-\title{Title}
+\title{score function
+The score function completes all scoring for a single step of a scoresheet. operations are conducted in the following order:
+\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}}
 \usage{
 score(raw, scoresheet)
 }
@@ -16,5 +18,7 @@ For sequential operations, see scorekeep function)}
 a tibble
 }
 \description{
-Title
+score function
+The score function completes all scoring for a single step of a scoresheet. operations are conducted in the following order:
+\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}
 }

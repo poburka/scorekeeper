@@ -2,7 +2,7 @@
 % Please edit documentation in R/if_else_vars.R
 \name{if_else_vars}
 \alias{if_else_vars}
-\title{Title}
+\title{If_else_vars}
 \usage{
 if_else_vars(raw, scoresheet)
 }
@@ -17,5 +17,5 @@ respectively, in a 'dplyr' if_else statement. see: \href{https://dplyr.tidyverse
 a tibble with 'new_var' appended.
 }
 \description{
-Title
+If_else_vars
 }

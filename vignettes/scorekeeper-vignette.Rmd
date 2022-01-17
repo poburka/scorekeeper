@@ -2,7 +2,7 @@
 title: "A Scorekeeper Vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A scorekeeper vignette using binge eating data}
+  %\VignetteIndexEntry{A Scorekeeper Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
