@@ -19,12 +19,20 @@ The following example depicts how to use the scoresheet package for manipulating
 First, we load the scorekeeper package: 
 ```{r setup}
 library(scorekeeper)
+library(sjmisc)
 ```
 
-Next, let's familiarize ourselves with the raw data. This example data file includes an `id` variable, 6 binge eating variables (`ccq360`, `ccq370`, `ccq371`, `ccq372`, `ccq373`, `ccq374`, and `ccq375`)
+Next, let's familiarize ourselves with the raw data. This example data file includes an `id` variable, 6 binge eating variables (`ccq360`, `ccq370`, `ccq371`, `ccq372`, `ccq373`, `ccq374`, and `ccq375`). I have also included 4 'noisy' variables which are related to other assessments of eating behavior, `ccq380`, `ccq381`, `ccq382` and `ccq383`. 
 
-```{r}
+## Raw Data
+
+```{r, echo=FALSE}
 knitr::kable(head(binge_raw))
+```
+
+These variables are coded in ways that are slightly odd. For instance, `ccq360` is not a descriptive name, and a response of 'never' corresponds to the value of 1. 
+```{r}
+frq(binge_raw$ccq370)
 ```
 
 
