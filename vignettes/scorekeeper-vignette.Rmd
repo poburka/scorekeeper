@@ -24,7 +24,7 @@ library(scorekeeper)
 Next, let's familiarize ourselves with the raw data. This example data file includes an `id` variable, 6 binge eating variables (`ccq360`, `ccq370`, `ccq371`, `ccq372`, `ccq373`, `ccq374`, and `ccq375`)
 
 ```{r}
-head(binge_raw)
+knitr::kable(head(binge_raw))
 ```
 
 
