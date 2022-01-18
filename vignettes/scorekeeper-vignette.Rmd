@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children [ALSPAC](http://www.bristol.ac.uk/alspac/). You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. My goal is that building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for easy and reproducable implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some *very basic* r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require some thoughtful coding, and I try to make that process a bit more approachable via this vignette. I recommend reading the dplyr documentation for an operation if you are stuck on a particular piece of code. 
+The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children [ALSPAC](http://www.bristol.ac.uk/alspac/). You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some *very basic* r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the dplyr documentation for an operation if you are stuck on a particular piece of code. 
 
 Ok! Let's get started. First, we load the scorekeeper package: 
 ```{r setup}
@@ -38,46 +38,84 @@ As you can see from the examples below, these variables are coded in ways that a
 frq(binge_raw$ccq360)
 ```
 
-Similarly, you can see that `ccq370` has a 'no' answer coded as a 3, with 'yes, usually' coded as 1 and 'yes, sometimes' coded as a 2. I also see a different missing code pop up here, which is 'not completed'. If I look at the data (and the documentation) I notice that variables ccq370-ccq375 were actually *skipped* if someone answered that they had never binge eaten in question ccq360.  I will also need to recode those variables as 'No' instead of 'not completed' for those variables in order to account for/fill in what the skip logic in the questionnaire missed 
+Similarly, you can see that `ccq370` has a 'no' answer coded as a 3, with 'yes, usually' coded as 1 and 'yes, sometimes' coded as a 2. I also see a different missing code pop up here, which is 'not completed'. If I look at the data patterns and the documentation, I notice that variables ccq370-ccq375 were actually *skipped* if someone answered that they had never binge eaten in question ccq360.  I will also need to recode those variables as 'No' instead of 'not completed' for those variables in order to account for/fill in what the skip logic in the questionnaire missed 
 
 
 ```{r, echo = FALSE}
 frq(binge_raw$ccq370)
 ```
-So far, I have identified 4 things that I would like to do to clean these variables prior to analysis: 
 
-**1**. select only `id`, `ccq370`, `ccq371`, `ccq372`, `ccq373`, `ccq374`, and `ccq375` as the variables that I am interested in scoring.
 
-**2**. appropriately account for skip patterns and change entries to 'no' for variables where a skip pattern was employed. 
-
-**3**. recode all negative numbers as 'missing'; recode other responses to be more sensible (e.g. for `ccq370`: 0 = No, 1 = Yes, sometimes, 2 = Yes, usually, OR, if I want to dichotomize these symtpoms, perhaps 0 = No and 1 = Yes - sometimes or usually). 
-
-**4**. rename the variables with more descriptive names. 
+When preparing to make a scoresheet - I recommend splitting your thought process into two chunks (1) cleaning raw variables and (2) creating composite scores. We'll start with  the first chunk below
 
 ## Scoresheet
 
-Currently, your scoresheet should include up to 11 columns which must have names that **exactly** match the following: `raw_vars`, `new_var`, `label`, `operation`, `step`, `val_labs`, `new_vals`, `if_condition`, `if_true_return`, `else_return`, `code`. Not all operations use all columns, so if there is an operation you do not need, you may need fewer columns in your scoresheet. Your scoresheet will still run if you leave out unnecessary columns, but it will give an error if you do not include columns that are needed. 
+So far, I have identified 4 things that I would like to do to clean raw variables prior to analysis: 
 
-**Step 0**: I'll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows (out of 7 variables) below: 
+**1**. Select only `id`, `ccq370`, `ccq371`, `ccq372`, `ccq373`, `ccq374`, and `ccq375` as the variables that I am interested in scoring.
+
+**2**. Appropriately account for skip patterns and change entries to 'no' for variables where a skip pattern was employed. 
+
+**3**. Recode all negative numbers as 'missing'; recode other responses to be more sensible (e.g. for `ccq370`: 0 = No, 1 = Yes, sometimes, 2 = Yes, usually for an ordinal variable AND/OR 0 = No and 1 = Yes - sometimes or usually for a dichotomized variable). 
+
+**4**. Rename variables with more descriptive names. Clean up variable labels
+
+Thinking about the order that these will need to be completed: I can do the `select` operation at any point, but it makes sense to do it first in order to reduce clutter in my data as I manipulate it. I can complete the unskipping (`if_else`) and `recode` in either order, but the VALUE that is entered for skipped variables would be different if I completed this before vs. after the recode, as a 'No' answer would have a different value before vs. after recoding. It seems most sensible to me to start with filling out the skipped variables, so I will do that step first before recoding. Finally, I would like to rename the variables to be more descriptive names and clean up the variable labels a bit. This renaming and cleaning up labels can be accomplished within the recode step, so I have 3 steps to complete in order to clean my raw variables.
+
+At present, scoresheets should include up to 11 columns which must have names that **exactly** match the following: `raw_vars`, `new_var`, `label`, `operation`, `step`, `val_labs`, `new_vals`, `if_condition`, `if_true_return`, `else_return`, `code`. Not all operations use all columns, so if there is an operation you do not need, you may not need all columns in your scoresheet. Your scoresheet will run regardless of whether your include unnecessary columns, but it will give an error if you do not include columns that are necessary. 
+
+**Step 0**: I'll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows of raw variables below: 
 
 ```{r, echo = FALSE}
 knitr::kable(binge_scoresheet[1:3,])
 ```
 
-**Step 1**: I'm going to enter a row in a scoresheet (I use a .csv file with my 11 columns for easy entry and revision, then load it into r using `load_csv`). To select only the variables that I want, I add a row to my scoresheet with `operation` = select and `step` = 1: 
+### Step 1
+
+I'm going to enter a row in a scoresheet (I use a .csv file with my 11 columns for easy entry and revision, then load it into r using `load_csv`). To select only the variables that I want, I add a row to my scoresheet with `operation` = select and `step` = 1. In the 'raw_vars' column, I list the variables that I would like to select in a comma separated list 
+
+*note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It will not evaluate across mutliple columns*
 ```{r, echo = FALSE}
 knitr::kable(binge_scoresheet[8,])
 ```
 
 Ok! Now for our first test. I'm going to use this row to see if I can select my variables of interest using the scorekeeper package. 
 ```{r}
-#select1 creates a scoreshet tibble with only the 8th row - which contains my 'select' operation that I would like to do in Step 1
-select1 <- binge_scoresheet[8,]
+#select1 creates a scoresheet tibble with only the 1st-8th rows - which contains the raw variables in rows 1-7 and my 'select' operation in row 8
+score1 <- binge_scoresheet[1:8,]
 #complete the 'scorekeep' function using my raw data and select 1
-scorekeep(binge_raw, select1)
+knitr::kable (scorekeep(binge_raw, score1))
 ```
 
-Great! now the next 
+Great - we now have only the 8 variables that we would like to use! Our next step will be to 'unskip' the currently skipped variables. To do this, I'm going to use the `if_else` code (see package documentation for additional details). For each row column ccq370-375, I will create a new variable with '_unskip' appended to the end of each variable.  If `ccq360` == 1, I'll change the value of the skipped variable to 3; otherwise, I'll keep the original value. Since I will be recoding in the next step, I will not use these '_unskip' variables in the final dataset, so I will skip putting a label on the variable and coding the values. See below for example of this code which creates a new variable 'ccq370_unskip': 
 
+*note - the if_else operation is currently designed to recode one variable per row. Vectorization may be available in future releases*
 
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet[9,])
+```
 
+Now we'll expand our scoring to Steps 1-2
+
+```{r, warning=FALSE}
+#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14
+score2 <- binge_scoresheet[1:14,]
+#complete the 'scorekeep' function using my raw data and select 1
+knitr::kable (scorekeep(binge_raw, score2))
+```
+
+Here you'll see that we now have **2** tibbles in our output, one for each step. The first step selects the variables, and the second step corrects the skip logic. 
+
+*Note - the scorekeeper package is designed to be very conservative in variable conservation. What this means is that original variables are never discarded, and output tibbles will generally lengthen as you create new variables. There are two operations where this is not the case. First, the `select` function will reduce columns in a tibble by selecting only those that are identified. Second, the `rename` function renames a column in a tibble directly. All other operations will generally require a 'new_var' name that is NOT yet a named variable and will append the newly created variable to the end of a tibble. You can always select your final variables and rename them back to an original name as a final step in the scorekeeping process if you prefer the original name of a variable but need to make modifications to the data.*
+
+Now we're ready for **Step 3**, recoding and renaming. Below is an example of what a scoresheet row will look like for this operation
+
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet[16,])
+```
+
+You can see above that I am using the newly minted `ccq370_unskip` variable when recoding. I rename the variable something more sensible `binge_loc_d.14` - which notes that it's a binge eating variable assessing loss of control , which is dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as 'label' = 'value', and the new values recode the old values under the pattern 'old' = 'new', with commas separating each element in the recoding scheme. 
+
+*Note - do not use commas within the value labels (e.g. 'yes, sometimes or usually' includes a comma and would not parse as an accurate value. Other punctuation may be used within value labels)*
+
+Beginning with this step, I'm only going to show the last tibble of output for ease of rea
