@@ -114,8 +114,88 @@ Now we're ready for **Step 3**, recoding and renaming. Below is an example of wh
 knitr::kable(binge_scoresheet[16,])
 ```
 
-You can see above that I am using the newly minted `ccq370_unskip` variable when recoding. I rename the variable something more sensible `binge_loc_d.14` - which notes that it's a binge eating variable assessing loss of control , which is dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as 'label' = 'value', and the new values recode the old values under the pattern 'old' = 'new', with commas separating each element in the recoding scheme. 
+You can see above that I am using the newly minted `ccq370_unskip` variable when recoding. I rename the variable something more sensible `binge_loc_d.14` - which notes that it's a binge eating variable assessing loss of control , which is dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as 'label' = 'value', and the new values recode the old values under the pattern 'old' = 'new', with commas separating each element in the recoding scheme. Recoded variables will also include a companion variable 'new_var.factor', which includes the value label easily visible, so that you can double check that your coding scheme is correct. 
 
 *Note - do not use commas within the value labels (e.g. 'yes, sometimes or usually' includes a comma and would not parse as an accurate value. Other punctuation may be used within value labels)*
 
-Beginning with this step, I'm only going to show the last tibble of output for ease of rea
+Beginning with this step, I'm only going to show the last tibble of output for readability -- as shown above, the scorekeep function scores iteratively and SAVES EACH STEP as a tibble in your output so that you can ensure that the correct transformations were made on each step and troubleshoot if necessary. 
+
+```{r, warning=FALSE}
+#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14
+score3 <- binge_scoresheet[1:21,]
+#complete the 'scorekeep' function using my raw data and select 1
+step3 <- scorekeep(binge_raw, score3)
+knitr::kable(step3[[3]])
+```
+
+This concludes the first chunk of data cleaning - recoding the raw variables -- in this example. Our variables binge_freq_d.14 through the end of the tibble now represent appropriately coded (dichotomized) variables for our analysis. Next, we'll create composite scores and then clean up our data. The composite scores that I have decided to create are a sum of symptoms that are present: `binge_sx_sum.14`, a variable that dichotomizes binge eating issues as present if individuals report binge at least once per month with at least two of the six additional symptoms, and a variable that splits the sum score into categories of absent, mild, and severe. We'll need to first create the sum score before we can complete the next two operations. 
+
+## Step 4
+
+Create a sum score. Below is the scoresheet row to create our symptom sum score, which gives a count of the number of binge eating symptoms (0-6) that are present for each individual
+ 
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet[22,])
+```
+
+
+The sum operation computes five variables, the raw sum of the list of variables provided in `raw_vars` (NAs excluded), the raw sum of those with complete data only, the number of missing values, the percent of values that are missing, and a weighted sum (weighted by the number of non-missing values). Below are the last 8 columns of the tibble created in Step 4:
+
+
+```{r, warning=FALSE, echo = FALSE}
+#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14
+score4 <- binge_scoresheet[1:22,]
+#complete the 'scorekeep' function using my raw data and select 1
+step4 <- scorekeep(binge_raw, score4)
+step4_last <- (step4[[4]])
+knitr::kable (step4_last[,26:33])
+```
+
+
+## Step 5
+
+In step 5, we create two additional variables based on the sum score created in step 4.
+
+
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet[23:24,])
+```
+
+The last five variables created are seen below:
+
+```{r, warning=FALSE, echo = FALSE}
+#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14
+score5 <- binge_scoresheet[1:24,]
+#complete the 'scorekeep' function using my raw data and select 1
+step5 <- scorekeep(binge_raw, score5)
+step5 <- step5[[5]]
+knitr::kable(step5[,31:35])
+```
+
+In step 6, we select only a few columns that will go into the final dataset, and in step 7, we rename `binge_sx_sum_split.14` to a simpler name: `binge_severity.14`
+
+
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet[26:27,])
+```
+
+
+Putting it all together: we now have a full scoresheet - 
+
+```{r, echo = FALSE}
+knitr::kable(binge_scoresheet)
+```
+
+
+And we can use that scoresheet to fully score our binge eating measure with just one line of code: 
+
+```{r, warning=FALSE}
+Cleand_data <-  scorekeep(binge_raw, binge_scoresheet)
+```
+
+The last tibble in this set of 7 tibbles will be the fully cleaned data
+
+```{r}
+knitr::kable(Cleand_data[[7]])
+```
+

@@ -26,9 +26,11 @@ sum_vars <- function (raw, scoresheet){
     sum_table <- sum_function(raw_tbl = raw, n_var = new_var, r_vars = r_var_func(scoresheet, i), n_lab = new_label)
 
     #save the last 4 columns (the new sum column, the NAs column, the NA percent column, and the weighted sum column), and append to the 'new table'
-    new_table1 <- sum_table[,(ncol(sum_table)-3):ncol(sum_table)]
+    new_table1 <- sum_table[,(ncol(sum_table)-4):ncol(sum_table)]
+
     new_table2 <- new_table2 %>%
-      add_column(new_table1[1], new_table1[2], new_table1[3], new_table1[4])
+      add_column(new_table1[1], new_table1[2], new_table1[3], new_table1[4], new_table1[5]) %>%
+      mutate_all(~replace(., is.nan(.), NA))
   }
 
   #return the new table
@@ -40,7 +42,8 @@ sum_vars <- function (raw, scoresheet){
 sum_function <- function (raw_tbl, n_var, r_vars, n_lab) {
   new_tbl <-raw_tbl %>%
     #create a new variable that sums across the raw variables
-    mutate("{n_var}" := rowSums(across(r_vars, na.rm = FALSE))) %>%
+    mutate("{n_var}" := rowSums(across(r_vars), na.rm = TRUE)) %>%
+    mutate("{n_var}_complete" := rowSums(across(r_vars), na.rm = FALSE)) %>%
     #label the new variable
     set_variable_labels("{n_var}" := n_lab) %>%
     #create a new variable that tells you -- across the raw variables, the number that are missing
@@ -48,7 +51,7 @@ sum_function <- function (raw_tbl, n_var, r_vars, n_lab) {
     #create a new variable that tells you -- across the raw variables that are summed, the percent that are missing
     mutate("{n_var}_NA_percent" := ((rowSums(is.na(across(r_vars))))/(length(r_vars))*100)) %>%
     #create a new variable that is your weighted sum score
-    mutate ("{n_var}_weighted_sum" := ((!!as.name(n_var))/(1-(((rowSums(is.na(across(r_vars))))/(length(r_vars)))))))
+    mutate ("{n_var}_weighted_sum" := ((rowSums(across(r_vars), na.rm = TRUE))/(1-(((rowSums(is.na(across(r_vars))))/(length(r_vars)))))))
   return(new_tbl)
 }
 
