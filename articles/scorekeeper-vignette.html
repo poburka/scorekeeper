@@ -76,7 +76,7 @@
 
     
     
-<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">ALSPAC</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>very basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the dplyr documentation for an operation if you are stuck on a particular piece of code.</p>
+<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">(ALSPAC)</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>very basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the <a href="https://dplyr.tidyverse.org" class="external-link">dplyr documentation</a> as well as the <a href="https://embark-lab.github.io/scorekeeper/reference/index.html">scorekeeper documentation</a> for a specific operation if you are stuck on a particular piece of code.</p>
 <p>Ok! Let’s get started. First, we load the scorekeeper package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/embark-lab/scorekeeper" class="external-link">scorekeeper</a></span><span class="op">)</span></code></pre></div>
@@ -274,11 +274,11 @@
 <span class="co">#&gt;     2 |          Yes, sometimes | 1 |    10 |      10 |     70</span>
 <span class="co">#&gt;     3 |                      No | 3 |    30 |      30 |    100</span>
 <span class="co">#&gt;  &lt;NA&gt; |                    &lt;NA&gt; | 0 |     0 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre>
-<p>When preparing to make a scoresheet - I recommend splitting your thought process into two chunks (1) cleaning raw variables and (2) creating composite scores. We’ll start with the first chunk below</p>
 </div>
 <div class="section level2">
 <h2 id="scoresheet">Scoresheet<a class="anchor" aria-label="anchor" href="#scoresheet"></a>
 </h2>
+<p>When preparing to make a scoresheet - I recommend splitting your thought process into three chunks (1) cleaning raw variables, (2) creating composite scores, and (3) selecting your final, cleaned variables to save. We’ll start with the first chunk below:</p>
 <p>So far, I have identified 4 things that I would like to do to clean raw variables prior to analysis:</p>
 <p><strong>1</strong>. Select only <code>id</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code> as the variables that I am interested in scoring.</p>
 <p><strong>2</strong>. Appropriately account for skip patterns and change entries to ‘no’ for variables where a skip pattern was employed.</p>
@@ -286,7 +286,11 @@
 <p><strong>4</strong>. Rename variables with more descriptive names. Clean up variable labels</p>
 <p>Thinking about the order that these will need to be completed: I can do the <code>select</code> operation at any point, but it makes sense to do it first in order to reduce clutter in my data as I manipulate it. I can complete the unskipping (<code>if_else</code>) and <code>recode</code> in either order, but the VALUE that is entered for skipped variables would be different if I completed this before vs. after the recode, as a ‘No’ answer would have a different value before vs. after recoding. It seems most sensible to me to start with filling out the skipped variables, so I will do that step first before recoding. Finally, I would like to rename the variables to be more descriptive names and clean up the variable labels a bit. This renaming and cleaning up labels can be accomplished within the recode step, so I have 3 steps to complete in order to clean my raw variables.</p>
 <p>At present, scoresheets should include up to 11 columns which must have names that <strong>exactly</strong> match the following: <code>raw_vars</code>, <code>new_var</code>, <code>label</code>, <code>operation</code>, <code>step</code>, <code>val_labs</code>, <code>new_vals</code>, <code>if_condition</code>, <code>if_true_return</code>, <code>else_return</code>, <code>code</code>. Not all operations use all columns, so if there is an operation you do not need, you may not need all columns in your scoresheet. Your scoresheet will run regardless of whether your include unnecessary columns, but it will give an error if you do not include columns that are necessary.</p>
-<p><strong>Step 0</strong>: I’ll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows of raw variables below:</p>
+</div>
+<div class="section level2">
+<h2 id="step-0">Step 0<a class="anchor" aria-label="anchor" href="#step-0"></a>
+</h2>
+<p>I’ll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows of raw variables below:</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
@@ -402,12 +406,9 @@
 <td align="left">NA</td>
 </tr></tbody>
 </table>
-<p>Ok! Now for our first test. I’m going to use this row to see if I can select my variables of interest using the scorekeeper package.</p>
+<p>Now I’ll use this row to select my variables of interest using the scorekeep function, with my raw data file (<code>binge_raw</code>) and scoresheet that contains Steps 0-1 (<code>score1</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-8th rows - which contains the raw variables in rows 1-7 and my 'select' operation in row 8</span>
-<span class="va">score1</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>,<span class="op">]</span>
-<span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table kable_wrapper"><tbody><tr>
 <td>
 <table class="table">
@@ -526,7 +527,12 @@
 </table>
 </td>
 </tr></tbody></table>
-<p>Great - we now have only the 8 variables that we would like to use! Our next step will be to ‘unskip’ the currently skipped variables. To do this, I’m going to use the <code>if_else</code> code (see package documentation for additional details). For each row column ccq370-375, I will create a new variable with ’_unskip’ appended to the end of each variable. If <code>ccq360</code> == 1, I’ll change the value of the skipped variable to 3; otherwise, I’ll keep the original value. Since I will be recoding in the next step, I will not use these ’_unskip’ variables in the final dataset, so I will skip putting a label on the variable and coding the values. See below for example of this code which creates a new variable ‘ccq370_unskip’:</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="step-2">Step 2<a class="anchor" aria-label="anchor" href="#step-2"></a>
+</h2>
+<p>We now have only the 8 variables that we would like to use. Our next step will be to ‘unskip’ the currently skipped variables. To do this, I’m going to use <code>if_else</code> code (see package documentation for additional details). For each row column ccq370-375, I will create a new variable with ’_unskip’ appended to the end of each variable. For example, if <code>ccq370</code> == 1, I’ll change the value of the skipped variable to 3; otherwise, I’ll keep the original value. See below for example of this code which creates a new variable ‘ccq370_unskip’:</p>
 <p><em>note - the if_else operation is currently designed to recode one variable per row. Vectorization may be available in future releases</em></p>
 <table class="table">
 <colgroup>
@@ -571,9 +577,7 @@
 </table>
 <p>Now we’ll expand our scoring to Steps 1-2</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14</span>
-<span class="va">score2</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">14</span>,<span class="op">]</span>
-<span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
+<code class="sourceCode R"><span class="co">#complete the `scorekeep` function using my raw data and the first two scoresheet steps:</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table kable_wrapper"><tbody><tr>
 <td>
@@ -891,8 +895,12 @@
 </table>
 </td>
 </tr></tbody></table>
-<p>Here you’ll see that we now have <strong>2</strong> tibbles in our output, one for each step. The first step selects the variables, and the second step corrects the skip logic.</p>
+<p>You’ll see that we now have <strong>2</strong> tibbles in our output, one for each step. The first step selects the variables, and the second step corrects the skip logic.</p>
 <p><em>Note - the scorekeeper package is designed to be very conservative in variable conservation. What this means is that original variables are never discarded, and output tibbles will generally lengthen as you create new variables. There are two operations where this is not the case. First, the <code>select</code> function will reduce columns in a tibble by selecting only those that are identified. Second, the <code>rename</code> function renames a column in a tibble directly. All other operations will generally require a ‘new_var’ name that is NOT yet a named variable and will append the newly created variable to the end of a tibble. You can always select your final variables and rename them back to an original name as a final step in the scorekeeping process if you prefer the original name of a variable but need to make modifications to the data.</em></p>
+</div>
+<div class="section level2">
+<h2 id="step-3">Step 3<a class="anchor" aria-label="anchor" href="#step-3"></a>
+</h2>
 <p>Now we’re ready for <strong>Step 3</strong>, recoding and renaming. Below is an example of what a scoresheet row will look like for this operation</p>
 <table style="width:100%;" class="table">
 <colgroup>
@@ -935,9 +943,9 @@
 <td align="left">NA</td>
 </tr></tbody>
 </table>
-<p>You can see above that I am using the newly minted <code>ccq370_unskip</code> variable when recoding. I rename the variable something more sensible <code>binge_loc_d.14</code> - which notes that it’s a binge eating variable assessing loss of control , which is dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as ‘label’ = ‘value’, and the new values recode the old values under the pattern ‘old’ = ‘new’, with commas separating each element in the recoding scheme. Recoded variables will also include a companion variable ‘new_var.factor’, which includes the value label easily visible, so that you can double check that your coding scheme is correct.</p>
+<p>I am using the newly minted <code>ccq370_unskip</code> variable when recoding. I rename the variable something more sensible <code>binge_loc_d.14</code> - which notes that it’s a binge eating variable assessing loss of control, dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as ‘label’ = ‘value’, and the new values recode the old values under the pattern ‘old’ = ‘new’, with commas separating each element in the recoding scheme. Recoded variables will also include a companion variable ‘new_var.factor’, which includes the value label easily visible, so that you can double check that your recoding scheme is correct.</p>
 <p><em>Note - do not use commas within the value labels (e.g. ‘yes, sometimes or usually’ includes a comma and would not parse as an accurate value. Other punctuation may be used within value labels)</em></p>
-<p>Beginning with this step, I’m only going to show the last tibble of output for readability – as shown above, the scorekeep function scores iteratively and SAVES EACH STEP as a tibble in your output so that you can ensure that the correct transformations were made on each step and troubleshoot if necessary.</p>
+<p>Beginning with this step, I’m only going to show the parts of output for readability – as noted above, the scorekeep function scores iteratively and <strong>saves each step</strong> as a tibble in your output so that you can ensure that the correct transformations were made on each step and troubleshoot if necessary.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14</span>
 <span class="va">score3</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">21</span>,<span class="op">]</span>
@@ -1310,11 +1318,10 @@
 </table>
 <p>This concludes the first chunk of data cleaning - recoding the raw variables – in this example. Our variables binge_freq_d.14 through the end of the tibble now represent appropriately coded (dichotomized) variables for our analysis. Next, we’ll create composite scores and then clean up our data. The composite scores that I have decided to create are a sum of symptoms that are present: <code>binge_sx_sum.14</code>, a variable that dichotomizes binge eating issues as present if individuals report binge at least once per month with at least two of the six additional symptoms, and a variable that splits the sum score into categories of absent, mild, and severe. We’ll need to first create the sum score before we can complete the next two operations.</p>
 </div>
-</div>
 <div class="section level2">
 <h2 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
 </h2>
-<p>Create a sum score. Below is the scoresheet row to create our symptom sum score, which gives a count of the number of binge eating symptoms (0-6) that are present for each individual</p>
+<p>Our next step will be to create a sum score. Below is the scoresheet row to create our symptom sum score, which gives a count of the number of binge eating symptoms (0-6) that are present for each individual</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="44%">
@@ -1356,22 +1363,16 @@
 <td align="left">NA</td>
 </tr></tbody>
 </table>
-<p>The sum operation computes five variables, the raw sum of the list of variables provided in <code>raw_vars</code> (NAs excluded), the raw sum of those with complete data only, the number of missing values, the percent of values that are missing, and a weighted sum (weighted by the number of non-missing values). Below are the last 8 columns of the tibble created in Step 4:</p>
+<p>The sum operation computes five variables, the raw sum of the list of variables provided in <code>raw_vars</code> (NAs excluded), the raw sum of those with complete data only, the number of missing values, the percent of values that are missing, and a weighted sum (weighted by the number of non-missing values). Below are the last 5 columns of the tibble created in Step 4:</p>
 <table class="table">
 <colgroup>
-<col width="14%">
-<col width="9%">
-<col width="14%">
-<col width="8%">
 <col width="13%">
-<col width="10%">
-<col width="14%">
-<col width="15%">
+<col width="21%">
+<col width="17%">
+<col width="23%">
+<col width="24%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">binge_hide_d.14.factor</th>
-<th align="right">binge_guilt_d.14</th>
-<th align="left">binge_guilt_d.14.factor</th>
 <th align="right">binge_sx_sum.14</th>
 <th align="right">binge_sx_sum.14_complete</th>
 <th align="right">binge_sx_sum.14_NAs</th>
@@ -1380,9 +1381,6 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">no</td>
-<td align="right">0</td>
-<td align="left">no</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1390,9 +1388,6 @@
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">no</td>
-<td align="right">0</td>
-<td align="left">no</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1400,9 +1395,6 @@
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">yes - sometimes or usually</td>
-<td align="right">1</td>
-<td align="left">yes - sometimes or usually</td>
 <td align="right">6</td>
 <td align="right">6</td>
 <td align="right">0</td>
@@ -1410,9 +1402,6 @@
 <td align="right">6</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
 <td align="right">0</td>
 <td align="right">NA</td>
 <td align="right">6</td>
@@ -1420,9 +1409,6 @@
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">no</td>
-<td align="right">1</td>
-<td align="left">yes - sometimes or usually</td>
 <td align="right">4</td>
 <td align="right">4</td>
 <td align="right">0</td>
@@ -1430,9 +1416,6 @@
 <td align="right">4</td>
 </tr>
 <tr class="even">
-<td align="left">no</td>
-<td align="right">0</td>
-<td align="left">no</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1440,9 +1423,6 @@
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">no</td>
-<td align="right">1</td>
-<td align="left">yes - sometimes or usually</td>
 <td align="right">5</td>
 <td align="right">5</td>
 <td align="right">0</td>
@@ -1450,9 +1430,6 @@
 <td align="right">5</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
 <td align="right">0</td>
 <td align="right">NA</td>
 <td align="right">6</td>
@@ -1460,9 +1437,6 @@
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">no</td>
-<td align="right">1</td>
-<td align="left">yes - sometimes or usually</td>
 <td align="right">3</td>
 <td align="right">3</td>
 <td align="right">0</td>
@@ -1470,9 +1444,6 @@
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td align="left">no</td>
-<td align="right">1</td>
-<td align="left">yes - sometimes or usually</td>
 <td align="right">3</td>
 <td align="right">3</td>
 <td align="right">0</td>
@@ -1485,7 +1456,7 @@
 <div class="section level2">
 <h2 id="step-5">Step 5<a class="anchor" aria-label="anchor" href="#step-5"></a>
 </h2>
-<p>In step 5, we create two additional variables based on the sum score created in step 4.</p>
+<p>In step 5, we create two additional variables based on the sum score created in step 4, and we filter the tibble to exclude cases with all missing data. We can do all of these operations in the same step because they are independent and do not rely on one another. The <code>if_else</code> operation computes a variable that notes binge eating is present (‘1’) if an individual reports binge eating at least once per month with more than two additional symptoms. The <code>case_when</code> operation splits the sum score into ‘absent’, ‘mild’, and ‘severe’ cases based on the number of symtpoms reported. See <code>if_else</code>, <code>filter_at</code> and <code>case_when</code> documentation in the package help files for more information.</p>
 <table class="table">
 <colgroup>
 <col width="10%">
@@ -1540,21 +1511,24 @@
 <td align="left">NA</td>
 <td align="left">binge_sx_sum.14 == 0 ~ 0, binge_sx_sum.14 &gt; 0 &amp; binge_sx_sum.14 &lt;=3 ~ 1, binge_sx_sum.14 &gt; 3 ~ 2</td>
 </tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">filter_at</td>
+<td align="right">5</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">c(15:28), any_vars(!is.na(.))</td>
+</tr>
 </tbody>
 </table>
-<p>The last five variables created are seen below:</p>
+<p>The last two variables created are seen below:</p>
 <table class="table">
-<colgroup>
-<col width="17%">
-<col width="23%">
-<col width="25%">
-<col width="14%">
-<col width="19%">
-</colgroup>
 <thead><tr class="header">
-<th align="right">binge_sx_sum.14_NAs</th>
-<th align="right">binge_sx_sum.14_NA_percent</th>
-<th align="right">binge_sx_sum.14_weighted_sum</th>
 <th align="right">binge_present.14</th>
 <th align="right">binge_sx_sum_split.14</th>
 </tr></thead>
@@ -1562,89 +1536,63 @@
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="right">6</td>
-<td align="right">100</td>
-<td align="right">NA</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">4</td>
 <td align="right">0</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">5</td>
 <td align="right">0</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">6</td>
-<td align="right">100</td>
-<td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
 <td align="right">0</td>
-<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
 <td align="right">0</td>
 <td align="right">1</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level2">
+<h2 id="steps-6-7">Steps 6-7<a class="anchor" aria-label="anchor" href="#steps-6-7"></a>
+</h2>
 <p>In step 6, we select only a few columns that will go into the final dataset, and in step 7, we rename <code>binge_sx_sum_split.14</code> to a simpler name: <code>binge_severity.14</code></p>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
-<col width="43%">
-<col width="10%">
-<col width="3%">
-<col width="5%">
-<col width="2%">
-<col width="5%">
-<col width="5%">
-<col width="7%">
-<col width="8%">
+<col width="64%">
 <col width="6%">
 <col width="2%">
+<col width="3%">
+<col width="1%">
+<col width="3%">
+<col width="3%">
+<col width="4%">
+<col width="5%">
+<col width="4%">
+<col width="1%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">raw_vars</th>
@@ -1661,7 +1609,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">id, binge_sx_sum.14, binge_freq_d.14, binge_present.14, binge_sx_sum_split.14</td>
+<td align="left">id, binge_freq_d.14, binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14, binge_present.14, binge_sx_sum.14, binge_sx_sum_split.14</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">select</td>
@@ -1688,20 +1636,24 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level2">
+<h2 id="the-final-reveal">The Final Reveal<a class="anchor" aria-label="anchor" href="#the-final-reveal"></a>
+</h2>
 <p>Putting it all together: we now have a full scoresheet -</p>
 <table class="table">
 <colgroup>
-<col width="16%">
+<col width="25%">
 <col width="3%">
-<col width="15%">
+<col width="13%">
 <col width="1%">
 <col width="0%">
-<col width="29%">
-<col width="6%">
-<col width="6%">
+<col width="26%">
+<col width="5%">
+<col width="5%">
 <col width="2%">
 <col width="2%">
-<col width="15%">
+<col width="13%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">raw_vars</th>
@@ -2040,10 +1992,10 @@
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
-<td align="left">c(2:7), any_vars(!is.na(.))</td>
+<td align="left">c(15:28), any_vars(!is.na(.))</td>
 </tr>
 <tr class="even">
-<td align="left">id, binge_sx_sum.14, binge_freq_d.14, binge_present.14, binge_sx_sum_split.14</td>
+<td align="left">id, binge_freq_d.14, binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14, binge_present.14, binge_sx_sum.14, binge_sx_sum_split.14</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">select</td>
@@ -2070,18 +2022,37 @@
 </tr>
 </tbody>
 </table>
-<p>And we can use that scoresheet to fully score our binge eating measure with just one line of code:</p>
+<p>And we can use that scoresheet to fully score our binge eating measure with just <strong>one line of code</strong>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Cleand_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">binge_scoresheet</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">cleaned_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">binge_scoresheet</span><span class="op">)</span></code></pre></div>
 <p>The last tibble in this set of 7 tibbles will be the fully cleaned data</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Cleand_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<table class="table">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cleaned_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="1%">
+<col width="9%">
+<col width="8%">
+<col width="9%">
+<col width="11%">
+<col width="10%">
+<col width="9%">
+<col width="10%">
+<col width="10%">
+<col width="9%">
+<col width="10%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">id</th>
-<th align="right">binge_sx_sum.14</th>
 <th align="right">binge_freq_d.14</th>
+<th align="right">binge_loc_d.14</th>
+<th align="right">binge_fast_d.14</th>
+<th align="right">binge_stomach_d.14</th>
+<th align="right">binge_large_d.14</th>
+<th align="right">binge_hide_d.14</th>
+<th align="right">binge_guilt_d.14</th>
 <th align="right">binge_present.14</th>
+<th align="right">binge_sx_sum.14</th>
 <th align="right">binge_severity.14</th>
 </tr></thead>
 <tbody>
@@ -2091,9 +2062,21 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2101,62 +2084,99 @@
 </tr>
 <tr class="odd">
 <td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
 <td align="right">6</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">NA</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
 <td align="right">4</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="right">6</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="right">7</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
 <td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="right">8</td>
-<td align="right">0</td>
-<td align="right">NA</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">9</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
 <td align="right">3</td>
-<td align="right">1</td>
-<td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">10</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
 <td align="right">3</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="right">1</td>
 </tr>
 </tbody>
 </table>
+<p>And we can start to analyze our cleaned variables:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">binge_clean</span> <span class="op">&lt;-</span> <span class="va">cleaned_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span>
+<span class="fu">frq</span><span class="op">(</span><span class="va">binge_clean</span><span class="op">$</span><span class="va">binge_severity.14</span><span class="op">)</span>
+<span class="co">#&gt; Binge symptoms sum split into absent, mild, severe (x) &lt;numeric&gt; </span>
+<span class="co">#&gt; # total N=8 valid N=8 mean=1.00 sd=0.93</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Value |  Label | N | Raw % | Valid % | Cum. %</span>
+<span class="co">#&gt; ---------------------------------------------</span>
+<span class="co">#&gt;     0 | absent | 3 | 37.50 |   37.50 |  37.50</span>
+<span class="co">#&gt;     1 |   mild | 2 | 25.00 |   25.00 |  62.50</span>
+<span class="co">#&gt;     2 | severe | 3 | 37.50 |   37.50 | 100.00</span>
+<span class="co">#&gt;  &lt;NA&gt; |   &lt;NA&gt; | 0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre></div>
+<p>While developing this initial scoresheet was somewhat labor intensive, the scoresheet creates a <strong>documented, reproducible scoring and data cleaning system</strong> that can be easily shared. For instance, if another individual has data on the same measure, they can use my scoresheet (which I can save to a .csv file and post/send) to clean and score their data in the exact same way that I did, using <strong>one line of code</strong>. If raw variables are named slightly differently across projects, I would only need to adjust the raw variable names in a few places in the scoresheet for it to work on new data. While the scorekeeper package can be used for any multi-item scoring tasks, it particularly shines for algorithmic tasks (i.e. deriving psychological diagnoses), which often involve multiple <code>if_else</code> or <code>case_when</code> statements.</p>
+<p><strong>Happy scoring!</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
