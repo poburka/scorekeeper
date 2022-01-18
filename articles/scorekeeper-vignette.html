@@ -76,7 +76,7 @@
 
     
     
-<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">ALSPAC</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. My goal is that building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for easy and reproducable implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>very basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require some thoughtful coding, and I try to make that process a bit more approachable via this vignette. I recommend reading the dplyr documentation for an operation if you are stuck on a particular piece of code.</p>
+<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">ALSPAC</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>very basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the dplyr documentation for an operation if you are stuck on a particular piece of code.</p>
 <p>Ok! Let’s get started. First, we load the scorekeeper package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/embark-lab/scorekeeper" class="external-link">scorekeeper</a></span><span class="op">)</span></code></pre></div>
@@ -260,7 +260,7 @@
 <span class="co">#&gt;     4 |             Once a week | 1 |    10 |      10 |    100</span>
 <span class="co">#&gt;     5 |            &lt;Once a week | 0 |     0 |       0 |    100</span>
 <span class="co">#&gt;  &lt;NA&gt; |                    &lt;NA&gt; | 0 |     0 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre></div>
-<p>Similarly, you can see that <code>ccq370</code> has a ‘no’ answer coded as a 3, with ‘yes, usually’ coded as 1 and ‘yes, sometimes’ coded as a 2. I also see a different missing code pop up here, which is ‘not completed’. If I look at the data (and the documentation) I notice that variables ccq370-ccq375 were actually <em>skipped</em> if someone answered that they had never binge eaten in question ccq360. I will also need to recode those variables as ‘No’ instead of ‘not completed’ for those variables in order to account for/fill in what the skip logic in the questionnaire missed</p>
+<p>Similarly, you can see that <code>ccq370</code> has a ‘no’ answer coded as a 3, with ‘yes, usually’ coded as 1 and ‘yes, sometimes’ coded as a 2. I also see a different missing code pop up here, which is ‘not completed’. If I look at the data patterns and the documentation, I notice that variables ccq370-ccq375 were actually <em>skipped</em> if someone answered that they had never binge eaten in question ccq360. I will also need to recode those variables as ‘No’ instead of ‘not completed’ for those variables in order to account for/fill in what the skip logic in the questionnaire missed</p>
 <pre><code><span class="co">#&gt; B13a/B12a: Respondent felt out of control when on a binge (x) &lt;numeric&gt; </span>
 <span class="co">#&gt; # total N=10 valid N=10 mean=-0.90 sd=5.02</span>
 <span class="co">#&gt; </span>
@@ -274,17 +274,19 @@
 <span class="co">#&gt;     2 |          Yes, sometimes | 1 |    10 |      10 |     70</span>
 <span class="co">#&gt;     3 |                      No | 3 |    30 |      30 |    100</span>
 <span class="co">#&gt;  &lt;NA&gt; |                    &lt;NA&gt; | 0 |     0 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre>
-<p>So far, I have identified 4 things that I would like to do to clean these variables prior to analysis:</p>
-<p><strong>1</strong>. select only <code>id</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code> as the variables that I am interested in scoring.</p>
-<p><strong>2</strong>. appropriately account for skip patterns and change entries to ‘no’ for variables where a skip pattern was employed.</p>
-<p><strong>3</strong>. recode all negative numbers as ‘missing’; recode other responses to be more sensible (e.g. for <code>ccq370</code>: 0 = No, 1 = Yes, sometimes, 2 = Yes, usually, OR, if I want to dichotomize these symtpoms, perhaps 0 = No and 1 = Yes - sometimes or usually).</p>
-<p><strong>4</strong>. rename the variables with more descriptive names.</p>
+<p>When preparing to make a scoresheet - I recommend splitting your thought process into two chunks (1) cleaning raw variables and (2) creating composite scores. We’ll start with the first chunk below</p>
 </div>
 <div class="section level2">
 <h2 id="scoresheet">Scoresheet<a class="anchor" aria-label="anchor" href="#scoresheet"></a>
 </h2>
-<p>Currently, your scoresheet should include up to 11 columns which must have names that <strong>exactly</strong> match the following: <code>raw_vars</code>, <code>new_var</code>, <code>label</code>, <code>operation</code>, <code>step</code>, <code>val_labs</code>, <code>new_vals</code>, <code>if_condition</code>, <code>if_true_return</code>, <code>else_return</code>, <code>code</code>. Not all operations use all columns, so if there is an operation you do not need, you may need fewer columns in your scoresheet. Your scoresheet will still run if you leave out unnecessary columns, but it will give an error if you do not include columns that are needed.</p>
-<p><strong>Step 0</strong>: I’ll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows (out of 7 variables) below:</p>
+<p>So far, I have identified 4 things that I would like to do to clean raw variables prior to analysis:</p>
+<p><strong>1</strong>. Select only <code>id</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code> as the variables that I am interested in scoring.</p>
+<p><strong>2</strong>. Appropriately account for skip patterns and change entries to ‘no’ for variables where a skip pattern was employed.</p>
+<p><strong>3</strong>. Recode all negative numbers as ‘missing’; recode other responses to be more sensible (e.g. for <code>ccq370</code>: 0 = No, 1 = Yes, sometimes, 2 = Yes, usually for an ordinal variable AND/OR 0 = No and 1 = Yes - sometimes or usually for a dichotomized variable).</p>
+<p><strong>4</strong>. Rename variables with more descriptive names. Clean up variable labels</p>
+<p>Thinking about the order that these will need to be completed: I can do the <code>select</code> operation at any point, but it makes sense to do it first in order to reduce clutter in my data as I manipulate it. I can complete the unskipping (<code>if_else</code>) and <code>recode</code> in either order, but the VALUE that is entered for skipped variables would be different if I completed this before vs. after the recode, as a ‘No’ answer would have a different value before vs. after recoding. It seems most sensible to me to start with filling out the skipped variables, so I will do that step first before recoding. Finally, I would like to rename the variables to be more descriptive names and clean up the variable labels a bit. This renaming and cleaning up labels can be accomplished within the recode step, so I have 3 steps to complete in order to clean my raw variables.</p>
+<p>At present, scoresheets should include up to 11 columns which must have names that <strong>exactly</strong> match the following: <code>raw_vars</code>, <code>new_var</code>, <code>label</code>, <code>operation</code>, <code>step</code>, <code>val_labs</code>, <code>new_vals</code>, <code>if_condition</code>, <code>if_true_return</code>, <code>else_return</code>, <code>code</code>. Not all operations use all columns, so if there is an operation you do not need, you may not need all columns in your scoresheet. Your scoresheet will run regardless of whether your include unnecessary columns, but it will give an error if you do not include columns that are necessary.</p>
+<p><strong>Step 0</strong>: I’ll just document my raw variables of interest in Step 0, so that anyone who is interested in replicating my scoring can verify that their variables are coded as mine are. This will also give me a starting point to refer back to if I would like to remember how the original varialbes were coded before transformation. For example, see the first three rows of raw variables below:</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
@@ -354,7 +356,11 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Step 1</strong>: I’m going to enter a row in a scoresheet (I use a .csv file with my 11 columns for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1:</p>
+<div class="section level3">
+<h3 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
+</h3>
+<p>I’m going to enter a row in a scoresheet (I use a .csv file with my 11 columns for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated list</p>
+<p><em>note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It will not evaluate across mutliple columns</em></p>
 <table class="table">
 <colgroup>
 <col width="39%">
@@ -398,25 +404,1759 @@
 </table>
 <p>Ok! Now for our first test. I’m going to use this row to see if I can select my variables of interest using the scorekeeper package.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#select1 creates a scoreshet tibble with only the 8th row - which contains my 'select' operation that I would like to do in Step 1</span>
-<span class="va">select1</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">8</span>,<span class="op">]</span>
+<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-8th rows - which contains the raw variables in rows 1-7 and my 'select' operation in row 8</span>
+<span class="va">score1</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>,<span class="op">]</span>
 <span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
-<span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">select1</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 8</span></span>
-<span class="co">#&gt;       id    ccq360     ccq370     ccq371    ccq372    ccq373    ccq374    ccq375</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl+lbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1  1<span style="color: #949494;"> [Neve…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not …</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not …</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2  2<span style="color: #949494;"> [&lt; On…</span>   3<span style="color: #949494;"> [No]</span>     3<span style="color: #949494;"> [No]</span>     3<span style="color: #949494;"> [No]</span>    3<span style="color: #949494;"> [No]</span>    3<span style="color: #949494;"> [No]</span>    3<span style="color: #949494;"> [No]</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3  2<span style="color: #949494;"> [&lt; On…</span>   1<span style="color: #949494;"> [Yes,…</span>   2<span style="color: #949494;"> [Yes,…</span>   2<span style="color: #949494;"> [Yes…</span>   1<span style="color: #949494;"> [Yes…</span>   1<span style="color: #949494;"> [Yes…</span>   1<span style="color: #949494;"> [Yes…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5  2<span style="color: #949494;"> [&lt; On…</span>   3<span style="color: #949494;"> [No]</span>     2<span style="color: #949494;"> [Yes,…</span>   1<span style="color: #949494;"> [Yes…</span>   2<span style="color: #949494;"> [Yes…</span>   3<span style="color: #949494;"> [No]</span>    1<span style="color: #949494;"> [Yes…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6  1<span style="color: #949494;"> [Neve…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not …</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not …</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span> -<span style="color: #BB0000;">10</span><span style="color: #949494;"> [Not…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7  2<span style="color: #949494;"> [&lt; On…</span>   2<span style="color: #949494;"> [Yes,…</span>   2<span style="color: #949494;"> [Yes,…</span>   2<span style="color: #949494;"> [Yes…</span>   2<span style="color: #949494;"> [Yes…</span>   3<span style="color: #949494;"> [No]</span>    2<span style="color: #949494;"> [Yes…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No r…</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span>  -<span style="color: #BB0000;">1</span><span style="color: #949494;"> [No …</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9  4<span style="color: #949494;"> [Once…</span>   3<span style="color: #949494;"> [No]</span>     2<span style="color: #949494;"> [Yes,…</span>   2<span style="color: #949494;"> [Yes…</span>   3<span style="color: #949494;"> [No]</span>    3<span style="color: #949494;"> [No]</span>    2<span style="color: #949494;"> [Yes…</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10  2<span style="color: #949494;"> [&lt; On…</span>   1<span style="color: #949494;"> [Yes,…</span>   3<span style="color: #949494;"> [No]</span>     3<span style="color: #949494;"> [No]</span>    2<span style="color: #949494;"> [Yes…</span>   3<span style="color: #949494;"> [No]</span>    2<span style="color: #949494;"> [Yes…</span></span></code></pre></div>
-<p>Great! now the next</p>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table class="table kable_wrapper"><tbody><tr>
+<td>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">ccq360</th>
+<th align="right">ccq370</th>
+<th align="right">ccq371</th>
+<th align="right">ccq372</th>
+<th align="right">ccq373</th>
+<th align="right">ccq374</th>
+<th align="right">ccq375</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr></tbody></table>
+<p>Great - we now have only the 8 variables that we would like to use! Our next step will be to ‘unskip’ the currently skipped variables. To do this, I’m going to use the <code>if_else</code> code (see package documentation for additional details). For each row column ccq370-375, I will create a new variable with ’_unskip’ appended to the end of each variable. If <code>ccq360</code> == 1, I’ll change the value of the skipped variable to 3; otherwise, I’ll keep the original value. Since I will be recoding in the next step, I will not use these ’_unskip’ variables in the final dataset, so I will skip putting a label on the variable and coding the values. See below for example of this code which creates a new variable ‘ccq370_unskip’:</p>
+<p><em>note - the if_else operation is currently designed to recode one variable per row. Vectorization may be available in future releases</em></p>
+<table class="table">
+<colgroup>
+<col width="7%">
+<col width="12%">
+<col width="5%">
+<col width="8%">
+<col width="4%">
+<col width="7%">
+<col width="7%">
+<col width="11%">
+<col width="13%">
+<col width="16%">
+<col width="4%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">ccq370</td>
+<td align="left">ccq370_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq370)</td>
+<td align="left">NA</td>
+</tr></tbody>
+</table>
+<p>Now we’ll expand our scoring to Steps 1-2</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14</span>
+<span class="va">score2</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">14</span>,<span class="op">]</span>
+<span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table class="table kable_wrapper"><tbody><tr>
+<td>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">ccq360</th>
+<th align="right">ccq370</th>
+<th align="right">ccq371</th>
+<th align="right">ccq372</th>
+<th align="right">ccq373</th>
+<th align="right">ccq374</th>
+<th align="right">ccq375</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="2%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">ccq360</th>
+<th align="right">ccq370</th>
+<th align="right">ccq371</th>
+<th align="right">ccq372</th>
+<th align="right">ccq373</th>
+<th align="right">ccq374</th>
+<th align="right">ccq375</th>
+<th align="right">ccq370_unskip</th>
+<th align="right">ccq371_unskip</th>
+<th align="right">ccq372_unskip</th>
+<th align="right">ccq373_unskip</th>
+<th align="right">ccq374_unskip</th>
+<th align="right">ccq375_unskip</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr></tbody></table>
+<p>Here you’ll see that we now have <strong>2</strong> tibbles in our output, one for each step. The first step selects the variables, and the second step corrects the skip logic.</p>
+<p><em>Note - the scorekeeper package is designed to be very conservative in variable conservation. What this means is that original variables are never discarded, and output tibbles will generally lengthen as you create new variables. There are two operations where this is not the case. First, the <code>select</code> function will reduce columns in a tibble by selecting only those that are identified. Second, the <code>rename</code> function renames a column in a tibble directly. All other operations will generally require a ‘new_var’ name that is NOT yet a named variable and will append the newly created variable to the end of a tibble. You can always select your final variables and rename them back to an original name as a final step in the scorekeeping process if you prefer the original name of a variable but need to make modifications to the data.</em></p>
+<p>Now we’re ready for <strong>Step 3</strong>, recoding and renaming. Below is an example of what a scoresheet row will look like for this operation</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="6%">
+<col width="7%">
+<col width="25%">
+<col width="4%">
+<col width="2%">
+<col width="18%">
+<col width="13%">
+<col width="6%">
+<col width="7%">
+<col width="5%">
+<col width="2%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">ccq370_unskip</td>
+<td align="left">binge_loc_d.14</td>
+<td align="left">Eating binges felt out of control - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr></tbody>
+</table>
+<p>You can see above that I am using the newly minted <code>ccq370_unskip</code> variable when recoding. I rename the variable something more sensible <code>binge_loc_d.14</code> - which notes that it’s a binge eating variable assessing loss of control , which is dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as ‘label’ = ‘value’, and the new values recode the old values under the pattern ‘old’ = ‘new’, with commas separating each element in the recoding scheme. Recoded variables will also include a companion variable ‘new_var.factor’, which includes the value label easily visible, so that you can double check that your coding scheme is correct.</p>
+<p><em>Note - do not use commas within the value labels (e.g. ‘yes, sometimes or usually’ includes a comma and would not parse as an accurate value. Other punctuation may be used within value labels)</em></p>
+<p>Beginning with this step, I’m only going to show the last tibble of output for readability – as shown above, the scorekeep function scores iteratively and SAVES EACH STEP as a tibble in your output so that you can ensure that the correct transformations were made on each step and troubleshoot if necessary.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14</span>
+<span class="va">score3</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">21</span>,<span class="op">]</span>
+<span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
+<span class="va">step3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score3</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">step3</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="5%">
+<col width="3%">
+<col width="6%">
+<col width="3%">
+<col width="6%">
+<col width="4%">
+<col width="6%">
+<col width="3%">
+<col width="6%">
+<col width="3%">
+<col width="6%">
+<col width="3%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">ccq360</th>
+<th align="right">ccq370</th>
+<th align="right">ccq371</th>
+<th align="right">ccq372</th>
+<th align="right">ccq373</th>
+<th align="right">ccq374</th>
+<th align="right">ccq375</th>
+<th align="right">ccq370_unskip</th>
+<th align="right">ccq371_unskip</th>
+<th align="right">ccq372_unskip</th>
+<th align="right">ccq373_unskip</th>
+<th align="right">ccq374_unskip</th>
+<th align="right">ccq375_unskip</th>
+<th align="right">binge_freq_d.14</th>
+<th align="left">binge_freq_d.14.factor</th>
+<th align="right">binge_loc_d.14</th>
+<th align="left">binge_loc_d.14.factor</th>
+<th align="right">binge_fast_d.14</th>
+<th align="left">binge_fast_d.14.factor</th>
+<th align="right">binge_stomach_d.14</th>
+<th align="left">binge_stomach_d.14.factor</th>
+<th align="right">binge_large_d.14</th>
+<th align="left">binge_large_d.14.factor</th>
+<th align="right">binge_hide_d.14</th>
+<th align="left">binge_hide_d.14.factor</th>
+<th align="right">binge_guilt_d.14</th>
+<th align="left">binge_guilt_d.14.factor</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">-10</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">1x/mo or more; present</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">&lt;1x/mo; absent</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+</tr>
+</tbody>
+</table>
+<p>This concludes the first chunk of data cleaning - recoding the raw variables – in this example. Our variables binge_freq_d.14 through the end of the tibble now represent appropriately coded (dichotomized) variables for our analysis. Next, we’ll create composite scores and then clean up our data. The composite scores that I have decided to create are a sum of symptoms that are present: <code>binge_sx_sum.14</code>, a variable that dichotomizes binge eating issues as present if individuals report binge at least once per month with at least two of the six additional symptoms, and a variable that splits the sum score into categories of absent, mild, and severe. We’ll need to first create the sum score before we can complete the next two operations.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
+</h2>
+<p>Create a sum score. Below is the scoresheet row to create our symptom sum score, which gives a count of the number of binge eating symptoms (0-6) that are present for each individual</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="44%">
+<col width="6%">
+<col width="15%">
+<col width="4%">
+<col width="2%">
+<col width="3%">
+<col width="3%">
+<col width="5%">
+<col width="6%">
+<col width="5%">
+<col width="2%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14</td>
+<td align="left">binge_sx_sum.14</td>
+<td align="left">Sum of binge eating symtpoms Age 14</td>
+<td align="left">sum</td>
+<td align="right">4</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr></tbody>
+</table>
+<p>The sum operation computes five variables, the raw sum of the list of variables provided in <code>raw_vars</code> (NAs excluded), the raw sum of those with complete data only, the number of missing values, the percent of values that are missing, and a weighted sum (weighted by the number of non-missing values). Below are the last 8 columns of the tibble created in Step 4:</p>
+<table class="table">
+<colgroup>
+<col width="14%">
+<col width="9%">
+<col width="14%">
+<col width="8%">
+<col width="13%">
+<col width="10%">
+<col width="14%">
+<col width="15%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">binge_hide_d.14.factor</th>
+<th align="right">binge_guilt_d.14</th>
+<th align="left">binge_guilt_d.14.factor</th>
+<th align="right">binge_sx_sum.14</th>
+<th align="right">binge_sx_sum.14_complete</th>
+<th align="right">binge_sx_sum.14_NAs</th>
+<th align="right">binge_sx_sum.14_NA_percent</th>
+<th align="right">binge_sx_sum.14_weighted_sum</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">yes - sometimes or usually</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">100</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="left">no</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">100</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">no</td>
+<td align="right">1</td>
+<td align="left">yes - sometimes or usually</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="step-5">Step 5<a class="anchor" aria-label="anchor" href="#step-5"></a>
+</h2>
+<p>In step 5, we create two additional variables based on the sum score created in step 4.</p>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="6%">
+<col width="15%">
+<col width="3%">
+<col width="1%">
+<col width="10%">
+<col width="2%">
+<col width="13%">
+<col width="4%">
+<col width="3%">
+<col width="29%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">binge_sx_sum.14, binge_freq_d.14</td>
+<td align="left">binge_present.14</td>
+<td align="left">binge eating present and more than 2 symptoms</td>
+<td align="left">if_else</td>
+<td align="right">5</td>
+<td align="left">present = 1, absent = 0</td>
+<td align="left">NA</td>
+<td align="left">binge_freq_d.14 == 1 &amp; binge_sx_sum.14 &gt; 2</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">binge_sx_sum.14</td>
+<td align="left">binge_sx_sum_split.14</td>
+<td align="left">Binge symptoms sum split into absent, mild, severe</td>
+<td align="left">case_when</td>
+<td align="right">5</td>
+<td align="left">absent = 0, mild = 1, severe = 2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">binge_sx_sum.14 == 0 ~ 0, binge_sx_sum.14 &gt; 0 &amp; binge_sx_sum.14 &lt;=3 ~ 1, binge_sx_sum.14 &gt; 3 ~ 2</td>
+</tr>
+</tbody>
+</table>
+<p>The last five variables created are seen below:</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="23%">
+<col width="25%">
+<col width="14%">
+<col width="19%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">binge_sx_sum.14_NAs</th>
+<th align="right">binge_sx_sum.14_NA_percent</th>
+<th align="right">binge_sx_sum.14_weighted_sum</th>
+<th align="right">binge_present.14</th>
+<th align="right">binge_sx_sum_split.14</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">100</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">100</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>In step 6, we select only a few columns that will go into the final dataset, and in step 7, we rename <code>binge_sx_sum_split.14</code> to a simpler name: <code>binge_severity.14</code></p>
+<table class="table">
+<colgroup>
+<col width="43%">
+<col width="10%">
+<col width="3%">
+<col width="5%">
+<col width="2%">
+<col width="5%">
+<col width="5%">
+<col width="7%">
+<col width="8%">
+<col width="6%">
+<col width="2%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">id, binge_sx_sum.14, binge_freq_d.14, binge_present.14, binge_sx_sum_split.14</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">select</td>
+<td align="right">6</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">binge_sx_sum_split.14</td>
+<td align="left">binge_severity.14</td>
+<td align="left">NA</td>
+<td align="left">rename</td>
+<td align="right">7</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Putting it all together: we now have a full scoresheet -</p>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="3%">
+<col width="15%">
+<col width="1%">
+<col width="0%">
+<col width="29%">
+<col width="6%">
+<col width="6%">
+<col width="2%">
+<col width="2%">
+<col width="15%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">raw_vars</th>
+<th align="left">new_var</th>
+<th align="left">label</th>
+<th align="left">operation</th>
+<th align="right">step</th>
+<th align="left">val_labs</th>
+<th align="left">new_vals</th>
+<th align="left">if_condition</th>
+<th align="left">if_true_return</th>
+<th align="left">else_return</th>
+<th align="left">code</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ccq360</td>
+<td align="left">NA</td>
+<td align="left">B12/B11: Frequency respondent went on an eating binge during the past year</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Never = 1, &lt; once a month = 2, 1-3 times a month = 3, once a week = 4, &gt; once a week = 5</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq370</td>
+<td align="left">NA</td>
+<td align="left">B13a/B12a: Respondent felt out of control when on a binge (ccq370)</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq371</td>
+<td align="left">NA</td>
+<td align="left">B13b/B12b: Respondent ate very fast or faster than normal when on a binge</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq372</td>
+<td align="left">NA</td>
+<td align="left">B13c/B12c: Respondent ate until their stomach hurt or they felt sick when on a binge</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq373</td>
+<td align="left">NA</td>
+<td align="left">B13d/B12d: Respondent ate really large amounts of food when not hungry when on a binge (ccq373)</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq374</td>
+<td align="left">NA</td>
+<td align="left">B13e/B12e: Respondent ate by themselves to hide amount eaten when on a binge (ccq374)</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq375</td>
+<td align="left">NA</td>
+<td align="left">B13f/B12f: Respondent felt really bad / guilty after eating a lot of food when on a binge (ccq375)</td>
+<td align="left">raw</td>
+<td align="right">0</td>
+<td align="left">consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">id, ccq360, ccq370, ccq371, ccq372, ccq373, ccq374, ccq375</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">select</td>
+<td align="right">1</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq370</td>
+<td align="left">ccq370_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq370)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq371</td>
+<td align="left">ccq371_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq371)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq372</td>
+<td align="left">ccq372_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq372)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq373</td>
+<td align="left">ccq373_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq373)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq374</td>
+<td align="left">ccq374_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq374)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq375</td>
+<td align="left">ccq375_unskip</td>
+<td align="left">NA</td>
+<td align="left">if_else</td>
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">ccq360 == 1</td>
+<td align="left">3</td>
+<td align="left">as.numeric(ccq375)</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq360</td>
+<td align="left">binge_freq_d.14</td>
+<td align="left">Eating binges (eating a large amount of food) present or absent in the past year’</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">&lt;1x/mo; absent = 0, 1x/mo or more; present = 1</td>
+<td align="left">1 = 0, 2= 0, 3 = 1, 4 = 1, 5 = 1, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq370_unskip</td>
+<td align="left">binge_loc_d.14</td>
+<td align="left">Eating binges felt out of control - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq371_unskip</td>
+<td align="left">binge_fast_d.14</td>
+<td align="left">Eating Very fast or faster than normal when on a binge - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq372_unskip</td>
+<td align="left">binge_stomach_d.14</td>
+<td align="left">Eating until Stomach hurt or felt sick - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq373_unskip</td>
+<td align="left">binge_large_d.14</td>
+<td align="left">Eating large amounts of food when not hungry - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ccq374_unskip</td>
+<td align="left">binge_hide_d.14</td>
+<td align="left">Hiding amount eaten when on a binge - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ccq375_unskip</td>
+<td align="left">binge_guilt_d.14</td>
+<td align="left">Feeling bad or guilty after a binge - present or absent</td>
+<td align="left">recode</td>
+<td align="right">3</td>
+<td align="left">no = 0, yes - sometimes or usually = 1</td>
+<td align="left">1 = 1, 2 = 1, 3 = 0, -1 = NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14</td>
+<td align="left">binge_sx_sum.14</td>
+<td align="left">Sum of binge eating symtpoms Age 14</td>
+<td align="left">sum</td>
+<td align="right">4</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">binge_sx_sum.14, binge_freq_d.14</td>
+<td align="left">binge_present.14</td>
+<td align="left">binge eating present and more than 2 symptoms</td>
+<td align="left">if_else</td>
+<td align="right">5</td>
+<td align="left">present = 1, absent = 0</td>
+<td align="left">NA</td>
+<td align="left">binge_freq_d.14 == 1 &amp; binge_sx_sum.14 &gt; 2</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">binge_sx_sum.14</td>
+<td align="left">binge_sx_sum_split.14</td>
+<td align="left">Binge symptoms sum split into absent, mild, severe</td>
+<td align="left">case_when</td>
+<td align="right">5</td>
+<td align="left">absent = 0, mild = 1, severe = 2</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">binge_sx_sum.14 == 0 ~ 0, binge_sx_sum.14 &gt; 0 &amp; binge_sx_sum.14 &lt;=3 ~ 1, binge_sx_sum.14 &gt; 3 ~ 2</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">filter_at</td>
+<td align="right">5</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">c(2:7), any_vars(!is.na(.))</td>
+</tr>
+<tr class="even">
+<td align="left">id, binge_sx_sum.14, binge_freq_d.14, binge_present.14, binge_sx_sum_split.14</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">select</td>
+<td align="right">6</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">binge_sx_sum_split.14</td>
+<td align="left">binge_severity.14</td>
+<td align="left">NA</td>
+<td align="left">rename</td>
+<td align="right">7</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<p>And we can use that scoresheet to fully score our binge eating measure with just one line of code:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Cleand_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">binge_scoresheet</span><span class="op">)</span></code></pre></div>
+<p>The last tibble in this set of 7 tibbles will be the fully cleaned data</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Cleand_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">binge_sx_sum.14</th>
+<th align="right">binge_freq_d.14</th>
+<th align="right">binge_present.14</th>
+<th align="right">binge_severity.14</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
