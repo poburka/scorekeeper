@@ -225,9 +225,4 @@ frq(binge_clean$binge_severity.14)
 
 While developing this initial scoresheet was somewhat labor intensive, the scoresheet creates a **documented, reproducible scoring and data cleaning system** that can be easily shared. For instance, if another individual has data on the same measure, they can use my scoresheet (which I can save to a .csv file and post/send) to clean and score their data in the exact same way that I did, using **one line of code**.  If raw variables are named slightly differently across projects, I would only need to adjust the raw variable names in a few places in the scoresheet for it to work on new data. While the scorekeeper package can be used for any multi-item scoring tasks, it shines for algorithmic tasks (i.e. deriving psychological diagnoses), which often involve multiple `if_else` or `case_when` statements. 
 
-**Happy scoring!** `
-
-```{r, echo = FALSE}
-emo::ji('100')
-```
-
+**Happy scoring!** 
