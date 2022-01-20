@@ -76,11 +76,11 @@
 
     
     
-<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">(ALSPAC)</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>very basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the <a href="https://dplyr.tidyverse.org" class="external-link">dplyr documentation</a> as well as the <a href="https://embark-lab.github.io/scorekeeper/reference/index.html">scorekeeper documentation</a> for a specific operation if you are stuck on a particular piece of code.</p>
+<p>The following example depicts how to use the scoresheet package for manipulating data and saving some scored data. This example will use 7 items used to assess binge eating behavior at age 14 in the Avon Longitudinal Study of Parents and Children <a href="http://www.bristol.ac.uk/alspac/" class="external-link">(ALSPAC)</a>. You can use load this synthetic data and scoresheet in the package to test the example and familiarize yourself with the package. Building a scoresheet should be an approachable and reproducible process, even for R beginners. While all of this can be accomplished (in some cases more efficiently) with some savvy dplyr coding, the scoresheet format should harmonize the process, increase approachabiity by reducing the need for heavy coding, allow for straightforward and reproducible implementation of scoring practices across studies, and offer a useful way to document and disseminate assessment scoring for publication. This package assumes some <em>basic</em> r knowledge (i.e. how to start up r, load packages and data, assign variables, and use basic computations). Some functions require a minimum of thoughtful coding, and I try to make that process a bit less painful via this vignette. I recommend reading the <a href="https://dplyr.tidyverse.org" class="external-link">dplyr documentation</a> as well as the <a href="https://embark-lab.github.io/scorekeeper/reference/index.html">scorekeeper documentation</a> for a specific operation if you are stuck on a particular piece of code.</p>
 <p>Ok! Let’s get started. First, we load the scorekeeper package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/embark-lab/scorekeeper" class="external-link">scorekeeper</a></span><span class="op">)</span></code></pre></div>
-<p>Next, let’s familiarize ourselves with the raw data. This example data file includes an <code>id</code> variable, 6 binge eating variables (<code>ccq360</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code>). I have also included 4 ‘noisy’ variables which are related to other assessments of eating behavior, <code>ccq380</code>, <code>ccq381</code>, <code>ccq382</code> and <code>ccq383</code>.</p>
+<p>Next, let’s familiarize ourselves with the raw data. This example data file includes an <code>id</code> variable, 7 binge eating variables (<code>ccq360</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code>). I have also included 4 ‘noisy’ variables which are related to other assessments of eating behavior, <code>ccq380</code>, <code>ccq381</code>, <code>ccq382</code> and <code>ccq383</code>.</p>
 <div class="section level2">
 <h2 id="raw-data">Raw Data<a class="anchor" aria-label="anchor" href="#raw-data"></a>
 </h2>
@@ -243,9 +243,7 @@
 </tbody>
 </table>
 <p>As you can see from the examples below, these variables are coded in ways that are slightly odd. For instance, <code>ccq360</code> is not a descriptive name, and a response of ‘never’ corresponds to the value of 1. There are also two missing data values currently coded as ‘no response’ that I’d like to recode as <code>NA</code> for analysis.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">frq</span><span class="op">(</span><span class="va">binge_raw</span><span class="op">$</span><span class="va">ccq360</span><span class="op">)</span>
-<span class="co">#&gt; B12/B11: Frequency respondent went on an eating binge during the past year (x) &lt;numeric&gt; </span>
+<pre><code><span class="co">#&gt; B12/B11: Frequency respondent went on an eating binge during the past year (x) &lt;numeric&gt; </span>
 <span class="co">#&gt; # total N=10 valid N=10 mean=1.40 sd=1.51</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Value |                   Label | N | Raw % | Valid % | Cum. %</span>
@@ -259,7 +257,7 @@
 <span class="co">#&gt;     3 |       1-3 times a month | 0 |     0 |       0 |     90</span>
 <span class="co">#&gt;     4 |             Once a week | 1 |    10 |      10 |    100</span>
 <span class="co">#&gt;     5 |            &lt;Once a week | 0 |     0 |       0 |    100</span>
-<span class="co">#&gt;  &lt;NA&gt; |                    &lt;NA&gt; | 0 |     0 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre></div>
+<span class="co">#&gt;  &lt;NA&gt; |                    &lt;NA&gt; | 0 |     0 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre>
 <p>Similarly, you can see that <code>ccq370</code> has a ‘no’ answer coded as a 3, with ‘yes, usually’ coded as 1 and ‘yes, sometimes’ coded as a 2. I also see a different missing code pop up here, which is ‘not completed’. If I look at the data patterns and the documentation, I notice that variables ccq370-ccq375 were actually <em>skipped</em> if someone answered that they had never binge eaten in question ccq360. I will also need to recode those variables as ‘No’ instead of ‘not completed’ for those variables in order to account for/fill in what the skip logic in the questionnaire missed</p>
 <pre><code><span class="co">#&gt; B13a/B12a: Respondent felt out of control when on a binge (x) &lt;numeric&gt; </span>
 <span class="co">#&gt; # total N=10 valid N=10 mean=-0.90 sd=5.02</span>
@@ -278,14 +276,15 @@
 <div class="section level2">
 <h2 id="scoresheet">Scoresheet<a class="anchor" aria-label="anchor" href="#scoresheet"></a>
 </h2>
-<p>When preparing to make a scoresheet - I recommend splitting your thought process into three chunks (1) cleaning raw variables, (2) creating composite scores, and (3) selecting your final, cleaned variables to save. We’ll start with the first chunk below:</p>
-<p>So far, I have identified 4 things that I would like to do to clean raw variables prior to analysis:</p>
-<p><strong>1</strong>. Select only <code>id</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code> as the variables that I am interested in scoring.</p>
+<p>When preparing to make a scoresheet - I split my thought process into three chunks (1) cleaning raw variables, (2) creating composite scores, and (3) selecting your final, cleaned variables to save. We’ll start with the first chunk below:</p>
+<p>I have identified 4 things that I would like to do to clean raw variables prior to analysis:</p>
+<p><strong>1</strong>. Select only <code>id</code>, <code>ccq360</code>, <code>ccq370</code>, <code>ccq371</code>, <code>ccq372</code>, <code>ccq373</code>, <code>ccq374</code>, and <code>ccq375</code> as the variables that I am interested in scoring.</p>
 <p><strong>2</strong>. Appropriately account for skip patterns and change entries to ‘no’ for variables where a skip pattern was employed.</p>
 <p><strong>3</strong>. Recode all negative numbers as ‘missing’; recode other responses to be more sensible (e.g. for <code>ccq370</code>: 0 = No, 1 = Yes, sometimes, 2 = Yes, usually for an ordinal variable AND/OR 0 = No and 1 = Yes - sometimes or usually for a dichotomized variable).</p>
 <p><strong>4</strong>. Rename variables with more descriptive names. Clean up variable labels</p>
 <p>Thinking about the order that these will need to be completed: I can do the <code>select</code> operation at any point, but it makes sense to do it first in order to reduce clutter in my data as I manipulate it. I can complete the unskipping (<code>if_else</code>) and <code>recode</code> in either order, but the VALUE that is entered for skipped variables would be different if I completed this before vs. after the recode, as a ‘No’ answer would have a different value before vs. after recoding. It seems most sensible to me to start with filling out the skipped variables, so I will do that step first before recoding. Finally, I would like to rename the variables to be more descriptive names and clean up the variable labels a bit. This renaming and cleaning up labels can be accomplished within the recode step, so I have 3 steps to complete in order to clean my raw variables.</p>
 <p>At present, scoresheets should include up to 11 columns which must have names that <strong>exactly</strong> match the following: <code>raw_vars</code>, <code>new_var</code>, <code>label</code>, <code>operation</code>, <code>step</code>, <code>val_labs</code>, <code>new_vals</code>, <code>if_condition</code>, <code>if_true_return</code>, <code>else_return</code>, <code>code</code>. Not all operations use all columns, so if there is an operation you do not need, you may not need all columns in your scoresheet. Your scoresheet will run regardless of whether your include unnecessary columns, but it will give an error if you do not include columns that are necessary.</p>
+<p>Steps 0-3 (below) represent this first chunk of data cleaning - preparing the raw variables:</p>
 </div>
 <div class="section level2">
 <h2 id="step-0">Step 0<a class="anchor" aria-label="anchor" href="#step-0"></a>
@@ -363,7 +362,7 @@
 <div class="section level3">
 <h3 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
 </h3>
-<p>I’m going to enter a row in a scoresheet (I use a .csv file with my 11 columns for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated list</p>
+<p>I’m going to enter a row in a scoresheet (I use a .csv file with for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated list</p>
 <p><em>note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It will not evaluate across mutliple columns</em></p>
 <table class="table">
 <colgroup>
@@ -946,12 +945,6 @@
 <p>I am using the newly minted <code>ccq370_unskip</code> variable when recoding. I rename the variable something more sensible <code>binge_loc_d.14</code> - which notes that it’s a binge eating variable assessing loss of control, dichotomized, assessed at age 14. I edited the label just a bit as well. The new value labels are coded as ‘label’ = ‘value’, and the new values recode the old values under the pattern ‘old’ = ‘new’, with commas separating each element in the recoding scheme. Recoded variables will also include a companion variable ‘new_var.factor’, which includes the value label easily visible, so that you can double check that your recoding scheme is correct.</p>
 <p><em>Note - do not use commas within the value labels (e.g. ‘yes, sometimes or usually’ includes a comma and would not parse as an accurate value. Other punctuation may be used within value labels)</em></p>
 <p>Beginning with this step, I’m only going to show the parts of output for readability – as noted above, the scorekeep function scores iteratively and <strong>saves each step</strong> as a tibble in your output so that you can ensure that the correct transformations were made on each step and troubleshoot if necessary.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#select1 creates a scoresheet tibble with only the 1st-14th rows - which contains the raw variables in rows 1-7, the 'select' operation in row 8, and the 'if_else' operations to unskip variables in rows 9-14</span>
-<span class="va">score3</span> <span class="op">&lt;-</span> <span class="va">binge_scoresheet</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">21</span>,<span class="op">]</span>
-<span class="co">#complete the 'scorekeep' function using my raw data and select 1</span>
-<span class="va">step3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">score3</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">step3</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="0%">
@@ -1316,7 +1309,7 @@
 </tr>
 </tbody>
 </table>
-<p>This concludes the first chunk of data cleaning - recoding the raw variables – in this example. Our variables binge_freq_d.14 through the end of the tibble now represent appropriately coded (dichotomized) variables for our analysis. Next, we’ll create composite scores and then clean up our data. The composite scores that I have decided to create are a sum of symptoms that are present: <code>binge_sx_sum.14</code>, a variable that dichotomizes binge eating issues as present if individuals report binge at least once per month with at least two of the six additional symptoms, and a variable that splits the sum score into categories of absent, mild, and severe. We’ll need to first create the sum score before we can complete the next two operations.</p>
+<p>This concludes the first chunk of data cleaning - recoding the raw variables – in this example. Our variables binge_freq_d.14 through the end of the tibble now represent appropriately coded (dichotomized) variables for our analysis. For the second chunk of data cleaning, we’ll create composite scores. The composite scores that I have decided to create are a sum of symptoms that are present: <code>binge_sx_sum.14</code>, a variable that dichotomizes binge eating issues as present if individuals report binge at least once per month with at least two of the six additional symptoms, and a variable that splits the sum score into categories of absent, mild, and severe. We’ll need to first create the sum score before we can complete the next two operations.</p>
 </div>
 <div class="section level2">
 <h2 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
@@ -1579,7 +1572,7 @@
 <div class="section level2">
 <h2 id="steps-6-7">Steps 6-7<a class="anchor" aria-label="anchor" href="#steps-6-7"></a>
 </h2>
-<p>In step 6, we select only a few columns that will go into the final dataset, and in step 7, we rename <code>binge_sx_sum_split.14</code> to a simpler name: <code>binge_severity.14</code></p>
+<p>Now we’ve created the final composite scores. In our final chunk, we’ll clean up the dataset. In step 6, we select only a few columns that will go into the final dataset, and in step 7, we rename <code>binge_sx_sum_split.14</code> to a simpler name: <code>binge_severity.14</code></p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="64%">
@@ -2023,11 +2016,9 @@
 </tbody>
 </table>
 <p>And we can use that scoresheet to fully score our binge eating measure with just <strong>one line of code</strong>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cleaned_data</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/scorekeep.html">scorekeep</a></span><span class="op">(</span><span class="va">binge_raw</span>, <span class="va">binge_scoresheet</span><span class="op">)</span></code></pre></div>
 <p>The last tibble in this set of 7 tibbles will be the fully cleaned data</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cleaned_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="1%">
@@ -2162,11 +2153,8 @@
 </tr>
 </tbody>
 </table>
-<p>And we can start to analyze our cleaned variables:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">binge_clean</span> <span class="op">&lt;-</span> <span class="va">cleaned_data</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span>
-<span class="fu">frq</span><span class="op">(</span><span class="va">binge_clean</span><span class="op">$</span><span class="va">binge_severity.14</span><span class="op">)</span>
-<span class="co">#&gt; Binge symptoms sum split into absent, mild, severe (x) &lt;numeric&gt; </span>
+<p>And we can start to analyze our cleaned variables, which I can then save, export, and connect with other data files :)</p>
+<pre><code><span class="co">#&gt; Binge symptoms sum split into absent, mild, severe (x) &lt;numeric&gt; </span>
 <span class="co">#&gt; # total N=8 valid N=8 mean=1.00 sd=0.93</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Value |  Label | N | Raw % | Valid % | Cum. %</span>
@@ -2174,8 +2162,8 @@
 <span class="co">#&gt;     0 | absent | 3 | 37.50 |   37.50 |  37.50</span>
 <span class="co">#&gt;     1 |   mild | 2 | 25.00 |   25.00 |  62.50</span>
 <span class="co">#&gt;     2 | severe | 3 | 37.50 |   37.50 | 100.00</span>
-<span class="co">#&gt;  &lt;NA&gt; |   &lt;NA&gt; | 0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre></div>
-<p>While developing this initial scoresheet was somewhat labor intensive, the scoresheet creates a <strong>documented, reproducible scoring and data cleaning system</strong> that can be easily shared. For instance, if another individual has data on the same measure, they can use my scoresheet (which I can save to a .csv file and post/send) to clean and score their data in the exact same way that I did, using <strong>one line of code</strong>. If raw variables are named slightly differently across projects, I would only need to adjust the raw variable names in a few places in the scoresheet for it to work on new data. While the scorekeeper package can be used for any multi-item scoring tasks, it particularly shines for algorithmic tasks (i.e. deriving psychological diagnoses), which often involve multiple <code>if_else</code> or <code>case_when</code> statements.</p>
+<span class="co">#&gt;  &lt;NA&gt; |   &lt;NA&gt; | 0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</span></code></pre>
+<p>While developing this initial scoresheet was somewhat labor intensive, the scoresheet creates a <strong>documented, reproducible scoring and data cleaning system</strong> that can be easily shared. For instance, if another individual has data on the same measure, they can use my scoresheet (which I can save to a .csv file and post/send) to clean and score their data in the exact same way that I did, using <strong>one line of code</strong>. If raw variables are named slightly differently across projects, I would only need to adjust the raw variable names in a few places in the scoresheet for it to work on new data. While the scorekeeper package can be used for any multi-item scoring tasks, it shines for algorithmic tasks (i.e. deriving psychological diagnoses), which often involve multiple <code>if_else</code> or <code>case_when</code> statements.</p>
 <p><strong>Happy scoring!</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
