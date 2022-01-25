@@ -90,6 +90,13 @@ weighted and unweighted sums, along with the number of and proportion of
 **case_when** : creates a new variable using case_when code defined in
 `scoresheet$code`
 
+**rename**: renames a single variable entered in `scoresheet$raw_vars`
+to `scoresheet$new_var`
+
+**mean**: creates a mean of variables identified in
+`scoresheet$raw_vars`. Provides means with and without removal of NAs,
+includes number of an proportion of `NA` values in the mean.
+
 ## Installation
 
 Install scorekeeper from its GitHub repository. If you do not have the
