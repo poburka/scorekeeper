@@ -50,6 +50,7 @@ tibble_func_2 <- function (meta) {
   return(tibbles) }
 
 #' Scorekeep Function
+#'
 #' Scores raw data in a step-by-step fashion using scoresheet provided
 #'
 #' @param raw Raw data object
