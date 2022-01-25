@@ -13,10 +13,10 @@ mean_vars(raw, scoresheet)
 }
 \value{
 raw tibble with four additional columns appended:
-a column which is the raw sum of items,
-a _NAs column with the count of NAs among items summed,
-the _NA_percent column with the percentage of NAs among the meaned variables,
-and the _weighted_mean column with the mean that is weighted by the number of non-NA items included
+\code{{n_var}} : a column which is the mean of items, with NAs removed
+\verb{\{n_var\}_complete} : a column with the mean of items -- rows that contain any NA values return NA
+\verb{\{n_var\}_NAs} : a column with the count of NAs among items contributing to the mean
+\verb{\{n_var\}_NA_percent} : a column with the percentage of NAs among the variables contributing to the mean
 }
 \description{
 Mean variables using scoresheet

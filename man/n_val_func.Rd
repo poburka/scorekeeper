@@ -2,7 +2,7 @@
 % Please edit documentation in R/n_val_func.R
 \name{n_val_func}
 \alias{n_val_func}
-\title{Title}
+\title{n_val_func}
 \usage{
 n_val_func(scoresheet, i)
 }
@@ -15,5 +15,5 @@ n_val_func(scoresheet, i)
 new values
 }
 \description{
-Title
+n_val_func
 }

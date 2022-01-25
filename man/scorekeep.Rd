@@ -2,17 +2,18 @@
 % Please edit documentation in R/scorekeep.R
 \name{scorekeep}
 \alias{scorekeep}
-\title{Scores raw data in a step-by-step fashion using scoresheet provided}
+\title{Scorekeep Function}
 \usage{
 scorekeep(raw, scoresheet)
 }
 \arguments{
 \item{raw}{Raw data object}
 
-\item{scoresheet}{Formatted scoresheet object}
+\item{scoresheet}{Formatted scoresheet object with appropriate columns}
 }
 \value{
-a series of tibbles representing data manipulations at each step as specified in scoresheet file
+a series of tibbles representing data manipulations at each step as specified in scoresheet file. The last tibble in
+the returned file will include fully cleaned data
 }
 \description{
 Scores raw data in a step-by-step fashion using scoresheet provided

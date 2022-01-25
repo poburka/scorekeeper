@@ -3,15 +3,16 @@
 \name{score}
 \alias{score}
 \title{score function
-The score function completes all scoring for a single step of a scoresheet. operations are conducted in the following order:
-\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}}
+The score function completes all scoring for a single step of a scoresheet. Operations are conducted in the following order:
+\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}, \code{rename}, \code{mean}}
 \usage{
 score(raw, scoresheet)
 }
 \arguments{
-\item{raw}{Raw data object}
+\item{raw}{A raw data object}
 
-\item{scoresheet}{Formatted scoresheet object with one step selected (all operations can be preformed simultaneously.
+\item{scoresheet}{A formatted scoresheet object with one step selected, operations that can all be preformed
+in a single step, simultaneously
 For sequential operations, see scorekeep function)}
 }
 \value{
@@ -19,6 +20,6 @@ a tibble
 }
 \description{
 score function
-The score function completes all scoring for a single step of a scoresheet. operations are conducted in the following order:
-\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}
+The score function completes all scoring for a single step of a scoresheet. Operations are conducted in the following order:
+\code{select}, \code{if_else}, \code{recode}, \code{sum}, \code{case_when}, \code{filter_at}, \code{rename}, \code{mean}
 }

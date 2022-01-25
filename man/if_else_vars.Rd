@@ -2,7 +2,8 @@
 % Please edit documentation in R/if_else_vars.R
 \name{if_else_vars}
 \alias{if_else_vars}
-\title{If_else_vars}
+\title{if_else_vars function
+creates a new variable based on if_else statements provided}
 \usage{
 if_else_vars(raw, scoresheet)
 }
@@ -17,5 +18,6 @@ respectively, in a 'dplyr' if_else statement. see: \href{https://dplyr.tidyverse
 a tibble with 'new_var' appended.
 }
 \description{
-If_else_vars
+if_else_vars function
+creates a new variable based on if_else statements provided
 }

@@ -12,7 +12,12 @@ sum_vars(raw, scoresheet)
 \item{scoresheet}{A formatted scoresheet object}
 }
 \value{
-raw tibble with four additional columns appended: a column which is the raw sum of items, a _NAs column with the count of NAs among items summed, the _NA_percent column with the percentage of NAs among the summed variables, and the _weighted_sum column with the sum that is weighted by the number of non-NA items included
+raw tibble with four additional columns appended:
+\code{{n_var}} : a column which is the sum of items - NAs are treated as '0' values
+\verb{\{n_var\}_complete} : a column with the sum of items -- rows that contain any NA values return NA
+\verb{\{n_var\}_NAs} : a column with the count of NAs among items contributing to the sum
+\verb{\{n_var\}_NA_percent} : a column with the percentage of NAs among the variables contributing to the sum
+\verb{\{n_var\}_weighted_sum} : a column with a sum weighted by the number of items contributing to the sum
 }
 \description{
 Sum variables using scoresheet

@@ -2,7 +2,8 @@
 % Please edit documentation in R/case_when_vars.R
 \name{case_when_vars}
 \alias{case_when_vars}
-\title{case_when function}
+\title{case_when function
+\code{case_when_vars} completes case_when evaluation and returns a new variable}
 \usage{
 case_when_vars(raw, scoresheet)
 }
@@ -13,8 +14,9 @@ case_when_vars(raw, scoresheet)
 dplyr case_when input. See \href{https://dplyr.tidyverse.org/reference/case_when.html}{case_when}}
 }
 \value{
-a tibble with new variables appended that follow tidyverse evaluation of case_when scoresheet statements
+appends \code{new_var} column after evaluation of case_when statements in \code{code} column of scoresheet
 }
 \description{
 case_when function
+\code{case_when_vars} completes case_when evaluation and returns a new variable
 }

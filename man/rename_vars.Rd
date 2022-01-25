@@ -2,7 +2,8 @@
 % Please edit documentation in R/rename_vars.R
 \name{rename_vars}
 \alias{rename_vars}
-\title{Rename Function}
+\title{Rename Function
+Renames variables to new variable name}
 \usage{
 rename_vars(raw, scoresheet)
 }
@@ -16,4 +17,5 @@ table with renamed variables
 }
 \description{
 Rename Function
+Renames variables to new variable name
 }
