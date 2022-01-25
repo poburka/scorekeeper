@@ -4,5 +4,6 @@
 .httr-oauth
 .DS_Store
 /Meta/
-
+Package Test.Rmd
+binge_scoresheet.xlsx
 docs

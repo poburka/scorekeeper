@@ -1,25 +1,23 @@
 
 
-#' Sum variables using scoresheet
+#' Mean variables using scoresheet
 #'
 #' @param raw A raw data object
 #' @param scoresheet A formatted scoresheet object
 #' @import dplyr
 #' @import glue
 #' @return raw tibble with four additional columns appended:
-#' `{n_var}` : a column which is the sum of items - NAs are treated as '0' values
-#' `{n_var}_complete` : a column with the sum of items -- rows that contain any NA values return NA
-#' `{n_var}_NAs` : a column with the count of NAs among items contributing to the sum
-#' `{n_var}_NA_percent` : a column with the percentage of NAs among the variables contributing to the sum
-#' `{n_var}_weighted_sum` : a column with a sum weighted by the number of items contributing to the sum
+#' `{n_var}` : a column which is the mean of items, with NAs removed
+#' `{n_var}_complete` : a column with the mean of items -- rows that contain any NA values return NA
+#' `{n_var}_NAs` : a column with the count of NAs among items contributing to the mean
+#' `{n_var}_NA_percent` : a column with the percentage of NAs among the variables contributing to the mean
 #' @export
 #'
 
-
-sum_vars <- function (raw, scoresheet){
+mean_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (operation == 'sum')
+    filter (operation == 'mean')
 
   #create a new tibble with just the raw data --we'll add columns with sum scores as we loop down below
   new_table2 <- tibble(raw_data)
@@ -29,10 +27,10 @@ sum_vars <- function (raw, scoresheet){
     raw_var <-  scoresheet$raw_vars[i]
     new_label <- scoresheet$label[i]
 
-    sum_table <- sum_function(raw_tbl = raw, n_var = new_var, r_vars = r_var_func(scoresheet, i), n_lab = new_label)
+    mean_table <- mean_function(raw_tbl = raw, n_var = new_var, r_vars = r_var_func(scoresheet, i), n_lab = new_label)
 
     #save the last 4 columns (the new sum column, the NAs column, the NA percent column, and the weighted sum column), and append to the 'new table'
-    new_table1 <- sum_table[,(ncol(sum_table)-4):ncol(sum_table)]
+    new_table1 <- mean_table[,(ncol(mean_table)-4):ncol(mean_table)]
 
     new_table2 <- new_table2 %>%
       add_column(new_table1[1], new_table1[2], new_table1[3], new_table1[4], new_table1[5]) %>%
@@ -45,19 +43,17 @@ sum_vars <- function (raw, scoresheet){
 
 
 #The sum function takes a raw table and several variables from the scoresheet. n_var is the new variable name, r_vars are the raw variables to be summed, and n_lab is the is the variable label for the new summed variable
-sum_function <- function (raw_tbl, n_var, r_vars, n_lab) {
+mean_function <- function (raw_tbl, n_var, r_vars, n_lab) {
   new_tbl <-raw_tbl %>%
     #create a new variable that sums across the raw variables
-    mutate("{n_var}" := rowSums(across(r_vars), na.rm = TRUE)) %>%
-    mutate("{n_var}_complete" := rowSums(across(r_vars), na.rm = FALSE)) %>%
+    mutate("{n_var}" := rowMeans(across(r_vars), na.rm = TRUE)) %>%
+    mutate("{n_var}_complete" := rowMeans(across(r_vars), na.rm = FALSE)) %>%
     #label the new variable
     set_variable_labels("{n_var}" := n_lab) %>%
     #create a new variable that tells you -- across the raw variables, the number that are missing
     mutate("{n_var}_NAs" := rowSums(is.na(across(r_vars))))  %>%
     #create a new variable that tells you -- across the raw variables that are summed, the percent that are missing
-    mutate("{n_var}_NA_percent" := ((rowSums(is.na(across(r_vars))))/(length(r_vars))*100)) %>%
-    #create a new variable that is your weighted sum score
-    mutate ("{n_var}_weighted_sum" := ((rowSums(across(r_vars), na.rm = TRUE))/(1-(((rowSums(is.na(across(r_vars))))/(length(r_vars)))))))
+    mutate("{n_var}_NA_percent" := ((rowSums(is.na(across(r_vars))))/(length(r_vars))*100))
   return(new_tbl)
 }
 

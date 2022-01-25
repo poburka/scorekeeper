@@ -63,6 +63,10 @@ The required columns in a scoresheet currently have limited flexibility. I antic
 
 **case_when** : creates a new variable using case_when code defined in `scoresheet$code`
 
+**rename**: renames a single variable entered in `scoresheet$raw_vars`  to `scoresheet$new_var`
+
+**mean**: creates a mean of variables identified in `scoresheet$raw_vars`. Provides means with and without removal of NAs, includes number of an proportion of `NA` values in the mean.
+
 
 ## Installation
 

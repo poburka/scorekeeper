@@ -1,6 +1,7 @@
 
 
-#' The recode_vars function recodes variables according to scoresheet instructions
+#' recode_vars function
+#' recodes variables according to scoresheet instructions
 #'
 #' @param raw : A raw data object
 #' @param scoresheet  : A scoresheet object
@@ -31,7 +32,7 @@ recode_vars <- function (raw, scoresheet){
     raw_var <- scoresheet$raw_vars[i]
     new_label <- scoresheet$label[i]
 
-    new_table <- recode_function(raw_tbl = raw, n_var = new_var, r_var = raw_var, n_val = n_val_func(scoresheet,i), n_val_lab = n_val_lab_func(scoresheet,i), n_lab = new_label, n_var_factor = n_var_factor_func(scoresheet,i))
+    new_table <- recode_function(raw_tbl = raw, n_var = new_var, r_var = raw_var, n_val = n_val_func(scoresheet, i), n_val_lab = n_val_lab_func(scoresheet,i), n_lab = new_label, n_var_factor = n_var_factor_func(scoresheet,i))
   #save the last two columns (the new named variable and the '.factor' variable as columns in the new table at each loop)
     new_table1 <- new_table[,(ncol(new_table)-1):ncol(new_table)]
     new_table2 <- new_table2 %>%
@@ -60,37 +61,6 @@ recode_function <- function (raw_tbl, n_var, r_var, n_val, n_val_lab, n_lab, n_v
   return(raw_tbl)
 }
 
-#The next three functions build the arguments that we will feed into the above 'recode_function' when we put it on loop. The raw info from the scoresheet file is in 'charachter' format when it comes in,   we need to manipulate it just a little bit in order to get it into a form that r finds acceptable for that argument
-
-#the new value function takes the 'new_vals_r' data and changes it from a charachter string to a named vector
-
-n_val_func <- function (scoresheet, i) {
-  #new values are defined in a list, splitting by the commas in the charachter string
-  new_vals <- as.list(el(strsplit(scoresheet$new_vals[i], ",")))
-  #the original values are defined as those on the left of the equals sign for each element in the list
-  origin_list <- lapply(new_vals, function(x) sub("=.*", "", x))
-  #the new values are defined as those on the right of the equals sign for each element in the list
-  new_vals <- lapply(new_vals, function(x) sub(".*=","",x))
-  # new values are converted from charachters to numeric values
-  n_val <- lapply(new_vals, function(x)as.numeric(x))
-  #the orignal values are now added as the 'names' of the new values
-  names(n_val) <-origin_list
-  #the list of new values (with the old values as their names) is returned
-  return(n_val)
-}
-
-#this function repeats the same process for the new value labels -- the charachter vector is split into two lists, and the new value labels become 'names' of the new values
-n_val_lab_func <- function (scoresheet, i) {
-  val_lab_names <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
-  new_val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
-  val_lab_names <- lapply(new_val_labs, function(x) sub("=.*", "", x))
-  val_lab_names <- trimws(unlist(val_lab_names))
-  n_val_labs<- lapply(new_val_labs, function(x) sub(".*=","",x))
-  n_val_labs<- lapply(n_val_labs, function(x)as.numeric(x))
-  n_val_lab <- unlist(n_val_labs)
-  names(n_val_lab) <-val_lab_names
-  return(n_val_lab)
-}
 
 #this final function just creates the name of the .factor variable, taking the 'new variable' name and appending .factor to the end
 n_var_factor_func <- function(scoresheet, i) {

@@ -1,5 +1,6 @@
 
-#' If_else_vars
+#' if_else_vars function
+#' creates a new variable based on if_else statements provided
 #' @param raw Raw data object
 #' @param scoresheet Formatted scoresheet object. Key variables for if_else_vars are 'if_condition', 'if_true_return' and 'else_return'.
 #' These variables should be entered in as the 'condition', 'TRUE' and 'FALSE' statements,
@@ -54,7 +55,7 @@ if_else_function <- function (raw_tbl, n_var, if_cond, if_true_r, else_r, n_lab,
     set_variable_labels(!!as.name(n_var) := n_lab)
   #if there are value labels - set the new value labels
   new_tbl <- new_tbl %>%
-    mutate("{n_var}" := labelled(!!as.name(n_var), n_val_labs))
+    mutate("{n_var}" := labelled(!!as.name(n_var), {{n_val_labs}}))
   return(new_tbl)
 }
 

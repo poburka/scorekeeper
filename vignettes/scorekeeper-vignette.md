@@ -15,7 +15,7 @@ process, increase approachabiity by reducing the need for heavy coding,
 allow for straightforward and reproducible implementation of scoring
 practices across studies, and offer a useful way to document and
 disseminate assessment scoring for publication. This package assumes
-some *very basic* r knowledge (i.e. how to start up r, load packages and
+some *basic* r knowledge (i.e. how to start up r, load packages and
 data, assign variables, and use basic computations). Some functions
 require a minimum of thoughtful coding, and I try to make that process a
 bit less painful via this vignette. I recommend reading the [dplyr
@@ -98,13 +98,13 @@ missed
 
 ## Scoresheet
 
-When preparing to make a scoresheet - I recommend splitting your thought
-process into three chunks (1) cleaning raw variables, (2) creating
-composite scores, and (3) selecting your final, cleaned variables to
-save. We’ll start with the first chunk below:
+When preparing to make a scoresheet - I split my thought process into
+three chunks (1) cleaning raw variables, (2) creating composite scores,
+and (3) selecting your final, cleaned variables to save. We’ll start
+with the first chunk below:
 
-In the first chunk, I have identified 4 things that I would like to do
-to clean raw variables prior to analysis:
+I have identified 4 things that I would like to do to clean raw
+variables prior to analysis:
 
 **1**. Select only `id`, `ccq360`, `ccq370`, `ccq371`, `ccq372`,
 `ccq373`, `ccq374`, and `ccq375` as the variables that I am interested
@@ -374,18 +374,18 @@ values that are missing, and a weighted sum (weighted by the number of
 non-missing values). Below are the last 5 columns of the tibble created
 in Step 4:
 
-| binge\_sx\_sum.14 | binge\_sx\_sum.14\_complete | binge\_sx\_sum.14\_NAs | binge\_sx\_sum.14\_NA\_percent |
-| ----------------: | --------------------------: | ---------------------: | -----------------------------: |
-|                 0 |                           0 |                      0 |                              0 |
-|                 0 |                           0 |                      0 |                              0 |
-|                 6 |                           6 |                      0 |                              0 |
-|                 0 |                          NA |                      6 |                            100 |
-|                 4 |                           4 |                      0 |                              0 |
-|                 0 |                           0 |                      0 |                              0 |
-|                 5 |                           5 |                      0 |                              0 |
-|                 0 |                          NA |                      6 |                            100 |
-|                 3 |                           3 |                      0 |                              0 |
-|                 3 |                           3 |                      0 |                              0 |
+| binge\_sx\_sum.14 | binge\_sx\_sum.14\_complete | binge\_sx\_sum.14\_NAs | binge\_sx\_sum.14\_NA\_percent | binge\_sx\_sum.14\_weighted\_sum |
+| ----------------: | --------------------------: | ---------------------: | -----------------------------: | -------------------------------: |
+|                 0 |                           0 |                      0 |                              0 |                                0 |
+|                 0 |                           0 |                      0 |                              0 |                                0 |
+|                 6 |                           6 |                      0 |                              0 |                                6 |
+|                 0 |                          NA |                      6 |                            100 |                               NA |
+|                 4 |                           4 |                      0 |                              0 |                                4 |
+|                 0 |                           0 |                      0 |                              0 |                                0 |
+|                 5 |                           5 |                      0 |                              0 |                                5 |
+|                 0 |                          NA |                      6 |                            100 |                               NA |
+|                 3 |                           3 |                      0 |                              0 |                                3 |
+|                 3 |                           3 |                      0 |                              0 |                                3 |
 
 ## Step 5
 
@@ -408,18 +408,18 @@ documentation in the package help files for more information.
 
 The last two variables created are seen below:
 
-| binge\_present.14 |
-| ----------------: |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 0 |
-|                 1 |
-|                 0 |
+| binge\_present.14 | binge\_sx\_sum\_split.14 |
+| ----------------: | -----------------------: |
+|                 0 |                        0 |
+|                 0 |                        0 |
+|                 0 |                        2 |
+|                 0 |                        0 |
+|                 0 |                        2 |
+|                 0 |                        0 |
+|                 0 |                        2 |
+|                 0 |                        0 |
+|                 1 |                        1 |
+|                 0 |                        1 |
 
 ## Steps 6-7
 
@@ -487,20 +487,18 @@ The last tibble in this set of 7 tibbles will be the fully cleaned data
 |  9 |                 1 |                0 |                 1 |                    1 |                  0 |                 0 |                  1 |                 1 |                 3 |                  1 |
 | 10 |                 0 |                1 |                 0 |                    0 |                  1 |                 0 |                  1 |                 0 |                 3 |                  1 |
 
-And we can start to analyze our cleaned variables:
+And we can start to analyze our cleaned variables, which I can then
+save, export, and connect with other data files :)
 
-``` r
-frq(binge_clean$binge_severity.14)
-#> Binge symptoms sum split into absent, mild, severe (x) <numeric> 
-#> # total N=8 valid N=8 mean=1.00 sd=0.93
-#> 
-#> Value |  Label | N | Raw % | Valid % | Cum. %
-#> ---------------------------------------------
-#>     0 | absent | 3 | 37.50 |   37.50 |  37.50
-#>     1 |   mild | 2 | 25.00 |   25.00 |  62.50
-#>     2 | severe | 3 | 37.50 |   37.50 | 100.00
-#>  <NA> |   <NA> | 0 |  0.00 |    <NA> |   <NA>
-```
+    #> Binge symptoms sum split into absent, mild, severe (x) <numeric> 
+    #> # total N=8 valid N=8 mean=1.00 sd=0.93
+    #> 
+    #> Value |  Label | N | Raw % | Valid % | Cum. %
+    #> ---------------------------------------------
+    #>     0 | absent | 3 | 37.50 |   37.50 |  37.50
+    #>     1 |   mild | 2 | 25.00 |   25.00 |  62.50
+    #>     2 | severe | 3 | 37.50 |   37.50 | 100.00
+    #>  <NA> |   <NA> | 0 |  0.00 |    <NA> |   <NA>
 
 While developing this initial scoresheet was somewhat labor intensive,
 the scoresheet creates a **documented, reproducible scoring and data

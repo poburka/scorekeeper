@@ -1,9 +1,9 @@
 
 
 
-#this function picks out the variables that need case_when, then puts the function on a loop
+#
 #' case_when function
-#'
+#' `case_when_vars` completes case_when evaluation and returns a new variable
 #' @param raw a raw data object
 #' @param scoresheet a properly formatted scoresheet object. Key columns that must have data for a case_when function are new_var and code. Code should be formatted in accordance with
 #' dplyr case_when input. See [case_when](https://dplyr.tidyverse.org/reference/case_when.html)
@@ -13,7 +13,7 @@
 #' @importFrom rlang parse_expr
 #' @importFrom methods el
 #' @importFrom stats as.formula
-#' @return  a tibble with new variables appended that follow tidyverse evaluation of case_when scoresheet statements
+#' @return  appends `new_var` column after evaluation of case_when statements in `code` column of scoresheet
 #' @export
 
 

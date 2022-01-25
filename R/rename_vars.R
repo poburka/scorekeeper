@@ -14,7 +14,7 @@ rename_func <- function (data, old_name, new_name){
   return(renamed)}
 
 #' Rename Function
-#'
+#' Renames variables to new variable name
 #' @param raw Raw data
 #' @param scoresheet  scoresheet
 #'
