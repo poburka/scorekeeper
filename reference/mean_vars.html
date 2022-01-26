@@ -67,10 +67,10 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>raw tibble with four additional columns appended:
-a column which is the raw sum of items,
-a _NAs column with the count of NAs among items summed,
-the _NA_percent column with the percentage of NAs among the meaned variables,
-and the _weighted_mean column with the mean that is weighted by the number of non-NA items included</p>
+<code>{n_var}</code> : a column which is the mean of items, with NAs removed
+<code>{n_var}_complete</code> : a column with the mean of items -- rows that contain any NA values return NA
+<code>{n_var}_NAs</code> : a column with the count of NAs among items contributing to the mean
+<code>{n_var}_NA_percent</code> : a column with the percentage of NAs among the variables contributing to the mean</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
