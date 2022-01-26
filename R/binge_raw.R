@@ -1,4 +1,4 @@
-#' ALSPAC binge eating example dataset with 6 binge eating variables assessed
+#' ALSPAC binge eating example dataset with 8 binge eating variables assessed
 #'
 #' A synthetic example dataset for binge eating items collected at age 14
 #' in the ALSPAC cohort.
@@ -7,7 +7,7 @@
 #'
 #' @usage data(binge_raw)
 #'
-#' @format An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+#' @format R data file
 #'
 #' @keywords datasets
 #'

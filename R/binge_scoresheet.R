@@ -7,7 +7,7 @@
 #'
 #' @usage data(binge_scoresheet)
 #'
-#' @format An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+#' @format R data file
 #'
 #' @keywords datasets
 #'

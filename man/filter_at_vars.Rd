@@ -11,8 +11,8 @@ filter_at_vars(raw, scoresheet)
 \item{raw}{a raw data object}
 
 \item{scoresheet}{a scoresheet object. Key columns for the filter_at function are \code{code}. Code should include two arguments
-separated by a comma. the first argument is a list of columns, a character vector of column names, or a numeric vector of column
-positions. The second is a predicate function to be applied to the columns or a logical vector. Variables for which the predicate
+separated by a comma. the first argument a numeric vector of column positions. *Note - this currently must be a numeric vector.
+The second is a predicate function to be applied to the columns or a logical vector. Variables for which the predicate
 returns true are selected. see dplyr for additional info. \href{https://dplyr.tidyverse.org/reference/filter_all.html}{filter_all}.}
 }
 \value{

@@ -3,9 +3,9 @@
 \docType{data}
 \name{binge_raw}
 \alias{binge_raw}
-\title{ALSPAC binge eating example dataset with 6 binge eating variables assessed}
+\title{ALSPAC binge eating example dataset with 8 binge eating variables assessed}
 \format{
-An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+R data file
 }
 \usage{
 data(binge_raw)

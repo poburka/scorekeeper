@@ -5,7 +5,7 @@
 \alias{binge_scoresheet}
 \title{ALSPAC binge eating example scoresheet - Age 14 (ccq) variables}
 \format{
-An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+R data file
 }
 \usage{
 data(binge_scoresheet)
