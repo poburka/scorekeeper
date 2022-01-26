@@ -35,7 +35,7 @@ I recommend building a scoresheet step-by-step. Add one 'step' at a time in your
 
 **label**: the new variable label, if needed
 
-**operation**: the operation to preform (`select`, `filter_at`, `recode`, `sum`, `if_else`, `case_when`, `rename`)
+**operation**: the operation to preform (`select`, `filter_at`, `recode`, `sum`, `if_else`, `case_when`, `rename`, `mean`)
 
 **step**: identifies the order of operations to be preformed, starting with '1'. I recommend entering any raw metadata as '0' to increase transparency of your scoring method when sharing a scoresheet
 

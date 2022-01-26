@@ -7,8 +7,7 @@ Authors@R:
 Description: The scorekeeper package allows you to reproducibly clean data and score multi-item assessments with a scoresheet (specifically formatted metadata file) and raw data file. 
 License: GPL (>= 3) + file LICENSE
 URL: https://github.com/embark-lab/scorekeeper,
-    https://embark-lab.github.io/scorekeeper,
-    https://embark-lab.github.io/scorekeeper/
+    https://embark-lab.github.io/scorekeeper
 BugReports: https://github.com/embark-lab/scorekeeper/issues
 Imports: 
     dplyr,
