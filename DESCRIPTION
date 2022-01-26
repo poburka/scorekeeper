@@ -24,9 +24,10 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    sjmisc
+    sjmisc,
+    covr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-VignetteBuilder:knitr
+VignetteBuilder: knitr
 LazyData: true
