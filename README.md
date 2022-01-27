@@ -4,6 +4,10 @@
 # scorekeeper
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/embark-lab/scorekeeper/branch/main/graph/badge.svg)](https://codecov.io/gh/embark-lab/scorekeeper?branch=main)
+[![R-CMD-check](https://github.com/embark-lab/scorekeeper/workflows/R-CMD-check/badge.svg)](https://github.com/embark-lab/scorekeeper/actions)
 <!-- badges: end -->
 
 A data cleaning package, by Katherine Schaumberg
@@ -43,7 +47,7 @@ operation
 **label**: the new variable label, if needed
 
 **operation**: the operation to preform (`select`, `filter_at`,
-`recode`, `sum`, `if_else`, `case_when`, `rename`)
+`recode`, `sum`, `if_else`, `case_when`, `rename`, `mean`)
 
 **step**: identifies the order of operations to be preformed, starting
 with ‘1’. I recommend entering any raw metadata as ‘0’ to increase
