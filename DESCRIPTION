@@ -9,7 +9,6 @@ License: GPL (>= 3) + file LICENSE
 URL: https://github.com/embark-lab/scorekeeper,
     https://embark-lab.github.io/scorekeeper
 BugReports: https://github.com/embark-lab/scorekeeper/issues
-Depends: R(>= 3.5)
 Imports: 
     dplyr,
     glue,
