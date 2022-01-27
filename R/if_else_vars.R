@@ -18,7 +18,7 @@
 if_else_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (operation == 'if_else')
+    filter (scoresheet$operation == 'if_else')
 
 #creates a new tibble with just the raw data
   new_table2 <- tibble(raw_data)

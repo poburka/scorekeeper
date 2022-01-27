@@ -26,7 +26,7 @@ rename_vars <- function (raw, scoresheet) {
   raw_data <-raw
   #filter rows of the scoresheet where the operation is 'recode'
   scoresheet1 <- scoresheet %>%
-    filter (operation == 'rename')
+    filter (scoresheet$operation == 'rename')
   #loop through the rename function, using the arguments defined in the scoresheet file and using the functions above
   i <- 1
   m <- 2

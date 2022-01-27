@@ -61,7 +61,7 @@ tibble_func_2 <- function (meta) {
 #' @export
 #'
 scorekeep <- function (raw, scoresheet) {
-  meta4 <- scoresheet %>% filter(step > 0)
+  meta4 <- scoresheet %>% filter(scoresheet$step > 0)
   raw_data <- raw
   steps <- c(unique({{meta4}}$step))
   i <- 1
@@ -71,7 +71,7 @@ scorekeep <- function (raw, scoresheet) {
   tibbles4[[1]] <- raw_data
   while (i < x) {
     scoresheet_for_func <- meta4 %>%
-      filter (step == steps[i])
+      filter (meta4$step == steps[i])
     data_for_fun <- tibbles4[[i]]
     tibbles4[[m]] <- score(raw = data_for_fun, scoresheet = scoresheet_for_func)
     i <- i+1

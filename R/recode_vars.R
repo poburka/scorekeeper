@@ -25,7 +25,7 @@ recode_vars <- function (raw, scoresheet){
   new_table2 <- tibble(raw_data)
   #filter rows of the scoresheet where the operation is 'recode'
   scoresheet <- scoresheet %>%
-    filter (operation == 'recode')
+    filter (scoresheet$operation == 'recode')
   #loop through the recode function, using the arguments defined frp, the scoresheet file and using the functions above
   for (i in 1:nrow(scoresheet)){
     new_var <- scoresheet$new_var[i]

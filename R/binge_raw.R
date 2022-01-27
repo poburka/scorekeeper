@@ -1,4 +1,4 @@
-#' ALSPAC binge eating example dataset with 8 binge eating variables assessed
+#' ALSPAC binge eating example dataset
 #'
 #' A synthetic example dataset for binge eating items collected at age 14
 #' in the ALSPAC cohort.

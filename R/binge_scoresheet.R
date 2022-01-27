@@ -1,4 +1,4 @@
-#' ALSPAC binge eating example scoresheet - Age 14 (ccq) variables
+#' ALSPAC binge eating example scoresheet
 #'
 #' An example scoresheet for binge eating items collected at age 14
 #' in the ALSPAC cohort.

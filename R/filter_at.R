@@ -17,7 +17,7 @@ filter_at_vars <- function (raw, scoresheet) {
   raw_data <-raw
   #filter rows of the scoresheet where the operation is 'recode'
   scoresheet1 <- scoresheet %>%
-    filter (operation == 'filter_at')
+    filter (scoresheet$operation == 'filter_at')
 #create empty tibbles -- one for each filter_at function in the step
 i <- 1
 m <- 2

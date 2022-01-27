@@ -3,7 +3,7 @@
 \docType{data}
 \name{binge_scoresheet}
 \alias{binge_scoresheet}
-\title{ALSPAC binge eating example scoresheet - Age 14 (ccq) variables}
+\title{ALSPAC binge eating example scoresheet}
 \format{
 R data file
 }

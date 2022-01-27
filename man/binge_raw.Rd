@@ -3,7 +3,7 @@
 \docType{data}
 \name{binge_raw}
 \alias{binge_raw}
-\title{ALSPAC binge eating example dataset with 8 binge eating variables assessed}
+\title{ALSPAC binge eating example dataset}
 \format{
 R data file
 }

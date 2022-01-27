@@ -17,7 +17,7 @@
 mean_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (operation == 'mean')
+    filter (scoresheet$operation == 'mean')
 
   #create a new tibble with just the raw data --we'll add columns with sum scores as we loop down below
   new_table2 <- tibble(raw_data)

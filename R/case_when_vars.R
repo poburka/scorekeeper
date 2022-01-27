@@ -20,7 +20,7 @@
 case_when_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (operation == 'case_when')
+    filter (scoresheet$operation == 'case_when')
 
   #create a new tibble with just the raw data --we'll add columns with if_else alogrithm variables as we loop down below
   new_table2 <- tibble(raw_data)
@@ -61,8 +61,9 @@ case_when_function <- function (raw_tbl, n_var, case_when_code, n_labs, label) {
     mutate("temp{n_var}_{i}" := as.numeric(case_when((eval_tidy(rlang::parse_expr(LHS[i]))) ~ (!!RHS[i]),))) }
 
   tbl_0 <- tbl_0 %>%
-    mutate(NAs := rowSums(is.na(across(starts_with('temp'))))) %>%
-    mutate("{n_var}" := ifelse(NAs < LHS_len, rowSums(across(starts_with('temp')), na.rm = TRUE), NA)) %>%
+    mutate('NAs' := rowSums(is.na(across(starts_with('temp')))))
+  tbl_0 <- tbl_0 %>%
+    mutate("{n_var}" := ifelse(tbl_0$NAs < LHS_len, rowSums(across(starts_with('temp')), na.rm = TRUE), NA)) %>%
     select(-starts_with('temp'))
 
   tbl_1 <- tbl_0 %>%

@@ -17,7 +17,7 @@
 select_vars <- function (raw, scoresheet){
   raw_data <- raw
   scoresheet <- scoresheet %>%
-    filter (operation == 'select')
+    filter (scoresheet$operation == 'select')
 
 #create a new tibble with just the raw data
   new_table2 <- tibble(raw_data)
