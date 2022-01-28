@@ -161,7 +161,7 @@ of raw variables below:
 | ccq370    | NA       | B13a/B12a: Respondent felt out of control when on a binge (ccq370)         | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA        | NA            | NA               | NA           | NA   |
 | ccq371    | NA       | B13b/B12b: Respondent ate very fast or faster than normal when on a binge  | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA        | NA            | NA               | NA           | NA   |
 
-### Step 1
+## Step 1
 
 I’m going to enter a row in a scoresheet (I use a .csv file with for
 easy entry and revision, then load it into r using `load_csv`). To
