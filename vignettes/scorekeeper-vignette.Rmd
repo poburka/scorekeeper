@@ -80,7 +80,7 @@ knitr::kable(binge_scoresheet[1:3,])
 
 I'm going to enter a row in a scoresheet (I use a .csv file with for easy entry and revision, then load it into r using `load_csv`). To select only the variables that I want, I add a row to my scoresheet with `operation` = select and `step` = 1. In the 'raw_vars' column, I list the variables that I would like to select in a comma separated list 
 
-*note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It will not evaluate across mutliple columns*
+*note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It is not able to accomodate tidyselect actions*
 ```{r, echo = FALSE}
 knitr::kable(binge_scoresheet[8,])
 ```
@@ -170,7 +170,6 @@ knitr::kable (step4_last[,29:33])
 ## Step 5
 
 In step 5, we create two additional variables based on the sum score created in step 4, and we filter the tibble to exclude cases with all missing data. We can do all of these operations in the same step because they are independent and do not rely on one another. The `if_else` operation computes a variable that notes binge eating is present ('1') if an individual reports binge eating at least once per month with more than two additional symptoms. The `case_when` operation splits the sum score into 'absent', 'mild', and 'severe' cases based on the number of symtpoms reported. See `if_else`, `filter_at` and `case_when` documentation in the package help files for more information. 
-
 
 ```{r, echo = FALSE}
 knitr::kable(binge_scoresheet[23:25,])
