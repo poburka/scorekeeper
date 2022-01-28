@@ -364,7 +364,7 @@
 <h2 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
 </h2>
 <p>I’m going to enter a row in a scoresheet (I use a .csv file with for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated list</p>
-<p><em>note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It will not evaluate across mutliple columns</em></p>
+<p><em>note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It is not able to accomodate tidyselect actions</em></p>
 <table class="table">
 <colgroup>
 <col width="39%">
