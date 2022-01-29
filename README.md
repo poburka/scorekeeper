@@ -5,12 +5,13 @@
 
 <!-- badges: start -->
 
-[![Codecov test
-coverage](https://codecov.io/gh/embark-lab/scorekeeper/branch/main/graph/badge.svg)](https://codecov.io/gh/embark-lab/scorekeeper?branch=main)
 [![R-CMD-check](https://github.com/embark-lab/scorekeeper/workflows/R-CMD-check/badge.svg)](https://github.com/embark-lab/scorekeeper/actions)
 <!-- badges: end -->
 
 A data cleaning package, by Katherine Schaumberg
+
+For a detailed example of how this package works, see [package
+vignette](https://embark-lab.github.io/scorekeeper/articles/scorekeeper-vignette.html)
 
 The goal of scorekeeper is to support the development of accessible,
 approachable, and reproducible scoring algorithms for multi-item
@@ -28,7 +29,7 @@ your scoring algorithm – no need to send or post additional code). While
 scoresheets are structured to be more easily developed and interpreted
 as compared to raw code, I also recommend a companion text file
 outlining each step in your data cleaning to maximize ease of
-interpretation when sharing with others (or your future self\!).
+interpretation when sharing with others (or your future self!).
 Currently, scoresheets must be formatted in accordance with guidelines
 outlined in each of the ‘operation’ functions and with steps that
 proceed in an appropriate order.
@@ -37,12 +38,14 @@ I recommend building a scoresheet step-by-step. Add one ‘step’ at a time
 in your data manipulaton and complete error checking by running
 functions in the scorekeeper package as you build the scoresheet.
 
+## Scoresheet Structure
+
 ***Necessary columns in a scoresheet include***:
 
-**raw\_vars** : a raw variable or list of raw variables needed for an
+**raw_vars** : a raw variable or list of raw variables needed for an
 operation
 
-**new\_var**: the desired name of a new variable created during the
+**new_var**: the desired name of a new variable created during the
 operation
 
 **label**: the new variable label, if needed
@@ -54,32 +57,35 @@ operation
 with ‘1’. I recommend entering any raw metadata as ‘0’ to increase
 transparency of your scoring method when sharing a scoresheet
 
-**val\_labs**: value labels for a new variable
+**val_labs**: value labels for a new variable
 
-**new\_vals**: values to be recoded in a `recode` operation. Follow the
+**new_vals**: values to be recoded in a `recode` operation. Follow the
 convention ‘old’ = ‘new’, with commas separating each old/new pair
 
-**if\_condition**: a logical condition to be evaluated for an `if_else`
+**if_condition**: a logical condition to be evaluated for an `if_else`
 operation
 
-**if\_true\_return**: value that is returned if the ‘if\_condition’ ==
-TRUE in `if_else` operations
-
-**else\_return**: value that is returned if the ‘if\_condition’ \!= TRUE
+**if_true_return**: value that is returned if the ‘if_condition’ == TRUE
 in `if_else` operations
 
-**code**: code for performing a ‘filter\_at’ or ‘case\_when’ operation
+**else_return**: value that is returned if the ‘if_condition’ != TRUE in
+`if_else` operations
+
+**code**: code for performing a ‘filter_at’ or ‘case_when’ operation
 
 The required columns in a scoresheet currently have limited flexibility
 – see documentation for the individual functions for details on these
 limitations. I anticipate adding additional functionality in the future.
 Enter `NA` for any elements that are unnecessary for a given operation.
+
+## Operations
+
 Current operations supported are:
 
 **select** : selects variables that you identify in
 `scoresheet$raw_vars`.
 
-**filter\_at**: filters rows of a dataset. Use `filter_at` dplyr
+**filter_at**: filters rows of a dataset. Use `filter_at` dplyr
 conventions using `scoresheet$code`
 
 **recode**: recodes a variable into a new variable, using values defined
@@ -89,11 +95,11 @@ in `scoresheet$new_vals`
 weighted and unweighted sums, along with the number of and proportion of
 `NA` values in the sum
 
-**if\_else** : creates a new variable defined in
+**if_else** : creates a new variable defined in
 `scoresheet$if_condition`, `scoresheet$if_true return`,
 `soresheet$else_return`
 
-**case\_when** : creates a new variable using case\_when code defined in
+**case_when** : creates a new variable using case_when code defined in
 `scoresheet$code`
 
 **rename**: renames a single variable entered in `scoresheet$raw_vars`
@@ -112,8 +118,7 @@ remotes package installed, first install the remotes package.
 install.packages("remotes")
 ```
 
-then install R/scorekeeper using the install\_github function in
-remotes.
+then install R/scorekeeper using the install_github function in remotes.
 
 ``` r
 library(remotes)
