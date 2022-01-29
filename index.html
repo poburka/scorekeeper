@@ -69,8 +69,12 @@
 <!-- badges: start -->
 
 <p>A data cleaning package, by Katherine Schaumberg</p>
+<p>For a detailed example of how this package works, see <a href="https://embark-lab.github.io/scorekeeper/articles/scorekeeper-vignette.html">package vignette</a></p>
 <p>The goal of scorekeeper is to support the development of accessible, approachable, and reproducible scoring algorithms for multi-item measures. This package was designed with psychological assessment measures in mind, but can be broadly applicable to other multi-item assessments. The package requires a raw data file and a scoresheet (an RData or .csv metadata file) as input. Scorekeeper uses dplyr functionality to manipulate and clean data in a systematic way, as specified in the scoresheet. The scoresheet can then serve as a resource that will make your data cleaning process both reproducible and easily shared (e.g. if a colleague would like to score a measure in the same way that you did for their project on a different sample, you can send or post your RData or .csv scoresheet and it should easily replicate your scoring algorithm – no need to send or post additional code). While scoresheets are structured to be more easily developed and interpreted as compared to raw code, I also recommend a companion text file outlining each step in your data cleaning to maximize ease of interpretation when sharing with others (or your future self!). Currently, scoresheets must be formatted in accordance with guidelines outlined in each of the ‘operation’ functions and with steps that proceed in an appropriate order.</p>
 <p>I recommend building a scoresheet step-by-step. Add one ‘step’ at a time in your data manipulaton and complete error checking by running functions in the scorekeeper package as you build the scoresheet.</p>
+<div class="section level2">
+<h2 id="scoresheet-structure">Scoresheet Structure<a class="anchor" aria-label="anchor" href="#scoresheet-structure"></a>
+</h2>
 <p><strong><em>Necessary columns in a scoresheet include</em></strong>:</p>
 <p><strong>raw_vars</strong> : a raw variable or list of raw variables needed for an operation</p>
 <p><strong>new_var</strong>: the desired name of a new variable created during the operation</p>
@@ -83,7 +87,12 @@
 <p><strong>if_true_return</strong>: value that is returned if the ‘if_condition’ == TRUE in <code>if_else</code> operations</p>
 <p><strong>else_return</strong>: value that is returned if the ‘if_condition’ != TRUE in <code>if_else</code> operations</p>
 <p><strong>code</strong>: code for performing a ‘filter_at’ or ‘case_when’ operation</p>
-<p>The required columns in a scoresheet currently have limited flexibility – see documentation for the individual functions for details on these limitations. I anticipate adding additional functionality in the future. Enter <code>NA</code> for any elements that are unnecessary for a given operation. Current operations supported are:</p>
+<p>The required columns in a scoresheet currently have limited flexibility – see documentation for the individual functions for details on these limitations. I anticipate adding additional functionality in the future. Enter <code>NA</code> for any elements that are unnecessary for a given operation.</p>
+</div>
+<div class="section level2">
+<h2 id="operations">Operations<a class="anchor" aria-label="anchor" href="#operations"></a>
+</h2>
+<p>Current operations supported are:</p>
 <p><strong>select</strong> : selects variables that you identify in <code>scoresheet$raw_vars</code>.</p>
 <p><strong>filter_at</strong>: filters rows of a dataset. Use <code>filter_at</code> dplyr conventions using <code>scoresheet$code</code></p>
 <p><strong>recode</strong>: recodes a variable into a new variable, using values defined in <code>scoresheet$new_vals</code></p>
@@ -92,6 +101,7 @@
 <p><strong>case_when</strong> : creates a new variable using case_when code defined in <code>scoresheet$code</code></p>
 <p><strong>rename</strong>: renames a single variable entered in <code>scoresheet$raw_vars</code> to <code>scoresheet$new_var</code></p>
 <p><strong>mean</strong>: creates a mean of variables identified in <code>scoresheet$raw_vars</code>. Provides means with and without removal of NAs, includes number of an proportion of <code>NA</code> values in the mean.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -138,7 +148,6 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/embark-lab/scorekeeper?branch=main" class="external-link"><img src="https://codecov.io/gh/embark-lab/scorekeeper/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/embark-lab/scorekeeper/actions" class="external-link"><img src="https://github.com/embark-lab/scorekeeper/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
