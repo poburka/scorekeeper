@@ -42,8 +42,8 @@ functions in the scorekeeper package as you build the scoresheet.
 
 ***Necessary columns in a scoresheet include***:
 
-**raw_vars** : a raw variable or list of raw variables needed for an
-operation
+**raw_vars** : a raw variable or list of raw variables (comma separated,
+listed as a single character string) needed for an operation
 
 **new_var**: the desired name of a new variable created during the
 operation
@@ -60,7 +60,8 @@ transparency of your scoring method when sharing a scoresheet
 **val_labs**: value labels for a new variable
 
 **new_vals**: values to be recoded in a `recode` operation. Follow the
-convention ‘old’ = ‘new’, with commas separating each old/new pair
+convention ‘old’ = ‘new’, with commas separating each old/new pair.
+class(new_vals) should be a single charachter string
 
 **if_condition**: a logical condition to be evaluated for an `if_else`
 operation
@@ -71,7 +72,8 @@ in `if_else` operations
 **else_return**: value that is returned if the ‘if_condition’ != TRUE in
 `if_else` operations
 
-**code**: code for performing a ‘filter_at’ or ‘case_when’ operation
+**code**: code for performing a ‘filter_at’ or ‘case_when’ operation.
+Not needed for other operations.
 
 The required columns in a scoresheet currently have limited flexibility
 – see documentation for the individual functions for details on these
