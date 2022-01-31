@@ -32,8 +32,3 @@ select_function <- function (raw_tbl, r_vars) {
   raw_tbl <- raw_tbl %>%
     select(all_of(r_vars))
   return (raw_tbl) }
-
-r_var_func <- function (scoresheet, i) {
-  raw_vars <- as.list(el(strsplit(scoresheet$raw_vars[i], ",")))
-  raw_vars <- trimws(raw_vars)
-  return(raw_vars) }

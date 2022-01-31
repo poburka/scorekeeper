@@ -13,7 +13,12 @@
 #' @return a list of raw variables
 
 r_var_func <- function (scoresheet, i) {
-  raw_vars <- as.list(el(strsplit(scoresheet$raw_vars[i], ",")))
-  raw_vars <- trimws(raw_vars)
-  return(raw_vars)
+
+    if (length(scoresheet$raw_vars[i]) >1) {
+      raw_vars <- scoresheet$raw_vars[i]
+      return(raw_vars)}
+    else {
+      raw_vars <- as.list(el(strsplit(scoresheet$raw_vars[i], ",")))
+      raw_vars <- trimws(raw_vars)
+  return(raw_vars)}
 }
