@@ -3,8 +3,8 @@
 #' Select Variables Using scoresheet
 #'
 #' @param raw - raw data object
-#' @param scoresheet - formatted scoresheet object. Key variables in this operation are `raw_vars`. The select operation currently takes a list of
-#' `raw_vars` and selects those variables. Remember to select any necessary variables for identification of your data when scoring a measure
+#' @param scoresheet - formatted scoresheet object. Key variables in this operation are `raw_vars`. The select operation currently takes a comma-separated
+#' character string (i.e. one character string which will be turned into a list via parsing at commas) of `raw_vars` and selects those variables. Remember to select any necessary variables for identification of your data when scoring a measure
 #' (so that you can later stitch tibbles back together for analysis if needed). Currently, you must enter the names of variables you would like
 #' in a simple, comma separated list. You cannot use shorthand expressions (e.g. `starts_with` or `c(1:7)` will not work as input. Full variables
 #' names are necessary. Additional flexibility for this function is planned for future releases
