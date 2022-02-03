@@ -23,7 +23,7 @@ A data cleaning package, by Katherine Schaumberg
 
 For a detailed example of how this package works, see [package vignette](https://embark-lab.github.io/scorekeeper/articles/scorekeeper-vignette.html)
 
-The goal of scorekeeper is to support the development of accessible, approachable, and reproducible scoring algorithms for multi-item measures. This package was designed with psychological assessment measures in mind, but can be broadly applicable to other multi-item assessments. The package requires a raw data file and a scoresheet (an RData or .csv metadata file) as input. Scorekeeper uses dplyr functionality to manipulate and clean data in a systematic way, as specified in the scoresheet. The scoresheet can then serve as a resource that will make your data cleaning process both reproducible and easily shared (e.g. if a colleague would like to score a measure in the same way that you did for their project on a different sample, you can send or post your RData or .csv scoresheet and it should easily replicate your scoring algorithm -- no need to send or post additional code). While scoresheets are structured to be more easily developed and interpreted as compared to raw code, I also recommend a companion text file outlining each step in your data cleaning to maximize ease of interpretation when sharing with others (or your future self!). Currently, scoresheets must be formatted in accordance with guidelines outlined in each of the 'operation' functions and with steps that proceed in an appropriate order. 
+The goal of scorekeeper is to support the development of accessible, approachable, and reproducible scoring algorithms for multi-item measures. This package was designed with psychological assessment measures in mind, but can be broadly applicable to other multi-item assessments. The package requires a raw data file and a scoresheet (an RData or .csv metadata file) as input. Scorekeeper uses dplyr functionality to manipulate and clean data in a systematic way, as specified in the scoresheet. The scoresheet can then serve as a resource that will make your data cleaning process both reproducible and easily shared (e.g. if a colleague would like to score a measure in the same way that you did for their project on a different sample, you can send or post your RData or .csv/.xlsx scoresheet and it should easily replicate your scoring algorithm -- no need to send or post additional code). While scoresheets are structured to be more easily developed and interpreted as compared to raw code, I also recommend a companion text file outlining each step in your data cleaning to maximize ease of interpretation when sharing with others (or your future self!). Currently, scoresheets must be formatted in accordance with guidelines outlined in each of the 'operation' functions and with steps that proceed in an appropriate order. 
 
 I recommend building a scoresheet step-by-step. Add one 'step' at a time in your data manipulaton and complete error checking by running functions in the scorekeeper package as you build the scoresheet. 
 
@@ -41,9 +41,9 @@ I recommend building a scoresheet step-by-step. Add one 'step' at a time in your
 
 **step**: identifies the order of operations to be preformed, starting with '1'. I recommend entering any raw metadata as '0' to increase transparency of your scoring method when sharing a scoresheet
 
-**val_labs**: value labels for a new variable. Follow the convention `label` = `value`. label/value pairs can be listed as a single, comma separated character string or as a vector of character strings
+**val_labs**: value labels for a new variable. Follow the convention `label` = `value`. label/value pairs can be listed as a single, comma separated character string or as a vector of character strings.
 
-**new_vals**: values to be recoded in a `recode` operation. Follow the convention `old` = `new`. old/new pairs can be listed as a single, comma separated character string or as a vector of character strings
+**new_vals**: values to be recoded in a `recode` operation. Follow the convention `old` = `new`. old/new pairs can be listed as a single, comma separated character string or as a vector of character strings.
 
 **if_condition**: a logical condition to be evaluated for an `if_else` operation
 
@@ -73,7 +73,7 @@ Current  operations supported are:
 
 **rename**: renames a single variable entered in `scoresheet$raw_vars`  to `scoresheet$new_var`
 
-**mean**: creates a mean of variables identified in `scoresheet$raw_vars`, named in accordance with `scoresheet$new_var`. In addition to the  mean, three additional new variables are appended - the mean of complete cases only, and the number of an proportion of `NA` values in the mean.
+**mean**: creates a mean of variables identified in `scoresheet$raw_vars`, named in accordance with `scoresheet$new_var`. In addition to the  mean, three additional new variables are appended - the mean of complete cases only, and the number of an proportion of `NA` values in the mean. 
 
 ## Installation
 
