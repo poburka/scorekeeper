@@ -363,8 +363,9 @@
 <div class="section level2">
 <h2 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
 </h2>
-<p>I’m going to enter a row in a scoresheet (I use a .csv file with for easy entry and revision, then load it into r using <code>load_csv</code>). To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated list</p>
-<p><em>note - currently the select operation only works if raw_vars are entered in comma separated list format, with each variable fully listed. It is not able to accomodate tidyselect actions</em></p>
+<p>I’m going to enter a row in a scoresheet (I use a .csv file in generic spreadsheet software for easy entry and revision, then load it into r using <code>load_csv</code>, make more minor edits, then save your working/final scoresheet as an RData file and/or export as .csv).</p>
+<p>To select only the variables that I want, I add a row to my scoresheet with <code>operation</code> = select and <code>step</code> = 1. In the ‘raw_vars’ column, I list the variables that I would like to select in a comma separated charachter string. Any time there is a list of variables for input, they can be in one of two formats - a single, comma separated character string, or a vector of character strings.</p>
+<p><em>note - currently the select operation only works with each element in a scoresheet fully listed. It is not able to accommodate tidyselect actions</em></p>
 <table class="table">
 <colgroup>
 <col width="39%">

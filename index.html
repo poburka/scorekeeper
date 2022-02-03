@@ -75,19 +75,19 @@
 <div class="section level2">
 <h2 id="scoresheet-structure">Scoresheet Structure<a class="anchor" aria-label="anchor" href="#scoresheet-structure"></a>
 </h2>
-<p><strong><em>Necessary columns in a scoresheet include</em></strong>:</p>
-<p><strong>raw_vars</strong> : a raw variable or list of raw variables (comma separated, listed as a single character string) needed for an operation</p>
+<p><strong><em>Columns in a scoresheet include</em></strong>:</p>
+<p><strong>raw_vars</strong> : a raw variable or list of raw variables (either a vector or a single, comma separated character string) needed for an operation</p>
 <p><strong>new_var</strong>: the desired name of a new variable created during the operation</p>
 <p><strong>label</strong>: the new variable label, if needed</p>
 <p><strong>operation</strong>: the operation to preform (<code>select</code>, <code>filter_at</code>, <code>recode</code>, <code>sum</code>, <code>if_else</code>, <code>case_when</code>, <code>rename</code>, <code>mean</code>)</p>
 <p><strong>step</strong>: identifies the order of operations to be preformed, starting with ‘1’. I recommend entering any raw metadata as ‘0’ to increase transparency of your scoring method when sharing a scoresheet</p>
-<p><strong>val_labs</strong>: value labels for a new variable</p>
-<p><strong>new_vals</strong>: values to be recoded in a <code>recode</code> operation. Follow the convention ‘old’ = ‘new’, with commas separating each old/new pair. class(new_vals) should be a single charachter string</p>
+<p><strong>val_labs</strong>: value labels for a new variable. Follow the convention <code>label</code> = <code>value</code>. label/value pairs can be listed as a single, comma separated character string or as a vector of character strings</p>
+<p><strong>new_vals</strong>: values to be recoded in a <code>recode</code> operation. Follow the convention <code>old</code> = <code>new</code>. old/new pairs can be listed as a single, comma separated character string or as a vector of character strings</p>
 <p><strong>if_condition</strong>: a logical condition to be evaluated for an <code>if_else</code> operation</p>
 <p><strong>if_true_return</strong>: value that is returned if the ‘if_condition’ == TRUE in <code>if_else</code> operations</p>
 <p><strong>else_return</strong>: value that is returned if the ‘if_condition’ != TRUE in <code>if_else</code> operations</p>
 <p><strong>code</strong>: code for performing a ‘filter_at’ or ‘case_when’ operation. Not needed for other operations.</p>
-<p>The required columns in a scoresheet currently have limited flexibility – see documentation for the individual functions for details on these limitations. I anticipate adding additional functionality in the future. Enter <code>NA</code> for any elements that are unnecessary for a given operation.</p>
+<p>The required columns in a scoresheet currently have limited flexibility – see documentation for the individual functions for details on these limitations. I anticipate adding additional functionality in the future.</p>
 </div>
 <div class="section level2">
 <h2 id="operations">Operations<a class="anchor" aria-label="anchor" href="#operations"></a>
@@ -95,12 +95,12 @@
 <p>Current operations supported are:</p>
 <p><strong>select</strong> : selects variables that you identify in <code>scoresheet$raw_vars</code>.</p>
 <p><strong>filter_at</strong>: filters rows of a dataset. Use <code>filter_at</code> dplyr conventions using <code>scoresheet$code</code></p>
-<p><strong>recode</strong>: recodes a variable into a new variable, using values defined in <code>scoresheet$new_vals</code></p>
-<p><strong>sum</strong>: sums variables identified in <code>scoresheet$raw_vars</code>. Provides weighted and unweighted sums, along with the number of and proportion of <code>NA</code> values in the sum</p>
-<p><strong>if_else</strong> : creates a new variable defined in <code>scoresheet$if_condition</code>, <code>scoresheet$if_true return</code>, <code>soresheet$else_return</code></p>
-<p><strong>case_when</strong> : creates a new variable using case_when code defined in <code>scoresheet$code</code></p>
+<p><strong>recode</strong>: recodes a variable into a new variable, using values defined in <code>scoresheet$new_vals</code>. Renames the new variable to the name defined in <code>scoresheet$new_var</code>. creates value labels defined in <code>scoresheet$val_labs</code>. labels new variable according to <code>scoresheet$label</code></p>
+<p><strong>sum</strong>: sums variables identified in <code>scoresheet$raw_vars</code>, new raw sum variable (NA values counted as 0) is named the value in <code>scoresheet$new_var</code>. In addition to the raw sum, four additional new variables are appended - complete case sums, the number of and proportion of <code>NA</code> values in the sum, and a weighted sum based on the number of variables included in the sum.</p>
+<p><strong>if_else</strong> : creates a new variable, <code>scoresheet$new_var</code>, defined in <code>scoresheet$if_condition</code>, <code>scoresheet$if_true return</code>, <code>soresheet$else_return</code></p>
+<p><strong>case_when</strong> : creates a new variable, <code>scoresheet$new_var</code>, using case_when code defined in <code>scoresheet$code</code></p>
 <p><strong>rename</strong>: renames a single variable entered in <code>scoresheet$raw_vars</code> to <code>scoresheet$new_var</code></p>
-<p><strong>mean</strong>: creates a mean of variables identified in <code>scoresheet$raw_vars</code>. Provides means with and without removal of NAs, includes number of an proportion of <code>NA</code> values in the mean.</p>
+<p><strong>mean</strong>: creates a mean of variables identified in <code>scoresheet$raw_vars</code>, named in accordance with <code>scoresheet$new_var</code>. In addition to the mean, three additional new variables are appended - the mean of complete cases only, and the number of an proportion of <code>NA</code> values in the mean.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
