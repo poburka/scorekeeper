@@ -40,10 +40,10 @@ functions in the scorekeeper package as you build the scoresheet.
 
 ## Scoresheet Structure
 
-***Necessary columns in a scoresheet include***:
+***Columns in a scoresheet include***:
 
-**raw_vars** : a raw variable or list of raw variables (comma separated,
-listed as a single character string) needed for an operation
+**raw_vars** : a raw variable or list of raw variables (either a vector
+or a single, comma separated character string) needed for an operation
 
 **new_var**: the desired name of a new variable created during the
 operation
@@ -57,11 +57,13 @@ operation
 with ‘1’. I recommend entering any raw metadata as ‘0’ to increase
 transparency of your scoring method when sharing a scoresheet
 
-**val_labs**: value labels for a new variable
+**val_labs**: value labels for a new variable. Follow the convention
+`label` = `value`. label/value pairs can be listed as a single, comma
+separated character string or as a vector of character strings
 
 **new_vals**: values to be recoded in a `recode` operation. Follow the
-convention ‘old’ = ‘new’, with commas separating each old/new pair.
-class(new_vals) should be a single charachter string
+convention `old` = `new`. old/new pairs can be listed as a single, comma
+separated character string or as a vector of character strings
 
 **if_condition**: a logical condition to be evaluated for an `if_else`
 operation
@@ -78,7 +80,6 @@ Not needed for other operations.
 The required columns in a scoresheet currently have limited flexibility
 – see documentation for the individual functions for details on these
 limitations. I anticipate adding additional functionality in the future.
-Enter `NA` for any elements that are unnecessary for a given operation.
 
 ## Operations
 
@@ -91,25 +92,33 @@ Current operations supported are:
 conventions using `scoresheet$code`
 
 **recode**: recodes a variable into a new variable, using values defined
-in `scoresheet$new_vals`
+in `scoresheet$new_vals`. Renames the new variable to the name defined
+in `scoresheet$new_var`. creates value labels defined in
+`scoresheet$val_labs`. labels new variable according to
+`scoresheet$label`
 
-**sum**: sums variables identified in `scoresheet$raw_vars`. Provides
-weighted and unweighted sums, along with the number of and proportion of
-`NA` values in the sum
+**sum**: sums variables identified in `scoresheet$raw_vars`, new raw sum
+variable (NA values counted as 0) is named the value in
+`scoresheet$new_var`. In addition to the raw sum, four additional new
+variables are appended - complete case sums, the number of and
+proportion of `NA` values in the sum, and a weighted sum based on the
+number of variables included in the sum.
 
-**if_else** : creates a new variable defined in
+**if_else** : creates a new variable, `scoresheet$new_var`, defined in
 `scoresheet$if_condition`, `scoresheet$if_true return`,
 `soresheet$else_return`
 
-**case_when** : creates a new variable using case_when code defined in
-`scoresheet$code`
+**case_when** : creates a new variable, `scoresheet$new_var`, using
+case_when code defined in `scoresheet$code`
 
 **rename**: renames a single variable entered in `scoresheet$raw_vars`
 to `scoresheet$new_var`
 
 **mean**: creates a mean of variables identified in
-`scoresheet$raw_vars`. Provides means with and without removal of NAs,
-includes number of an proportion of `NA` values in the mean.
+`scoresheet$raw_vars`, named in accordance with `scoresheet$new_var`. In
+addition to the mean, three additional new variables are appended - the
+mean of complete cases only, and the number of an proportion of `NA`
+values in the mean.
 
 ## Installation
 

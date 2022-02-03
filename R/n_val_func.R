@@ -9,7 +9,7 @@
 
 n_val_func <- function (scoresheet, i) {
   #new values are defined in a list, splitting by the commas in the charachter string
-  new_vals <- as.list(el(strsplit(scoresheet$new_vals[i], ",")))
+  new_vals <- new_vals(scoresheet, i)
   #the original values are defined as those on the left of the equals sign for each element in the list
   origin_list <- lapply(new_vals, function(x) sub("=.*", "", x))
   #the new values are defined as those on the right of the equals sign for each element in the list
@@ -20,4 +20,16 @@ n_val_func <- function (scoresheet, i) {
   names(n_val) <-origin_list
   #the list of new values (with the old values as their names) is returned
   return(n_val)
+}
+
+
+
+new_vals <- function (scoresheet, i) {
+  if (length(scoresheet$new_vals[i]) >1) {
+    new_vals <- scoresheet$new_vals[i]
+    return(new_vals)}
+  else {
+    new_vals <- as.list(el(strsplit(scoresheet$new_vals[i], ",")))
+    new_vals <- trimws(new_vals)
+    return(new_vals)}
 }

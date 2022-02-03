@@ -171,7 +171,7 @@ the variables that I would like to select in a comma separated list
 
 *note - currently the select operation only works if raw\_vars are
 entered in comma separated list format, with each variable fully listed.
-It will not evaluate across mutliple columns*
+It is not able to accomodate tidyselect actions*
 
 | raw\_vars                                                  | new\_var | label | operation | step | val\_labs | new\_vals | if\_condition | if\_true\_return | else\_return | code |
 | :--------------------------------------------------------- | :------- | :---- | :-------- | ---: | :-------- | :-------- | :------------ | :--------------- | :----------- | :--- |
