@@ -13,9 +13,9 @@
 #' @return a list of raw variables
 
 r_var_func <- function (scoresheet, i) {
-
-    if (length(scoresheet$raw_vars[i]) >1) {
-      raw_vars <- scoresheet$raw_vars[i]
+    raw_var_var <- scoresheet$raw_vars[[i]]
+    if (length(raw_var_var) >1) {
+      raw_vars <- raw_var_var
       return(raw_vars)}
     else {
       raw_vars <- as.list(el(strsplit(scoresheet$raw_vars[i], ",")))

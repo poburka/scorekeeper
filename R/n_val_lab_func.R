@@ -29,8 +29,9 @@ n_val_lab_func <- function (scoresheet, i) {
 
 val_lab_func <- function (scoresheet, i) {
 
-  if (length(scoresheet$val_labs[i]) >1) {
-    val_labs <- scoresheet$val_labs[i]
+  val_labs_var <- scoresheet$val_labs[[i]]
+  if (length(val_labs_var) >1) {
+    val_labs <- val_labs_var
     return(val_labs)}
   else {
     val_labs <- as.list(el(strsplit(scoresheet$val_labs[i], ",")))
