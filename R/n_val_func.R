@@ -25,9 +25,9 @@ n_val_func <- function (scoresheet, i) {
 
 
 new_vals <- function (scoresheet, i) {
-  new_vals_var <- scoresheet$new_vals[[i]]
-  if (length(new_vals_var) >1) {
-    val_labs <- new_vals_var
+  new_vals_var <- scoresheet$new_vals[i]
+  if (class(new_vals_var) == 'list') {
+    new_vals <- scoresheet$new_vals[[i]]
     return(new_vals)}
   else {
     new_vals <- as.list(el(strsplit(scoresheet$new_vals[i], ",")))

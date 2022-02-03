@@ -26,7 +26,7 @@ case_when_vars <- function (raw, scoresheet){
   new_table2 <- tibble(raw_data)
 
   for (i in 1:nrow(scoresheet)){
-    raw_var1 <- scoresheet$raw_vars[1]
+    raw_var1 <- scoresheet$raw_vars[[1]]
     new_var <- scoresheet$new_var[i]
     new_label <- scoresheet$label[i]
     case_when_code <- scoresheet$code[i]

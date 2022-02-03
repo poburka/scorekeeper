@@ -24,11 +24,11 @@ specified in the scoresheet. The scoresheet can then serve as a resource
 that will make your data cleaning process both reproducible and easily
 shared (e.g. if a colleague would like to score a measure in the same
 way that you did for their project on a different sample, you can send
-or post your RData or .csv scoresheet and it should easily replicate
-your scoring algorithm – no need to send or post additional code). While
-scoresheets are structured to be more easily developed and interpreted
-as compared to raw code, I also recommend a companion text file
-outlining each step in your data cleaning to maximize ease of
+or post your RData or .csv/.xlsx scoresheet and it should easily
+replicate your scoring algorithm – no need to send or post additional
+code). While scoresheets are structured to be more easily developed and
+interpreted as compared to raw code, I also recommend a companion text
+file outlining each step in your data cleaning to maximize ease of
 interpretation when sharing with others (or your future self!).
 Currently, scoresheets must be formatted in accordance with guidelines
 outlined in each of the ‘operation’ functions and with steps that
@@ -59,11 +59,11 @@ transparency of your scoring method when sharing a scoresheet
 
 **val_labs**: value labels for a new variable. Follow the convention
 `label` = `value`. label/value pairs can be listed as a single, comma
-separated character string or as a vector of character strings
+separated character string or as a vector of character strings.
 
 **new_vals**: values to be recoded in a `recode` operation. Follow the
 convention `old` = `new`. old/new pairs can be listed as a single, comma
-separated character string or as a vector of character strings
+separated character string or as a vector of character strings.
 
 **if_condition**: a logical condition to be evaluated for an `if_else`
 operation

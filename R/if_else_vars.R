@@ -50,12 +50,11 @@ if_else_function <- function (raw_tbl, n_var, if_cond, if_true_r, else_r, n_lab,
   new_tbl <-raw_tbl %>%
     #create a new variable that parses the three elements from the scoresheet -- 'if_condition', 'if_true_return', and 'else_return' into an if_else statement that is
     #readable by dplyr and evaluate it
-    mutate("{n_var}" := if_else( (eval_tidy(rlang::parse_expr(if_cond))), eval(parse(text = if_true_r)), eval(parse(text = else_r)), missing = NULL )) %>%
-    #label the new variable
-    set_variable_labels(!!as.name(n_var) := n_lab)
-  #if there are value labels - set the new value labels
-  new_tbl <- new_tbl %>%
-    mutate("{n_var}" := labelled(!!as.name(n_var), {{n_val_labs}}))
+    mutate("{n_var}" := if_else( (eval_tidy(rlang::parse_expr(if_cond))), eval(parse(text = if_true_r)), eval(parse(text = else_r)), missing = NULL ))
+    #set value labels and variable labels
+    new_tbl <- new_tbl %>%
+    mutate("{n_var}" := labelled(!!as.name(n_var), {{n_val_labs}})) %>%
+    set_variable_labels('{n_var}' := n_lab)
   return(new_tbl)
 }
 

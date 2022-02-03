@@ -29,7 +29,7 @@ recode_vars <- function (raw, scoresheet){
   #loop through the recode function, using the arguments defined frp, the scoresheet file and using the functions above
   for (i in 1:nrow(scoresheet)){
     new_var <- scoresheet$new_var[i]
-    raw_var <- scoresheet$raw_vars[i]
+    raw_var <- scoresheet$raw_vars[[i]]
     new_label <- scoresheet$label[i]
 
     new_table <- recode_function(raw_tbl = raw, n_var = new_var, r_var = raw_var, n_val = n_val_func(scoresheet, i), n_val_lab = n_val_lab_func(scoresheet,i), n_lab = new_label, n_var_factor = n_var_factor_func(scoresheet,i))

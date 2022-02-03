@@ -34,7 +34,7 @@ rename_vars <- function (raw, scoresheet) {
   tibbles <- tibble_func_2(scoresheet1)
   tibbles[[1]] <- raw_data
   while (i < x) {
-    raw_var <- scoresheet1$raw_vars[i]
+    raw_var <- scoresheet1$raw_vars[[i]]
     new_var <- scoresheet1$new_var[i]
     data_for_fun <- tibbles[[i]]
     tibbles[[m]] <- rename_func(data = data_for_fun, old_name = raw_var, new_name = {{new_var}})
