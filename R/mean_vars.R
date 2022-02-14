@@ -30,10 +30,10 @@ mean_vars <- function (raw, scoresheet){
     mean_table <- mean_function(raw_tbl = raw, n_var = new_var, r_vars = r_var_func(scoresheet, i), n_lab = new_label)
 
     #save the last 4 columns (the new sum column, the NAs column, the NA percent column, and the weighted sum column), and append to the 'new table'
-    new_table1 <- mean_table[,(ncol(mean_table)-4):ncol(mean_table)]
+    new_table1 <- mean_table[,(ncol(mean_table)-3):ncol(mean_table)]
 
     new_table2 <- new_table2 %>%
-      add_column(new_table1[1], new_table1[2], new_table1[3], new_table1[4], new_table1[5]) %>%
+      add_column(new_table1[1], new_table1[2], new_table1[3], new_table1[4]) %>%
       mutate_all(~replace(., is.nan(.), NA))
   }
 
