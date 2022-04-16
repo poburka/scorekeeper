@@ -23,7 +23,7 @@ documentation](https://dplyr.tidyverse.org) as well as the [scorekeeper
 documentation](https://embark-lab.github.io/scorekeeper/reference/index.html)
 for a specific operation if you are stuck on a particular piece of code.
 
-Ok\! Let’s get started. First, we load the scorekeeper package:
+Ok! Let’s get started. First, we load the scorekeeper package:
 
 ``` r
 library(scorekeeper)
@@ -37,18 +37,18 @@ of eating behavior, `ccq380`, `ccq381`, `ccq382` and `ccq383`.
 
 ## Raw Data
 
-| id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq380 | ccq381 | ccq382 | ccq383 |
-| -: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
-|  1 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |      1 |      1 |      1 |      1 |
-|  3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |      1 |      1 |      2 |      1 |
-|  4 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |      4 |      1 |      1 |      1 |
-|  6 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |      1 |      1 |      1 |      1 |
-|  7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |      4 |      2 |      1 |      2 |
-|  8 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |      1 |      2 |      1 |      4 |
-| 10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |      1 |      1 |      1 |      1 |
+|  id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq380 | ccq381 | ccq382 | ccq383 |
+|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+|   1 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |     -1 |     -1 |     -1 |     -1 |
+|   2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |      1 |      1 |      1 |      1 |
+|   3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |      1 |      1 |      2 |      1 |
+|   4 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |      4 |      1 |      1 |      1 |
+|   6 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |      1 |      1 |      1 |      1 |
+|   7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |      4 |      2 |      1 |      2 |
+|   8 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |      1 |      2 |      1 |      4 |
+|  10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |      1 |      1 |      1 |      1 |
 
 As you can see from the examples below, these variables are coded in
 ways that are slightly odd. For instance, `ccq360` is not a descriptive
@@ -155,27 +155,33 @@ to refer back to if I would like to remember how the original varialbes
 were coded before transformation. For example, see the first three rows
 of raw variables below:
 
-| raw\_vars | new\_var | label                                                                      | operation | step | val\_labs                                                                                                                                                                                     | new\_vals | if\_condition | if\_true\_return | else\_return | code |
-| :-------- | :------- | :------------------------------------------------------------------------- | :-------- | ---: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------ | :--------------- | :----------- | :--- |
-| ccq360    | NA       | B12/B11: Frequency respondent went on an eating binge during the past year | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Never = 1, \< once a month = 2, 1-3 times a month = 3, once a week = 4, \> once a week = 5 | NA        | NA            | NA               | NA           | NA   |
-| ccq370    | NA       | B13a/B12a: Respondent felt out of control when on a binge (ccq370)         | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA        | NA            | NA               | NA           | NA   |
-| ccq371    | NA       | B13b/B12b: Respondent ate very fast or faster than normal when on a binge  | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA        | NA            | NA               | NA           | NA   |
+| raw_vars | new_var | label                                                                      | operation | step | val_labs                                                                                                                                                                                      | new_vals | if_condition | if_true_return | else_return | code |
+|:---------|:--------|:---------------------------------------------------------------------------|:----------|-----:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|:-------------|:---------------|:------------|:-----|
+| ccq360   | NA      | B12/B11: Frequency respondent went on an eating binge during the past year | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Never = 1, \< once a month = 2, 1-3 times a month = 3, once a week = 4, \> once a week = 5 | NA       | NA           | NA             | NA          | NA   |
+| ccq370   | NA      | B13a/B12a: Respondent felt out of control when on a binge (ccq370)         | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA       | NA           | NA             | NA          | NA   |
+| ccq371   | NA      | B13b/B12b: Respondent ate very fast or faster than normal when on a binge  | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA       | NA           | NA             | NA          | NA   |
 
 ## Step 1
 
-I’m going to enter a row in a scoresheet (I use a .csv file with for
-easy entry and revision, then load it into r using `load_csv`). To
-select only the variables that I want, I add a row to my scoresheet with
-`operation` = select and `step` = 1. In the ‘raw\_vars’ column, I list
-the variables that I would like to select in a comma separated list
+I’m going to enter a row in a scoresheet (I use a .csv file in generic
+spreadsheet software for easy entry and revision, then load it into r
+using `load_csv`, make more minor edits, then save your working/final
+scoresheet as an RData file and/or export as .csv).
 
-*note - currently the select operation only works if raw\_vars are
-entered in comma separated list format, with each variable fully listed.
-It is not able to accomodate tidyselect actions*
+To select only the variables that I want, I add a row to my scoresheet
+with `operation` = select and `step` = 1. In the ‘raw_vars’ column, I
+list the variables that I would like to select in a comma separated
+charachter string. Any time there is a list of variables for input, they
+can be in one of two formats - a single, comma separated character
+string, or a vector of character strings.
 
-| raw\_vars                                                  | new\_var | label | operation | step | val\_labs | new\_vals | if\_condition | if\_true\_return | else\_return | code |
-| :--------------------------------------------------------- | :------- | :---- | :-------- | ---: | :-------- | :-------- | :------------ | :--------------- | :----------- | :--- |
-| id, ccq360, ccq370, ccq371, ccq372, ccq373, ccq374, ccq375 | NA       | NA    | select    |    1 | NA        | NA        | NA            | NA               | NA           | NA   |
+*note - currently the select operation only works with each element in a
+scoresheet fully listed. It is not able to accommodate tidyselect
+actions*
+
+| raw_vars                                                   | new_var | label | operation | step | val_labs | new_vals | if_condition | if_true_return | else_return | code |
+|:-----------------------------------------------------------|:--------|:------|:----------|-----:|:---------|:---------|:-------------|:---------------|:------------|:-----|
+| id, ccq360, ccq370, ccq371, ccq372, ccq373, ccq374, ccq375 | NA      | NA    | select    |    1 | NA       | NA       | NA           | NA             | NA          | NA   |
 
 Now I’ll use this row to select my variables of interest using the
 scorekeep function, with my raw data file (`binge_raw`) and scoresheet
@@ -185,34 +191,18 @@ that contains Steps 0-1 (`score1`):
 knitr::kable (scorekeep(binge_raw, score1))
 ```
 
-<table class="kable_wrapper">
-
-<tbody>
-
-<tr>
-
-<td>
-
-| id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 |
-| -: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
-|  1 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |
-|  2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |
-|  3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |
-|  4 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |
-|  6 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |
-|  7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |
-|  8 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |
-| 10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+|  id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 |
+|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+|   1 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |
+|   2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |
+|   3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |
+|   4 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |
+|   6 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |
+|   7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |
+|   8 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |
+|  10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |
 
 ## Step 2
 
@@ -223,14 +213,14 @@ additional details). For each row column ccq370-375, I will create a new
 variable with ’\_unskip’ appended to the end of each variable. For
 example, if `ccq370` == 1, I’ll change the value of the skipped variable
 to 3; otherwise, I’ll keep the original value. See below for example of
-this code which creates a new variable ‘ccq370\_unskip’:
+this code which creates a new variable ‘ccq370_unskip’:
 
-*note - the if\_else operation is currently designed to recode one
+*note - the if_else operation is currently designed to recode one
 variable per row. Vectorization may be available in future releases*
 
-| raw\_vars | new\_var       | label | operation | step | val\_labs | new\_vals | if\_condition | if\_true\_return | else\_return       | code |
-| :-------- | :------------- | :---- | :-------- | ---: | :-------- | :-------- | :------------ | :--------------- | :----------------- | :--- |
-| ccq370    | ccq370\_unskip | NA    | if\_else  |    2 | NA        | NA        | ccq360 == 1   | 3                | as.numeric(ccq370) | NA   |
+| raw_vars | new_var       | label | operation | step | val_labs | new_vals | if_condition | if_true_return | else_return        | code |
+|:---------|:--------------|:------|:----------|-----:|:---------|:---------|:-------------|:---------------|:-------------------|:-----|
+| ccq370   | ccq370_unskip | NA    | if_else   |    2 | NA       | NA       | ccq360 == 1  | 3              | as.numeric(ccq370) | NA   |
 
 Now we’ll expand our scoring to Steps 1-2
 
@@ -239,51 +229,31 @@ Now we’ll expand our scoring to Steps 1-2
 knitr::kable (scorekeep(binge_raw, score2))
 ```
 
-<table class="kable_wrapper">
+|  id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 |
+|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+|   1 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |
+|   2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |
+|   3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |
+|   4 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |
+|   6 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |
+|   7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |
+|   8 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |
+|   9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |
+|  10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |
 
-<tbody>
-
-<tr>
-
-<td>
-
-| id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 |
-| -: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
-|  1 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |
-|  2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |
-|  3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |
-|  4 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |
-|  6 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |
-|  7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |
-|  8 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |
-|  9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |
-| 10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |
-
-</td>
-
-<td>
-
-| id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq370\_unskip | ccq371\_unskip | ccq372\_unskip | ccq373\_unskip | ccq374\_unskip | ccq375\_unskip |
-| -: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -------------: | -------------: | -------------: | -------------: | -------------: | -------------: |
-|  1 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |              3 |              3 |              3 |              3 |              3 |              3 |
-|  2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |              3 |              3 |              3 |              3 |              3 |              3 |
-|  3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |              1 |              2 |              2 |              1 |              1 |              1 |
-|  4 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |
-|  5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |              3 |              2 |              1 |              2 |              3 |              1 |
-|  6 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |              3 |              3 |              3 |              3 |              3 |              3 |
-|  7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |              2 |              2 |              2 |              2 |              3 |              2 |
-|  8 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |
-|  9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |              3 |              2 |              2 |              3 |              3 |              2 |
-| 10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |              1 |              3 |              3 |              2 |              3 |              2 |
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+|  id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq370_unskip | ccq371_unskip | ccq372_unskip | ccq373_unskip | ccq374_unskip | ccq375_unskip |
+|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|
+|   1 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |             3 |             3 |             3 |             3 |             3 |             3 |
+|   2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |             3 |             3 |             3 |             3 |             3 |             3 |
+|   3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |             1 |             2 |             2 |             1 |             1 |             1 |
+|   4 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |            -1 |            -1 |            -1 |            -1 |            -1 |            -1 |
+|   5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |             3 |             2 |             1 |             2 |             3 |             1 |
+|   6 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |             3 |             3 |             3 |             3 |             3 |             3 |
+|   7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |             2 |             2 |             2 |             2 |             3 |             2 |
+|   8 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |            -1 |            -1 |            -1 |            -1 |            -1 |            -1 |
+|   9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |             3 |             2 |             2 |             3 |             3 |             2 |
+|  10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |             1 |             3 |             3 |             2 |             3 |             2 |
 
 You’ll see that we now have **2** tibbles in our output, one for each
 step. The first step selects the variables, and the second step corrects
@@ -296,7 +266,7 @@ create new variables. There are two operations where this is not the
 case. First, the `select` function will reduce columns in a tibble by
 selecting only those that are identified. Second, the `rename` function
 renames a column in a tibble directly. All other operations will
-generally require a ‘new\_var’ name that is NOT yet a named variable and
+generally require a ‘new_var’ name that is NOT yet a named variable and
 will append the newly created variable to the end of a tibble. You can
 always select your final variables and rename them back to an original
 name as a final step in the scorekeeping process if you prefer the
@@ -307,9 +277,9 @@ original name of a variable but need to make modifications to the data.*
 Now we’re ready for **Step 3**, recoding and renaming. Below is an
 example of what a scoresheet row will look like for this operation
 
-| raw\_vars      | new\_var         | label                                                 | operation | step | val\_labs                              | new\_vals                    | if\_condition | if\_true\_return | else\_return | code |
-| :------------- | :--------------- | :---------------------------------------------------- | :-------- | ---: | :------------------------------------- | :--------------------------- | :------------ | :--------------- | :----------- | :--- |
-| ccq370\_unskip | binge\_loc\_d.14 | Eating binges felt out of control - present or absent | recode    |    3 | no = 0, yes - sometimes or usually = 1 | 1 = 1, 2 = 1, 3 = 0, -1 = NA | NA            | NA               | NA           | NA   |
+| raw_vars      | new_var        | label                                                 | operation | step | val_labs                               | new_vals                     | if_condition | if_true_return | else_return | code |
+|:--------------|:---------------|:------------------------------------------------------|:----------|-----:|:---------------------------------------|:-----------------------------|:-------------|:---------------|:------------|:-----|
+| ccq370_unskip | binge_loc_d.14 | Eating binges felt out of control - present or absent | recode    |    3 | no = 0, yes - sometimes or usually = 1 | 1 = 1, 2 = 1, 3 = 0, -1 = NA | NA           | NA             | NA          | NA   |
 
 I am using the newly minted `ccq370_unskip` variable when recoding. I
 rename the variable something more sensible `binge_loc_d.14` - which
@@ -318,7 +288,7 @@ dichotomized, assessed at age 14. I edited the label just a bit as well.
 The new value labels are coded as ‘label’ = ‘value’, and the new values
 recode the old values under the pattern ‘old’ = ‘new’, with commas
 separating each element in the recoding scheme. Recoded variables will
-also include a companion variable ‘new\_var.factor’, which includes the
+also include a companion variable ‘new_var.factor’, which includes the
 value label easily visible, so that you can double check that your
 recoding scheme is correct.
 
@@ -332,21 +302,21 @@ and **saves each step** as a tibble in your output so that you can
 ensure that the correct transformations were made on each step and
 troubleshoot if necessary.
 
-| id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq370\_unskip | ccq371\_unskip | ccq372\_unskip | ccq373\_unskip | ccq374\_unskip | ccq375\_unskip | binge\_freq\_d.14 | binge\_freq\_d.14.factor | binge\_loc\_d.14 | binge\_loc\_d.14.factor    | binge\_fast\_d.14 | binge\_fast\_d.14.factor   | binge\_stomach\_d.14 | binge\_stomach\_d.14.factor | binge\_large\_d.14 | binge\_large\_d.14.factor  | binge\_hide\_d.14 | binge\_hide\_d.14.factor   | binge\_guilt\_d.14 | binge\_guilt\_d.14.factor  |
-| -: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -------------: | -------------: | -------------: | -------------: | -------------: | -------------: | ----------------: | :----------------------- | ---------------: | :------------------------- | ----------------: | :------------------------- | -------------------: | :-------------------------- | -----------------: | :------------------------- | ----------------: | :------------------------- | -----------------: | :------------------------- |
-|  1 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |              3 |              3 |              3 |              3 |              3 |              3 |                 0 | \<1x/mo; absent          |                0 | no                         |                 0 | no                         |                    0 | no                          |                  0 | no                         |                 0 | no                         |                  0 | no                         |
-|  2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |              3 |              3 |              3 |              3 |              3 |              3 |                 0 | \<1x/mo; absent          |                0 | no                         |                 0 | no                         |                    0 | no                          |                  0 | no                         |                 0 | no                         |                  0 | no                         |
-|  3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |              1 |              2 |              2 |              1 |              1 |              1 |                 0 | \<1x/mo; absent          |                1 | yes - sometimes or usually |                 1 | yes - sometimes or usually |                    1 | yes - sometimes or usually  |                  1 | yes - sometimes or usually |                 1 | yes - sometimes or usually |                  1 | yes - sometimes or usually |
-|  4 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |                NA | NA                       |               NA | NA                         |                NA | NA                         |                   NA | NA                          |                 NA | NA                         |                NA | NA                         |                 NA | NA                         |
-|  5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |              3 |              2 |              1 |              2 |              3 |              1 |                 0 | \<1x/mo; absent          |                0 | no                         |                 1 | yes - sometimes or usually |                    1 | yes - sometimes or usually  |                  1 | yes - sometimes or usually |                 0 | no                         |                  1 | yes - sometimes or usually |
-|  6 |      1 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |   \-10 |              3 |              3 |              3 |              3 |              3 |              3 |                 0 | \<1x/mo; absent          |                0 | no                         |                 0 | no                         |                    0 | no                          |                  0 | no                         |                 0 | no                         |                  0 | no                         |
-|  7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |              2 |              2 |              2 |              2 |              3 |              2 |                 0 | \<1x/mo; absent          |                1 | yes - sometimes or usually |                 1 | yes - sometimes or usually |                    1 | yes - sometimes or usually  |                  1 | yes - sometimes or usually |                 0 | no                         |                  1 | yes - sometimes or usually |
-|  8 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |    \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |            \-1 |                NA | NA                       |               NA | NA                         |                NA | NA                         |                   NA | NA                          |                 NA | NA                         |                NA | NA                         |                 NA | NA                         |
-|  9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |              3 |              2 |              2 |              3 |              3 |              2 |                 1 | 1x/mo or more; present   |                0 | no                         |                 1 | yes - sometimes or usually |                    1 | yes - sometimes or usually  |                  0 | no                         |                 0 | no                         |                  1 | yes - sometimes or usually |
-| 10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |              1 |              3 |              3 |              2 |              3 |              2 |                 0 | \<1x/mo; absent          |                1 | yes - sometimes or usually |                 0 | no                         |                    0 | no                          |                  1 | yes - sometimes or usually |                 0 | no                         |                  1 | yes - sometimes or usually |
+|  id | ccq360 | ccq370 | ccq371 | ccq372 | ccq373 | ccq374 | ccq375 | ccq370_unskip | ccq371_unskip | ccq372_unskip | ccq373_unskip | ccq374_unskip | ccq375_unskip | binge_freq_d.14 | binge_freq_d.14.factor | binge_loc_d.14 | binge_loc_d.14.factor      | binge_fast_d.14 | binge_fast_d.14.factor     | binge_stomach_d.14 | binge_stomach_d.14.factor  | binge_large_d.14 | binge_large_d.14.factor    | binge_hide_d.14 | binge_hide_d.14.factor     | binge_guilt_d.14 | binge_guilt_d.14.factor    |
+|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|----------------:|:-----------------------|---------------:|:---------------------------|----------------:|:---------------------------|-------------------:|:---------------------------|-----------------:|:---------------------------|----------------:|:---------------------------|-----------------:|:---------------------------|
+|   1 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |             3 |             3 |             3 |             3 |             3 |             3 |               0 | \<1x/mo; absent        |              0 | no                         |               0 | no                         |                  0 | no                         |                0 | no                         |               0 | no                         |                0 | no                         |
+|   2 |      2 |      3 |      3 |      3 |      3 |      3 |      3 |             3 |             3 |             3 |             3 |             3 |             3 |               0 | \<1x/mo; absent        |              0 | no                         |               0 | no                         |                  0 | no                         |                0 | no                         |               0 | no                         |                0 | no                         |
+|   3 |      2 |      1 |      2 |      2 |      1 |      1 |      1 |             1 |             2 |             2 |             1 |             1 |             1 |               0 | \<1x/mo; absent        |              1 | yes - sometimes or usually |               1 | yes - sometimes or usually |                  1 | yes - sometimes or usually |                1 | yes - sometimes or usually |               1 | yes - sometimes or usually |                1 | yes - sometimes or usually |
+|   4 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |            -1 |            -1 |            -1 |            -1 |            -1 |            -1 |              NA | NA                     |             NA | NA                         |              NA | NA                         |                 NA | NA                         |               NA | NA                         |              NA | NA                         |               NA | NA                         |
+|   5 |      2 |      3 |      2 |      1 |      2 |      3 |      1 |             3 |             2 |             1 |             2 |             3 |             1 |               0 | \<1x/mo; absent        |              0 | no                         |               1 | yes - sometimes or usually |                  1 | yes - sometimes or usually |                1 | yes - sometimes or usually |               0 | no                         |                1 | yes - sometimes or usually |
+|   6 |      1 |    -10 |    -10 |    -10 |    -10 |    -10 |    -10 |             3 |             3 |             3 |             3 |             3 |             3 |               0 | \<1x/mo; absent        |              0 | no                         |               0 | no                         |                  0 | no                         |                0 | no                         |               0 | no                         |                0 | no                         |
+|   7 |      2 |      2 |      2 |      2 |      2 |      3 |      2 |             2 |             2 |             2 |             2 |             3 |             2 |               0 | \<1x/mo; absent        |              1 | yes - sometimes or usually |               1 | yes - sometimes or usually |                  1 | yes - sometimes or usually |                1 | yes - sometimes or usually |               0 | no                         |                1 | yes - sometimes or usually |
+|   8 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |     -1 |            -1 |            -1 |            -1 |            -1 |            -1 |            -1 |              NA | NA                     |             NA | NA                         |              NA | NA                         |                 NA | NA                         |               NA | NA                         |              NA | NA                         |               NA | NA                         |
+|   9 |      4 |      3 |      2 |      2 |      3 |      3 |      2 |             3 |             2 |             2 |             3 |             3 |             2 |               1 | 1x/mo or more; present |              0 | no                         |               1 | yes - sometimes or usually |                  1 | yes - sometimes or usually |                0 | no                         |               0 | no                         |                1 | yes - sometimes or usually |
+|  10 |      2 |      1 |      3 |      3 |      2 |      3 |      2 |             1 |             3 |             3 |             2 |             3 |             2 |               0 | \<1x/mo; absent        |              1 | yes - sometimes or usually |               0 | no                         |                  0 | no                         |                1 | yes - sometimes or usually |               0 | no                         |                1 | yes - sometimes or usually |
 
 This concludes the first chunk of data cleaning - recoding the raw
-variables – in this example. Our variables binge\_freq\_d.14 through the
+variables – in this example. Our variables binge_freq_d.14 through the
 end of the tibble now represent appropriately coded (dichotomized)
 variables for our analysis. For the second chunk of data cleaning, we’ll
 create composite scores. The composite scores that I have decided to
@@ -363,9 +333,9 @@ Our next step will be to create a sum score. Below is the scoresheet row
 to create our symptom sum score, which gives a count of the number of
 binge eating symptoms (0-6) that are present for each individual
 
-| raw\_vars                                                                                                            | new\_var          | label                               | operation | step | val\_labs | new\_vals | if\_condition | if\_true\_return | else\_return | code |
-| :------------------------------------------------------------------------------------------------------------------- | :---------------- | :---------------------------------- | :-------- | ---: | :-------- | :-------- | :------------ | :--------------- | :----------- | :--- |
-| binge\_loc\_d.14, binge\_fast\_d.14, binge\_stomach\_d.14, binge\_large\_d.14, binge\_hide\_d.14, binge\_guilt\_d.14 | binge\_sx\_sum.14 | Sum of binge eating symtpoms Age 14 | sum       |    4 | NA        | NA        | NA            | NA               | NA           | NA   |
+| raw_vars                                                                                                 | new_var         | label                               | operation | step | val_labs | new_vals | if_condition | if_true_return | else_return | code |
+|:---------------------------------------------------------------------------------------------------------|:----------------|:------------------------------------|:----------|-----:|:---------|:---------|:-------------|:---------------|:------------|:-----|
+| binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14 | binge_sx_sum.14 | Sum of binge eating symtpoms Age 14 | sum       |    4 | NA       | NA       | NA           | NA             | NA          | NA   |
 
 The sum operation computes five variables, the raw sum of the list of
 variables provided in `raw_vars` (NAs excluded), the raw sum of those
@@ -374,18 +344,18 @@ values that are missing, and a weighted sum (weighted by the number of
 non-missing values). Below are the last 5 columns of the tibble created
 in Step 4:
 
-| binge\_sx\_sum.14 | binge\_sx\_sum.14\_complete | binge\_sx\_sum.14\_NAs | binge\_sx\_sum.14\_NA\_percent | binge\_sx\_sum.14\_weighted\_sum |
-| ----------------: | --------------------------: | ---------------------: | -----------------------------: | -------------------------------: |
-|                 0 |                           0 |                      0 |                              0 |                                0 |
-|                 0 |                           0 |                      0 |                              0 |                                0 |
-|                 6 |                           6 |                      0 |                              0 |                                6 |
-|                 0 |                          NA |                      6 |                            100 |                               NA |
-|                 4 |                           4 |                      0 |                              0 |                                4 |
-|                 0 |                           0 |                      0 |                              0 |                                0 |
-|                 5 |                           5 |                      0 |                              0 |                                5 |
-|                 0 |                          NA |                      6 |                            100 |                               NA |
-|                 3 |                           3 |                      0 |                              0 |                                3 |
-|                 3 |                           3 |                      0 |                              0 |                                3 |
+| binge_sx_sum.14 | binge_sx_sum.14_complete | binge_sx_sum.14_NAs | binge_sx_sum.14_NA_percent | binge_sx_sum.14_weighted_sum |
+|----------------:|-------------------------:|--------------------:|---------------------------:|-----------------------------:|
+|               0 |                        0 |                   0 |                          0 |                            0 |
+|               0 |                        0 |                   0 |                          0 |                            0 |
+|               6 |                        6 |                   0 |                          0 |                            6 |
+|               0 |                       NA |                   6 |                        100 |                           NA |
+|               4 |                        4 |                   0 |                          0 |                            4 |
+|               0 |                        0 |                   0 |                          0 |                            0 |
+|               5 |                        5 |                   0 |                          0 |                            5 |
+|               0 |                       NA |                   6 |                        100 |                           NA |
+|               3 |                        3 |                   0 |                          0 |                            3 |
+|               3 |                        3 |                   0 |                          0 |                            3 |
 
 ## Step 5
 
@@ -400,26 +370,26 @@ score into ‘absent’, ‘mild’, and ‘severe’ cases based on the number 
 symtpoms reported. See `if_else`, `filter_at` and `case_when`
 documentation in the package help files for more information.
 
-| raw\_vars                            | new\_var                 | label                                              | operation  | step | val\_labs                        | new\_vals | if\_condition                                   | if\_true\_return | else\_return | code                                                                                                           |
-| :----------------------------------- | :----------------------- | :------------------------------------------------- | :--------- | ---: | :------------------------------- | :-------- | :---------------------------------------------- | :--------------- | :----------- | :------------------------------------------------------------------------------------------------------------- |
-| binge\_sx\_sum.14, binge\_freq\_d.14 | binge\_present.14        | binge eating present and more than 2 symptoms      | if\_else   |    5 | present = 1, absent = 0          | NA        | binge\_freq\_d.14 == 1 & binge\_sx\_sum.14 \> 2 | 1                | 0            | NA                                                                                                             |
-| binge\_sx\_sum.14                    | binge\_sx\_sum\_split.14 | Binge symptoms sum split into absent, mild, severe | case\_when |    5 | absent = 0, mild = 1, severe = 2 | NA        | NA                                              | NA               | NA           | binge\_sx\_sum.14 == 0 \~ 0, binge\_sx\_sum.14 \> 0 & binge\_sx\_sum.14 \<=3 \~ 1, binge\_sx\_sum.14 \> 3 \~ 2 |
-| NA                                   | NA                       | NA                                                 | filter\_at |    5 | NA                               | NA        | NA                                              | NA               | NA           | c(15:28), any\_vars(\!is.na(.))                                                                                |
+| raw_vars                         | new_var               | label                                              | operation | step | val_labs                         | new_vals | if_condition                                | if_true_return | else_return | code                                                                                                   |
+|:---------------------------------|:----------------------|:---------------------------------------------------|:----------|-----:|:---------------------------------|:---------|:--------------------------------------------|:---------------|:------------|:-------------------------------------------------------------------------------------------------------|
+| binge_sx_sum.14, binge_freq_d.14 | binge_present.14      | binge eating present and more than 2 symptoms      | if_else   |    5 | present = 1, absent = 0          | NA       | binge_freq_d.14 == 1 & binge_sx_sum.14 \> 2 | 1              | 0           | NA                                                                                                     |
+| binge_sx_sum.14                  | binge_sx_sum_split.14 | Binge symptoms sum split into absent, mild, severe | case_when |    5 | absent = 0, mild = 1, severe = 2 | NA       | NA                                          | NA             | NA          | binge_sx_sum.14 == 0 \~ 0, binge_sx_sum.14 \> 0 & binge_sx_sum.14 \<=3 \~ 1, binge_sx_sum.14 \> 3 \~ 2 |
+| NA                               | NA                    | NA                                                 | filter_at |    5 | NA                               | NA       | NA                                          | NA             | NA          | c(15:28), any_vars(!is.na(.))                                                                          |
 
 The last two variables created are seen below:
 
-| binge\_present.14 | binge\_sx\_sum\_split.14 |
-| ----------------: | -----------------------: |
-|                 0 |                        0 |
-|                 0 |                        0 |
-|                 0 |                        2 |
-|                 0 |                        0 |
-|                 0 |                        2 |
-|                 0 |                        0 |
-|                 0 |                        2 |
-|                 0 |                        0 |
-|                 1 |                        1 |
-|                 0 |                        1 |
+| binge_present.14 | binge_sx_sum_split.14 |
+|-----------------:|----------------------:|
+|                0 |                     0 |
+|                0 |                     0 |
+|                0 |                     2 |
+|                0 |                     0 |
+|                0 |                     2 |
+|                0 |                     0 |
+|                0 |                     2 |
+|                0 |                     0 |
+|                1 |                     1 |
+|                0 |                     1 |
 
 ## Steps 6-7
 
@@ -428,44 +398,44 @@ clean up the dataset. In step 6, we select only a few columns that will
 go into the final dataset, and in step 7, we rename
 `binge_sx_sum_split.14` to a simpler name: `binge_severity.14`
 
-| raw\_vars                                                                                                                                                                                                   | new\_var           | label | operation | step | val\_labs | new\_vals | if\_condition | if\_true\_return | else\_return | code |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------- | :---- | :-------- | ---: | :-------- | :-------- | :------------ | :--------------- | :----------- | :--- |
-| id, binge\_freq\_d.14, binge\_loc\_d.14, binge\_fast\_d.14, binge\_stomach\_d.14, binge\_large\_d.14, binge\_hide\_d.14, binge\_guilt\_d.14, binge\_present.14, binge\_sx\_sum.14, binge\_sx\_sum\_split.14 | NA                 | NA    | select    |    6 | NA        | NA        | NA            | NA               | NA           | NA   |
-| binge\_sx\_sum\_split.14                                                                                                                                                                                    | binge\_severity.14 | NA    | rename    |    7 | NA        | NA        | NA            | NA               | NA           | NA   |
+| raw_vars                                                                                                                                                                                | new_var           | label | operation | step | val_labs | new_vals | if_condition | if_true_return | else_return | code |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|:------|:----------|-----:|:---------|:---------|:-------------|:---------------|:------------|:-----|
+| id, binge_freq_d.14, binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14, binge_present.14, binge_sx_sum.14, binge_sx_sum_split.14 | NA                | NA    | select    |    6 | NA       | NA       | NA           | NA             | NA          | NA   |
+| binge_sx_sum_split.14                                                                                                                                                                   | binge_severity.14 | NA    | rename    |    7 | NA       | NA       | NA           | NA             | NA          | NA   |
 
 ## The Final Reveal
 
 Putting it all together: we now have a full scoresheet -
 
-| raw\_vars                                                                                                                                                                                                   | new\_var                 | label                                                                                              | operation  | step | val\_labs                                                                                                                                                                                     | new\_vals                                 | if\_condition                                   | if\_true\_return | else\_return       | code                                                                                                           |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :------------------------------------------------------------------------------------------------- | :--------- | ---: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------- | :---------------------------------------------- | :--------------- | :----------------- | :------------------------------------------------------------------------------------------------------------- |
-| ccq360                                                                                                                                                                                                      | NA                       | B12/B11: Frequency respondent went on an eating binge during the past year                         | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Never = 1, \< once a month = 2, 1-3 times a month = 3, once a week = 4, \> once a week = 5 | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq370                                                                                                                                                                                                      | NA                       | B13a/B12a: Respondent felt out of control when on a binge (ccq370)                                 | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq371                                                                                                                                                                                                      | NA                       | B13b/B12b: Respondent ate very fast or faster than normal when on a binge                          | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq372                                                                                                                                                                                                      | NA                       | B13c/B12c: Respondent ate until their stomach hurt or they felt sick when on a binge               | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq373                                                                                                                                                                                                      | NA                       | B13d/B12d: Respondent ate really large amounts of food when not hungry when on a binge (ccq373)    | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq374                                                                                                                                                                                                      | NA                       | B13e/B12e: Respondent ate by themselves to hide amount eaten when on a binge (ccq374)              | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq375                                                                                                                                                                                                      | NA                       | B13f/B12f: Respondent felt really bad / guilty after eating a lot of food when on a binge (ccq375) | raw        |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| id, ccq360, ccq370, ccq371, ccq372, ccq373, ccq374, ccq375                                                                                                                                                  | NA                       | NA                                                                                                 | select     |    1 | NA                                                                                                                                                                                            | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq370                                                                                                                                                                                                      | ccq370\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq370) | NA                                                                                                             |
-| ccq371                                                                                                                                                                                                      | ccq371\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq371) | NA                                                                                                             |
-| ccq372                                                                                                                                                                                                      | ccq372\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq372) | NA                                                                                                             |
-| ccq373                                                                                                                                                                                                      | ccq373\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq373) | NA                                                                                                             |
-| ccq374                                                                                                                                                                                                      | ccq374\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq374) | NA                                                                                                             |
-| ccq375                                                                                                                                                                                                      | ccq375\_unskip           | NA                                                                                                 | if\_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                     | 3                | as.numeric(ccq375) | NA                                                                                                             |
-| ccq360                                                                                                                                                                                                      | binge\_freq\_d.14        | Eating binges (eating a large amount of food) present or absent in the past year’                  | recode     |    3 | \<1x/mo; absent = 0, 1x/mo or more; present = 1                                                                                                                                               | 1 = 0, 2= 0, 3 = 1, 4 = 1, 5 = 1, -1 = NA | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq370\_unskip                                                                                                                                                                                              | binge\_loc\_d.14         | Eating binges felt out of control - present or absent                                              | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq371\_unskip                                                                                                                                                                                              | binge\_fast\_d.14        | Eating Very fast or faster than normal when on a binge - present or absent                         | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq372\_unskip                                                                                                                                                                                              | binge\_stomach\_d.14     | Eating until Stomach hurt or felt sick - present or absent                                         | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq373\_unskip                                                                                                                                                                                              | binge\_large\_d.14       | Eating large amounts of food when not hungry - present or absent                                   | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq374\_unskip                                                                                                                                                                                              | binge\_hide\_d.14        | Hiding amount eaten when on a binge - present or absent                                            | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| ccq375\_unskip                                                                                                                                                                                              | binge\_guilt\_d.14       | Feeling bad or guilty after a binge - present or absent                                            | recode     |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                              | NA               | NA                 | NA                                                                                                             |
-| binge\_loc\_d.14, binge\_fast\_d.14, binge\_stomach\_d.14, binge\_large\_d.14, binge\_hide\_d.14, binge\_guilt\_d.14                                                                                        | binge\_sx\_sum.14        | Sum of binge eating symtpoms Age 14                                                                | sum        |    4 | NA                                                                                                                                                                                            | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| binge\_sx\_sum.14, binge\_freq\_d.14                                                                                                                                                                        | binge\_present.14        | binge eating present and more than 2 symptoms                                                      | if\_else   |    5 | present = 1, absent = 0                                                                                                                                                                       | NA                                        | binge\_freq\_d.14 == 1 & binge\_sx\_sum.14 \> 2 | 1                | 0                  | NA                                                                                                             |
-| binge\_sx\_sum.14                                                                                                                                                                                           | binge\_sx\_sum\_split.14 | Binge symptoms sum split into absent, mild, severe                                                 | case\_when |    5 | absent = 0, mild = 1, severe = 2                                                                                                                                                              | NA                                        | NA                                              | NA               | NA                 | binge\_sx\_sum.14 == 0 \~ 0, binge\_sx\_sum.14 \> 0 & binge\_sx\_sum.14 \<=3 \~ 1, binge\_sx\_sum.14 \> 3 \~ 2 |
-| NA                                                                                                                                                                                                          | NA                       | NA                                                                                                 | filter\_at |    5 | NA                                                                                                                                                                                            | NA                                        | NA                                              | NA               | NA                 | c(15:28), any\_vars(\!is.na(.))                                                                                |
-| id, binge\_freq\_d.14, binge\_loc\_d.14, binge\_fast\_d.14, binge\_stomach\_d.14, binge\_large\_d.14, binge\_hide\_d.14, binge\_guilt\_d.14, binge\_present.14, binge\_sx\_sum.14, binge\_sx\_sum\_split.14 | NA                       | NA                                                                                                 | select     |    6 | NA                                                                                                                                                                                            | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
-| binge\_sx\_sum\_split.14                                                                                                                                                                                    | binge\_severity.14       | NA                                                                                                 | rename     |    7 | NA                                                                                                                                                                                            | NA                                        | NA                                              | NA               | NA                 | NA                                                                                                             |
+| raw_vars                                                                                                                                                                                | new_var               | label                                                                                              | operation | step | val_labs                                                                                                                                                                                      | new_vals                                  | if_condition                                | if_true_return | else_return        | code                                                                                                   |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------|:---------------------------------------------------------------------------------------------------|:----------|-----:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------|:--------------------------------------------|:---------------|:-------------------|:-------------------------------------------------------------------------------------------------------|
+| ccq360                                                                                                                                                                                  | NA                    | B12/B11: Frequency respondent went on an eating binge during the past year                         | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Never = 1, \< once a month = 2, 1-3 times a month = 3, once a week = 4, \> once a week = 5 | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq370                                                                                                                                                                                  | NA                    | B13a/B12a: Respondent felt out of control when on a binge (ccq370)                                 | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq371                                                                                                                                                                                  | NA                    | B13b/B12b: Respondent ate very fast or faster than normal when on a binge                          | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq372                                                                                                                                                                                  | NA                    | B13c/B12c: Respondent ate until their stomach hurt or they felt sick when on a binge               | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq373                                                                                                                                                                                  | NA                    | B13d/B12d: Respondent ate really large amounts of food when not hungry when on a binge (ccq373)    | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq374                                                                                                                                                                                  | NA                    | B13e/B12e: Respondent ate by themselves to hide amount eaten when on a binge (ccq374)              | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq375                                                                                                                                                                                  | NA                    | B13f/B12f: Respondent felt really bad / guilty after eating a lot of food when on a binge (ccq375) | raw       |    0 | consent withrdrawn by YP = -9999, triplet/quadruplet = -11, Not completed = -10, No response = -1, Yes, usually = 1, Yes, sometimes = 2, No =3                                                | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| id, ccq360, ccq370, ccq371, ccq372, ccq373, ccq374, ccq375                                                                                                                              | NA                    | NA                                                                                                 | select    |    1 | NA                                                                                                                                                                                            | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq370                                                                                                                                                                                  | ccq370_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq370) | NA                                                                                                     |
+| ccq371                                                                                                                                                                                  | ccq371_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq371) | NA                                                                                                     |
+| ccq372                                                                                                                                                                                  | ccq372_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq372) | NA                                                                                                     |
+| ccq373                                                                                                                                                                                  | ccq373_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq373) | NA                                                                                                     |
+| ccq374                                                                                                                                                                                  | ccq374_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq374) | NA                                                                                                     |
+| ccq375                                                                                                                                                                                  | ccq375_unskip         | NA                                                                                                 | if_else   |    2 | NA                                                                                                                                                                                            | NA                                        | ccq360 == 1                                 | 3              | as.numeric(ccq375) | NA                                                                                                     |
+| ccq360                                                                                                                                                                                  | binge_freq_d.14       | Eating binges (eating a large amount of food) present or absent in the past year’                  | recode    |    3 | \<1x/mo; absent = 0, 1x/mo or more; present = 1                                                                                                                                               | 1 = 0, 2= 0, 3 = 1, 4 = 1, 5 = 1, -1 = NA | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq370_unskip                                                                                                                                                                           | binge_loc_d.14        | Eating binges felt out of control - present or absent                                              | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq371_unskip                                                                                                                                                                           | binge_fast_d.14       | Eating Very fast or faster than normal when on a binge - present or absent                         | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq372_unskip                                                                                                                                                                           | binge_stomach_d.14    | Eating until Stomach hurt or felt sick - present or absent                                         | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq373_unskip                                                                                                                                                                           | binge_large_d.14      | Eating large amounts of food when not hungry - present or absent                                   | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq374_unskip                                                                                                                                                                           | binge_hide_d.14       | Hiding amount eaten when on a binge - present or absent                                            | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| ccq375_unskip                                                                                                                                                                           | binge_guilt_d.14      | Feeling bad or guilty after a binge - present or absent                                            | recode    |    3 | no = 0, yes - sometimes or usually = 1                                                                                                                                                        | 1 = 1, 2 = 1, 3 = 0, -1 = NA              | NA                                          | NA             | NA                 | NA                                                                                                     |
+| binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14                                                                                | binge_sx_sum.14       | Sum of binge eating symtpoms Age 14                                                                | sum       |    4 | NA                                                                                                                                                                                            | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| binge_sx_sum.14, binge_freq_d.14                                                                                                                                                        | binge_present.14      | binge eating present and more than 2 symptoms                                                      | if_else   |    5 | present = 1, absent = 0                                                                                                                                                                       | NA                                        | binge_freq_d.14 == 1 & binge_sx_sum.14 \> 2 | 1              | 0                  | NA                                                                                                     |
+| binge_sx_sum.14                                                                                                                                                                         | binge_sx_sum_split.14 | Binge symptoms sum split into absent, mild, severe                                                 | case_when |    5 | absent = 0, mild = 1, severe = 2                                                                                                                                                              | NA                                        | NA                                          | NA             | NA                 | binge_sx_sum.14 == 0 \~ 0, binge_sx_sum.14 \> 0 & binge_sx_sum.14 \<=3 \~ 1, binge_sx_sum.14 \> 3 \~ 2 |
+| NA                                                                                                                                                                                      | NA                    | NA                                                                                                 | filter_at |    5 | NA                                                                                                                                                                                            | NA                                        | NA                                          | NA             | NA                 | c(15:28), any_vars(!is.na(.))                                                                          |
+| id, binge_freq_d.14, binge_loc_d.14, binge_fast_d.14, binge_stomach_d.14, binge_large_d.14, binge_hide_d.14, binge_guilt_d.14, binge_present.14, binge_sx_sum.14, binge_sx_sum_split.14 | NA                    | NA                                                                                                 | select    |    6 | NA                                                                                                                                                                                            | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
+| binge_sx_sum_split.14                                                                                                                                                                   | binge_severity.14     | NA                                                                                                 | rename    |    7 | NA                                                                                                                                                                                            | NA                                        | NA                                          | NA             | NA                 | NA                                                                                                     |
 
 And we can use that scoresheet to fully score our binge eating measure
 with just **one line of code**:
@@ -476,16 +446,16 @@ cleaned_data <-  scorekeep(binge_raw, binge_scoresheet)
 
 The last tibble in this set of 7 tibbles will be the fully cleaned data
 
-| id | binge\_freq\_d.14 | binge\_loc\_d.14 | binge\_fast\_d.14 | binge\_stomach\_d.14 | binge\_large\_d.14 | binge\_hide\_d.14 | binge\_guilt\_d.14 | binge\_present.14 | binge\_sx\_sum.14 | binge\_severity.14 |
-| -: | ----------------: | ---------------: | ----------------: | -------------------: | -----------------: | ----------------: | -----------------: | ----------------: | ----------------: | -----------------: |
-|  1 |                 0 |                0 |                 0 |                    0 |                  0 |                 0 |                  0 |                 0 |                 0 |                  0 |
-|  2 |                 0 |                0 |                 0 |                    0 |                  0 |                 0 |                  0 |                 0 |                 0 |                  0 |
-|  3 |                 0 |                1 |                 1 |                    1 |                  1 |                 1 |                  1 |                 0 |                 6 |                  2 |
-|  5 |                 0 |                0 |                 1 |                    1 |                  1 |                 0 |                  1 |                 0 |                 4 |                  2 |
-|  6 |                 0 |                0 |                 0 |                    0 |                  0 |                 0 |                  0 |                 0 |                 0 |                  0 |
-|  7 |                 0 |                1 |                 1 |                    1 |                  1 |                 0 |                  1 |                 0 |                 5 |                  2 |
-|  9 |                 1 |                0 |                 1 |                    1 |                  0 |                 0 |                  1 |                 1 |                 3 |                  1 |
-| 10 |                 0 |                1 |                 0 |                    0 |                  1 |                 0 |                  1 |                 0 |                 3 |                  1 |
+|  id | binge_freq_d.14 | binge_loc_d.14 | binge_fast_d.14 | binge_stomach_d.14 | binge_large_d.14 | binge_hide_d.14 | binge_guilt_d.14 | binge_present.14 | binge_sx_sum.14 | binge_severity.14 |
+|----:|----------------:|---------------:|----------------:|-------------------:|-----------------:|----------------:|-----------------:|-----------------:|----------------:|------------------:|
+|   1 |               0 |              0 |               0 |                  0 |                0 |               0 |                0 |                0 |               0 |                 0 |
+|   2 |               0 |              0 |               0 |                  0 |                0 |               0 |                0 |                0 |               0 |                 0 |
+|   3 |               0 |              1 |               1 |                  1 |                1 |               1 |                1 |                0 |               6 |                 2 |
+|   5 |               0 |              0 |               1 |                  1 |                1 |               0 |                1 |                0 |               4 |                 2 |
+|   6 |               0 |              0 |               0 |                  0 |                0 |               0 |                0 |                0 |               0 |                 0 |
+|   7 |               0 |              1 |               1 |                  1 |                1 |               0 |                1 |                0 |               5 |                 2 |
+|   9 |               1 |              0 |               1 |                  1 |                0 |               0 |                1 |                1 |               3 |                 1 |
+|  10 |               0 |              1 |               0 |                  0 |                1 |               0 |                1 |                0 |               3 |                 1 |
 
 And we can start to analyze our cleaned variables, which I can then
 save, export, and connect with other data files :)
@@ -513,4 +483,4 @@ be used for any multi-item scoring tasks, it shines for algorithmic
 tasks (i.e. deriving psychological diagnoses), which often involve
 multiple `if_else` or `case_when` statements.
 
-**Happy scoring\!**
+**Happy scoring!**
