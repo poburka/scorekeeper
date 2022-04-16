@@ -19,7 +19,8 @@ Imports:
     purrr,
     rlang,
     tibble,
-    stats
+    stats,
+    stringr
 Suggests: 
     knitr,
     rmarkdown,

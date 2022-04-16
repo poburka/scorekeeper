@@ -8,6 +8,7 @@
 #' @import dplyr
 #' @import labelled
 #' @import tibble
+#' @import stringr
 #' @importFrom rlang parse_expr
 #' @return a tibble with 'new_var' appended.
 #' @export
