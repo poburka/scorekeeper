@@ -13,7 +13,8 @@ A data cleaning package, by Katherine Schaumberg
 For a detailed example of how this package works, see [package
 vignette](https://embark-lab.github.io/scorekeeper/articles/scorekeeper-vignette.html)
 
-For instructional videos, see my [youtube playlist](https://www.youtube.com/playlist?list=PLj0MKOezmHuAfQEhidIuzTjV8fUD67U58)
+Instructional Videos Can be Found Here
+https://www.youtube.com/playlist?list=PLj0MKOezmHuAfQEhidIuzTjV8fUD67U58
 
 The goal of scorekeeper is to support the development of accessible,
 approachable, and reproducible scoring algorithms for multi-item
