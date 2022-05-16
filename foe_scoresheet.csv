@@ -1,0 +1,48 @@
+﻿raw_vars,new_var,label,operation,step,val_labs,new_vals,if_condition,if_true_return,else_return,code
+function_1,NA,"I exercise to reduce feelings of anger, sadness, loneliness, anxiety, etc.",raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_2,NA,I exercise to get a reaction from someone even if it's negative.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_3,NA,I exercise to give myself something to do when you are alone.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_4,NA,I exercise to avoid having to do something unpleasant that I don't want to do.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_5,NA,I exercise to relieve anxiety.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_6,NA,I exercise to prevent bad feelings.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_7,NA,I exercise to let others know how desperate I was feeling.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_8,NA,I exercise to escape/avoid/stop bad feelings.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_9,NA,I exercise to communicate to others how badly I feel inside.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_10,NA,"I exercise to avoid school, work, or other activities.",raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_11,NA,I exercise to get other people to understand or notice me.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_12,NA,I exercise to ground myself/return from a dissociative state.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_13,NA,I exercise to get attention.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_14,NA,I exercise to slow down racing thoughts.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_15,NA,I exercise to feel special.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_16,NA,I exercise to feel relaxed.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_17,NA,I exercise to feel something at all.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_18,NA,I exercise to avoid being with other people.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_19,NA,I exercise to give myself something to do when I am bored.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_20,NA,I exercise to cope with/relieve stress.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_21,NA,I exercise to receive more attention from family and friends.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+function_22,NA,I exercise to get my parents to understand or notice me.,raw,0,"never=1, rarely=2, sometimes=3, often=4, always=5",NA,NA,NA,NA,NA
+"function_1,function_2,function_3,function_4,function_5,function_6,function_7,function_8,function_9,function_10,function_11,function_12,function_13,function_14,function_15,function_16,function_17,function_18,function_19,function_20,function_21,function_22",NA,NA,select,1,NA,NA,NA,NA,NA,NA
+function_1,foe_reduce_feelings,"I exercise to reduce feelings of anger, sadness, loneliness, anxiety, etc.",recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_2,foe_reaction,I exercise to get a reaction from someone even if it's negative.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_3,foe_do_while_alone,I exercise to give myself something to do when you are alone.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_4,foe_avoid_unpleasant,I exercise to avoid having to do something unpleasant that I don't want to do.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_5,foe_relieve_anxiety,I exercise to relieve anxiety.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_6,foe_prevent_bad_feelings,I exercise to prevent bad feelings.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_7,foe_show_desperation,I exercise to let others know how desperate I was feeling.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_8,foe_escape_avoid_stop,I exercise to escape/avoid/stop bad feelings.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_9,foe_communicate_bad_feelings,I exercise to communicate to others how badly I feel inside.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_10,foe_avoid_school_work,"I exercise to avoid school, work, or other activities.",recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_11,foe_others_understand_notice,I exercise to get other people to understand or notice me.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_12,foe_ground_return_dissociative,I exercise to ground myself/return from a dissociative state.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_13,foe_get_attention,I exercise to get attention.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_14,foe_slow_racing_thoughts,I exercise to slow down racing thoughts.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_15,foe_feel_special,I exercise to feel special.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_16,foe_feel_relaxed,I exercise to feel relaxed.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_17,foe_feel_something,I exercise to feel something at all.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_18,foe_avoid_other_people,I exercise to avoid being with other people.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_19,foe_do_while_bored,I exercise to give myself something to do when I am bored.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_20,foe_cope_relieve_stress,I exercise to cope with/relieve stress.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_21,foe_attention_family_friends,I exercise to receive more attention from family and friends.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+function_22,foe_parents_understand_notice,I exercise to get my parents to understand or notice me.,recode,2,"never=0, rarely=1, sometimes=2, often=3, always=4","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+"function_1,function_2,function_3,function_4,function_5,function_6,function_7,function_8,function_9,function_10,function_11,function_12,function_13,function_14,function_15,function_16,function_17,function_18,function_19,function_20,function_21,function_22",foe_sum,Sum of Function of Exercise Scores,sum,3,NA,NA,NA,NA,NA,NA
+"foe_reaction,foe_do_while_alone,foe_avoid_unpleasant,foe_relieve_anxiety,foe_prevent_bad_feelings,foe_show_desperation,foe_escape_avoid_stop,foe_communicate_bad_feelings,foe_avoid_school_work,foe_others_understand_notice,foe_ground_return_dissociative,foe_get_attention,foe_slow_racing_thoughts,foe_feel_special,foe_feel_relaxed,foe_feel_something,foe_avoid_other_people,foe_do_while_bored,foe_cope_relieve_stress,foe_attention_family_friends,foe_parents_understand_notice,foe_sum",NA,NA,select,4,NA,NA,NA,NA,NA,NA

@@ -1,0 +1,28 @@
+﻿raw_vars,new_var,label,operation,step,val_labs,new_vals,if_condition,if_true_return,else_return,code
+ocd_instruction,NA,"Obsessions are frequent, unwelcome,and intrusive thoughts.",raw,0,NA,NA,NA,NA,NA,NA
+ocd_time_obsessive,NA,How much time do you spend on obsessive thoughts?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_interfere_obsessive,NA,"How much do your obsessive thoughts interfere with your personal, social, or work life?",raw,0,NA,NA,NA,NA,NA,NA
+ocd_distress_obsessive,NA,How much do your obsessive thoughts distress you?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_resist_obsessive,NA,How hard do you try to resist your obsessions?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_control_obsessive,NA,How much control do you have over your obsessive thoughts?,raw,0,NA,NA,NA,NA,NA,NA
+compulsion_description,NA,Compulsions are repetitive behaviors or mental acts that you have a strong urge to repeat that are aimed at reducing your anxiety or preventing some dreaded event.,raw,0,NA,NA,NA,NA,NA,NA
+ocd_compulsive_time,NA,How much time do you spend performing compulsive behaviors?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_interfere_compulsive,NA,"How much do your compulsive behaviors interfere with your personal, social, or work life?",raw,0,NA,NA,NA,NA,NA,NA
+ocd_anxious_compulsive,NA,How anxious would you feel if you were prevented from performing your compulsive behaviors?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_resist_compulsive,NA,How hard do you try to resist your compulsive behaviors?,raw,0,NA,NA,NA,NA,NA,NA
+ocd_control_compulsive,NA,How much control do you have over your compulsive behaviors?,raw,0,NA,NA,NA,NA,NA,NA
+"ocd_instruction,ocd_time_obsessive,ocd_interfere_obsessive,ocd_distress_obsessive,ocd_resist_obsessive,ocd_control_obsessive,compulsion_description,ocd_compulsive_time,ocd_interfere_compulsive,ocd_anxious_compulsive,ocd_resist_compulsive,ocd_control_compulsive",NA,NA,select,1,NA,NA,NA,NA,NA,NA
+ocd_instruction,NA,"Obsessions are frequent, unwelcome,and intrusive thoughts.",recode,2,NA,NA,,,,
+ocd_time_obsessive,NA,How much time do you spend on obsessive thoughts?,recode,2,"none=1, 0-1 hrs/day=2, 1-3 hrs/day=3, 3-8 hrs/day=4, More than 8 hrs/day=5","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+ocd_interfere_obsessive,NA,"How much do your obsessive thoughts interfere with your personal, social, or work life?",recode,2,"none=1, mild=2, definite but manageable=3, substantial interference=4, severe=5","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+ocd_distress_obsessive,NA,How much do your obsessive thoughts distress you?,recode,2,"none=1, little=2, moderate but manageable=3, nearly constant, disabling=5, severe=6","1=0, 2=1, 3=2, 4=3, 5=4, 6=5",NA,NA,NA,NA
+ocd_resist_obsessive,NA,How hard do you try to resist your obsessions?,recode,2,"Always try=1, Try much of the time=2, Try some of the time=3, Rarely try=4, Often yield=5, Never try=6, Completely yield=7","1=6, 2=5, 3=4, 4=3, 5=2, 6=1, 7=0",NA,NA,NA,NA
+ocd_control_obsessive,NA,How much control do you have over your obsessive thoughts?,recode,2,"complete control=1, Much control=2, Some control=3, Little control=4, No control=5","1=4, 2=3, 3=2, 4=1, 5=0",NA,NA,NA,NA
+compulsion_description,NA,Compulsions are repetitive behaviors or mental acts that you have a strong urge to repeat that are aimed at reducing your anxiety or preventing some dreaded event.,recode,2,NA,NA,NA,NA,NA,NA
+ocd_compulsive_time,NA,How much time do you spend performing compulsive behaviors?,recode,2,"none=1, 0-1 hrs/day=2, 1-3 hrs/day=3, 3-8 hrs/day=4, More than 8 hrs/day=5","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+ocd_interfere_compulsive,NA,"How much do your compulsive behaviors interfere with your personal, social, or work life?",recode,2,"none=1, mild=2, definite but manageable=3, substantial interference=4, severe=5","1=0, 2=1, 3=2, 4=3, 5=4",NA,NA,NA,NA
+ocd_anxious_compulsive,NA,How anxious would you feel if you were prevented from performing your compulsive behaviors?,recode,2,"none=1, little=2, moderate but manageable=3, nearly constant, disabling=5, severe=6","1=0, 2=1, 3=2, 4=3, 5=4, 6=5",NA,NA,NA,NA
+ocd_resist_compulsive,NA,How hard do you try to resist your compulsive behaviors?,recode,2,"Always try=1, Try much of the time=2, Try some of the time=3, Rarely try, often yield=4, Never try, completely yield=5","1=4, 2=3, 3=2, 4=1, 5=0",NA,NA,NA,NA
+ocd_control_compulsive,NA,How much control do you have over your compulsive behaviors?,recode,2,"complete control=1, Much control=2, Some control=3, Little control=4, No control=5","1=4, 2=3, 3=2, 4=1, 5=0",NA,NA,NA,NA
+"ocd_instruction,ocd_time_obsessive,ocd_interfere_obsessive,ocd_distress_obsessive,ocd_resist_obsessive,ocd_control_obsessive,compulsion_description,ocd_compulsive_time,ocd_interfere_compulsive,ocd_anxious_compulsive,ocd_resist_compulsive,ocd_control_compulsive",ocd_sum,Sum OCD,sum,3,NA,NA,NA,NA,NA,NA
+"ocd_instruction,ocd_time_obsessive,ocd_interfere_obsessive,ocd_distress_obsessive,ocd_resist_obsessive,ocd_control_obsessive,compulsion_description,ocd_compulsive_time,ocd_interfere_compulsive,ocd_anxious_compulsive,ocd_resist_compulsive,ocd_control_compulsive,ocd_instruction,ocd_time_obsessive,ocd_interfere_obsessive,ocd_distress_obsessive,ocd_resist_obsessive,ocd_control_obsessive,compulsion_description,ocd_compulsive_time,ocd_interfere_compulsive,ocd_anxious_compulsive,ocd_resist_compulsive,ocd_control_compulsive",NA,NA,select,4,NA,NA,NA,NA,NA,NA
