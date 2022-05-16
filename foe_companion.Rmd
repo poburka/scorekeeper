@@ -1,0 +1,26 @@
+---
+title: "foe_scoresheet"
+output: html_document
+---
+#background: 
+
+The Functions of Exercise Scale was developed by Patricia Marten DiBartolo, Linda Lin, Simone Montoya, Heather Neal, and Carey Shaffer. The scale includes two subscales: Weight and Appearance (WA), and Health and Enjoyment (HE). The FES is a 16-item, self-report questionnaire that assesses motivation to exercise. Individuals provide ratings using a 7-item scale from “1 = do not agree” to “7 = strongly agree". FES-HE scores are positively correlated with psychological well-being and physical health. Conversely, FES-WA scores are negatively correlated with depressive and eating disorder symptoms, self-esteem, and physical well-being.
+
+
+```{r}
+#load necessary packages
+library(haven)
+library(cgwtools)
+library(readxl)
+library(scorekeeper)
+#load in raw data and scoresheet
+
+maxed_raw <- read.csv("MAXED_RA_raw.csv")
+foe_scoresheet <- read_excel("foe_scoresheet.xlsx")
+
+#run scorekeeper function
+scorekeep(maxed_raw, foe_scoresheet)
+
+#outro
+```
+

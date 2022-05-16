@@ -1,0 +1,25 @@
+---
+title: "stai_scoresheet"
+output: html_document
+---
+#background: 
+
+The State Trait Anxiety Inventory is a self-evaluation questionnaire developed by Charles D. Spielberger. It can be used in clinical settings to diagnose anxiety and to distinguish it from depressive syndromes. Form Y, its most popular version, has 20 items for assessing trait anxiety and 20 for state anxiety. All items are rated on a 4-point scale, and higher scores indicate greater anxiety.
+
+
+```{r}
+#load necessary packages
+library(haven)
+library(cgwtools)
+library(readxl)
+library(scorekeeper)
+#load in raw data and scoresheet
+
+maxed_raw <- read.csv("MAXED_RA_raw.csv")
+stai_scoresheet <- read_excel("stai_scoresheet.xlsx")
+
+#run scorekeeper function
+scorekeep(maxed_raw, stai_scoresheet)
+
+#outro
+```
